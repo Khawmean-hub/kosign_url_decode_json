@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOSIGN</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
+    <script src="js/js.js"></script>
+    <style>
+        .layout {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            margin: 20px;
+            
+        }
+        .layout>div{
+            overflow-x: hidden;
+        }
+        .formUrl {
+            margin-top: 20px;
+            border-radius: 5px;
+            padding: 10px;
+            height: 51px;
+            background-color: rgb(243, 243, 243);
+            border: 1px solid rgb(218, 218, 218);
+        }
+        pre {
+            outline: 1px solid #ccc; padding: 5px; margin: 5px;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            border-radius: 5px;
+            background-color: rgb(255, 255, 255);
+        }
+        .string { color: rgb(107, 107, 107); }
+        .number { color: rgb(32, 192, 17); }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+
+        .dark .string { color: rgb(218, 218, 218); }
+        .dark .number { color: rgb(32, 192, 17); }
+        .dark .boolean { color: blue; }
+        .dark .null { color: magenta; }
+        .dark .key { color: rgb(238, 60, 60); }
+
+        .right_part{
+            padding: 0px 20px 20px 50px;
+        }
+        textarea {
+            font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;
+        }
+        .btn_zoom, .btn_zoom2, .formUrl button{
+            cursor: pointer;
+        }
+        #url_text {
+            color: rgb(146, 146, 146);
+        }
+
+        .text-white{
+            color: white !important;
+        }
+        .text-black{
+            color: rgb(36, 36, 36) !important;
+        }
+        
+        .box {
+            border-radius: 5px;
+            border: 1px solid rgb(212, 212, 212);
+            background: rgb(240, 240, 240);
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .box p{
+            margin: 0px;
+            min-width: 115px;
+        }
+
+
+        /* Dark */
+        body.dark {
+            background-color: rgb(27, 27, 27);
+            color: white;
+        }
+
+        .dark pre, .dark .formUrl, .dark #url_text {
+            background: rgb(63, 63, 63);
+            color: white;
+        }
+        .dark pre {
+            outline: 1px solid rgb(26, 26, 26);
+        }
+        .dark .formUrl {
+            border: 1px solid rgb(26, 26, 26);
+        }
+        .dark h3, .dark h4, .dark label {
+            color: white !important;
+        }
+
+
+        /* Light */
+        .light h3, .light h4,  .light label {
+            color: rgb(48, 48, 48) !important;
+        }
+       
+    </style>
+</head>
+
+<body class="">
+    <div style="background-color: rgb(30, 68, 190); padding: 10px 20px; display: flex; justify-content: space-between;">
+        <div>
+            <h3 style="color: white; margin: 0; padding: 0;">KOSIGN Json url decode</h3>
+        </div>
+       <div>
+        <button class="ui button red mini btn_clear_data" style="margin-right: 20px;">Clear Data</button>
+        <div class="ui toggle checkbox">
+            <input type="checkbox" id="dark_mode">
+            <label class="text-white">Dark Mode </label>
+        </div>
+       </div>
+    </div>
+    <div class="layout">
+
+        <!-- left -->
+        <div>
+            <div class="ui form">
+                <div class="field">
+                    <label>
+                        <div style="display: flex; justify-content: space-between;">
+                        URL
+                        <div class="ui label btn_zoom">
+                            <i class="zoom icon"></i> Zoom In
+                        </div>
+                        </div>
+                    </label> 
+                    <textarea rows="2" id="url_text"></textarea>
+                </div>
+            </div>
+            
+           
+            <div class="ui form mini formUrl">
+               
+                <div class="ui toggle checkbox" style="margin-top: 4px;">
+                    <input type="checkbox" id="live_mode">
+                    <label>Live mode</label>
+                </div>
+                <button class="ui button blue tiny circular right floated btn_decode">DECODE</button>
+                <button class="ui button green tiny circular right floated btn_save">SAVE</button>
+                <button class="ui button tiny circular right floated btn_format">FORMAT</button>
+                <button class="ui button tiny circular right floated btn_copy">COPY</button>
+            </div>
+
+            <div class="ui info message" style="display: none;">
+                <div class="header">
+                  Copies to cliboard.
+                </div>
+              </div>
+
+            <div class="ui form" style="margin-top: 10px;">
+                <div class="field">
+                    <label>Result</label>
+                    <!-- <textarea rows="26" id="url_result"></textarea> -->
+                    <pre id="url_result" contenteditable="true">
+
+                    </pre>
+                </div>
+            </div>
+
+        </div>
+        <!-- Right -->
+        <div class="right_part">
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <h4>Recent</h4>
+                </div>
+                <div class="ui label btn_zoom2">
+                    <i class="zoom icon"></i> Zoom In
+                </div>
+                
+            </div>
+            <div style="height: 165px;">
+                <div>
+                    <div style="display: flex; overflow-x: auto;" id="save_data_rec">
+                       No Data
+                    </div>
+                </div>
+            </div>
+            <div class="save1">
+                <pre contenteditable="true"></pre>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding: 20px;">
+        <!-- <h3>Compare</h3> -->
+
+
+
+    </div>
+
+    <input type="hidden" name="" id="tem_input">
+
+    <script>
+        //Event
+
+        $('.btn_decode').click(function () {
+            decode();
+        })
+        $('.btn_save').click(function () {
+            save();
+            try {
+                var newObj = {
+                    name: 'Save1',
+                    date: moment().format('YYYY-MM-DD | hh:mm a'),
+                    data: JSON.parse($('#url_result').text())
+                }
+
+                var oldData = localStorage.getItem('kosign_save_data')
+                if(!isNull(oldData)){
+                    oldData = JSON.parse(oldData)
+                    oldData.push(newObj)
+                    localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
+                }else{
+                    var ls = [];
+                    ls.push(newObj);
+                    localStorage.setItem('kosign_save_data', JSON.stringify(ls))
+                }
+            } catch (error) {
+                
+            }
+            loadData();
+        })
+
+        //
+        $('#live_mode').change(function() {
+            var mode = $(this).prop('checked');
+            localStorage.setItem('kosign_live_mode', mode)
+            if(mode){
+                decode()
+            }
+            checkLiveMode()
+        })
+
+        var isHide =false;
+        $('.btn_zoom').click(function () {
+            if(isHide){
+                isHide = false;
+                $('.btn_zoom').empty().append('<i class="zoom-in icon"></i> Zoom In')
+                $('.layout').css('gridTemplateColumns', '50% 50%')
+            }else{
+                isHide = true;
+                $('.btn_zoom').empty().append('<i class="zoom-out icon"></i> Zoom Out')
+                $('.layout').css('gridTemplateColumns', '100% 0%')
+            }
+        })
+
+        $('.btn_zoom2').click(function () {
+            if(isHide){
+                isHide = false;
+                $('.btn_zoom2').empty().append('<i class="zoom-in icon"></i> Zoom In')
+                $('.layout').css('gridTemplateColumns', '50% 50%')
+            }else{
+                isHide = true;
+                $('.btn_zoom2').empty().append('<i class="zoom-out icon"></i> Zoom Out')
+                $('.layout').css('gridTemplateColumns', '0% 100%')
+            }
+        })
+
+        $('.btn_format').click(function () {
+            formatJson('#url_result');
+        })
+
+        $('.btn_copy').click(function () {
+            copy($('#url_result').text())
+            $('.message').show()
+            setTimeout(function () {
+                $('.message').hide()
+            }, 1000)
+        })
+
+        $('#dark_mode').change(function () {
+            if($(this).prop('checked')){
+                $('body').removeClass('light')
+                $('body').addClass('dark')
+            }else{
+                $('body').removeClass('dark')
+                $('body').addClass('light')
+            }
+        })
+
+        $(document).on('click', '.box',function () {
+            var str = JSON.stringify(JSON.parse(decodeURIComponent($(this).attr('data-val'))), undefined, 4);
+            $('.save1 pre').html(syntaxHighlight(str))
+        })
+
+        $('#btn_clear_data').click(function () {
+          localStorage.removeItem('kosign_save_data')  
+        })
+
+        checkLiveMode()
+        loadData();
+    </script>
+</body>
+
+</html>
