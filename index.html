@@ -80,12 +80,25 @@
             padding: 10px;
             margin: 10px;
             cursor: pointer;
+            position: relative;
         }
 
         .box p{
             margin: 0px;
             min-width: 115px;
         }
+        .active_select {
+            background-color: yellow;
+            border: 1px solid rgb(255, 209, 109);
+        }
+        .btn_box_close{
+            position: absolute;
+            background: rgba(228, 228, 228, 0.747) !important;
+            right: -10px;
+            top: -10px;
+        }
+
+
 
 
         /* Dark */
@@ -107,7 +120,14 @@
         .dark h3, .dark h4, .dark label {
             color: white !important;
         }
-
+        .dark .box {
+            border: 1px solid rgb(22, 22, 22);
+            background: rgb(46, 46, 46);
+        }
+        .dark .active_select {
+            border: 1px solid rgb(22, 22, 22);
+            background: rgb(161, 134, 12);
+        }
 
         /* Light */
         .light h3, .light h4,  .light label {
@@ -192,7 +212,7 @@
             <div style="height: 165px;">
                 <div>
                     <div style="display: flex; overflow-x: auto;" id="save_data_rec">
-                       No Data
+                      <div style="padding: 30px; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">No Data</h4></div>
                     </div>
                 </div>
             </div>
@@ -221,7 +241,7 @@
             save();
             try {
                 var newObj = {
-                    name: 'Save1',
+                    name: 'Save',
                     date: moment().format('YYYY-MM-DD | hh:mm a'),
                     data: JSON.parse($('#url_result').text())
                 }
@@ -229,6 +249,7 @@
                 var oldData = localStorage.getItem('kosign_save_data')
                 if(!isNull(oldData)){
                     oldData = JSON.parse(oldData)
+                    newObj.name = 'Save ' + oldData.length;
                     oldData.push(newObj)
                     localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
                 }else{
@@ -240,6 +261,8 @@
                 
             }
             loadData();
+            $('.box').eq(0).addClass('active_select')
+           
         })
 
         //
@@ -299,13 +322,30 @@
             }
         })
 
-        $(document).on('click', '.box',function () {
+        $(document).on('click', '.btn_box',function () {
             var str = JSON.stringify(JSON.parse(decodeURIComponent($(this).attr('data-val'))), undefined, 4);
             $('.save1 pre').html(syntaxHighlight(str))
+
+            $('.box').removeClass('active_select');
+            $(this).parent().addClass('active_select')
         })
 
-        $('#btn_clear_data').click(function () {
-          localStorage.removeItem('kosign_save_data')  
+        $('.btn_clear_data').click(function () {
+            if (confirm('Do you really want to clear all data.') == true) {
+                localStorage.removeItem('kosign_save_data')
+                loadData();
+                $('.save1 pre').html('');
+            }
+         
+        })
+
+        $(document).on('click','.btn_box_close', function () {
+            var index = $(this).parent().index()
+            if (confirm('Do you really want to clear data.') == true) {
+                console.log('>>> ',index)
+                onRemoveData(index)
+            }
+           
         })
 
         checkLiveMode()

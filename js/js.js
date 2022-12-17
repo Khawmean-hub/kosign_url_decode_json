@@ -88,15 +88,48 @@ function loadData() {
         var oldData = localStorage.getItem('kosign_save_data')
         if(!isNull(oldData)){
             oldData = JSON.parse(oldData)
+            oldData.sort(function(a,b){
+                //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
+                return a.name > b.name ? -1 : 1;
+              });
+
             var html = '';
             $.each(oldData, function(i, v){
-                html += `<div class="box" data-val="${encodeURIComponent(JSON.stringify(v.data))}">
-                            <p>${v.name}</p>
-                            <small>${v.date}</small>
-                        </div>`
+               
+                html += `<div class="box">
+                         <button class="circular ui icon button mini btn_box_close">
+                            <i class="close icon"></i>
+                         </button>
+                            <div class="btn_box" data-val="${encodeURIComponent(JSON.stringify(v.data))}"> <p>${v.name}</p>
+                            <small>${v.date}</small></div>
+                    </div>`
+               
             })
 
             $('#save_data_rec').empty().append(html);
+        }else{
+            $('#save_data_rec').empty().append('<div style="padding: 30px;border: 1px solid gainsboro; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">No Data</h4></div>');
+        }
+    } catch (error) {
+        
+    }
+}
+
+
+function onRemoveData(index){
+    try {
+        var oldData = localStorage.getItem('kosign_save_data')
+        if(!isNull(oldData)){
+            oldData = JSON.parse(oldData)
+            oldData.sort(function(a,b){
+                //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
+                return a.name > b.name ? -1 : 1;
+            });
+            oldData.remove(index)
+            console.log(oldData)
+            localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
+
+            loadData()
         }
     } catch (error) {
         
