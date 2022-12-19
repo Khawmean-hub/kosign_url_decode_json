@@ -32,8 +32,7 @@ function decode() {
         $('#url_result').html(syntaxHighlight((str)))
     }catch(e){
        if($('#url_text').val() != ''){
-            alert(e)
-            console.log(e)
+        onMessage(e, 'error')
        }else{
         $('#url_result').empty()
        }
@@ -95,24 +94,27 @@ function loadData() {
 
             var html = '';
             $.each(oldData, function(i, v){
-               
                 html += `<div class="box">
-                         <button class="circular ui icon button mini btn_box_close">
-                            <i class="close icon"></i>
-                         </button>
-                            <div class="btn_box" data-val="${encodeURIComponent(JSON.stringify(v.data))}"> <p>${v.name}</p>
-                            <small>${v.date}</small></div>
-                    </div>`
-               
+                    <button class="circular ui icon button mini btn_box_close">
+                       <i class="close icon"></i>
+                    </button>
+                       <div class="btn_box" data-val="${encodeURIComponent(JSON.stringify(v.data))}"> <p>${v.name}</p>
+                       <small>${v.date}</small></div>
+               </div>`
+                
             })
-
             $('#save_data_rec').empty().append(html);
+            $('.save1 pre').html('');
         }else{
-            $('#save_data_rec').empty().append('<div style="padding: 30px;border: 1px solid gainsboro; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">No Data</h4></div>');
+            saveNoData();
         }
     } catch (error) {
         
     }
+}
+
+function saveNoData(){
+    $('#save_data_rec').empty().append('<div style="padding: 30px;border: 1px solid gainsboro; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">No Data</h4></div>');
 }
 
 
@@ -125,13 +127,47 @@ function onRemoveData(index){
                 //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
                 return a.name > b.name ? -1 : 1;
             });
-            oldData.remove(index)
-            console.log(oldData)
-            localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
-
-            loadData()
+            var newList =[] 
+            $.each(oldData, function(i, v) {
+                if(i != index){
+                    newList.push(v);
+                }
+            })
+            console.log(newList)
+            localStorage.setItem('kosign_save_data', JSON.stringify(newList))
         }
     } catch (error) {
         
     }
+}
+
+function onMessage(str, type, duration=3000){
+    var id = '';
+    var size = 7;
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    for (let index = 0; index < size; index++) {
+        id += characters.charAt(Math.floor(Math.random() * characters.length-1));
+    }
+    $('#message-block').append('<div class="message-main" id="'+id+'"></div>')
+
+    var status='';
+    switch(type){
+        case 'error':
+            status = '#fc1e4b'
+            break;
+        case 'success':
+            status = '#456aff'
+            break
+        default:
+            status = '#45ff4b'
+            break;
+    }
+
+    $('#' +id).text(str);
+    $('#' +id).css({'borderLeft': '3px solid' + status})
+    $('#' +id).animate({"right": '+=250'});
+    setTimeout(function(){
+        $('#' +id).animate({"right": '-=250'});
+        setTimeout(function(){$('#' +id).remove();}, 300)
+    }, duration)
 }

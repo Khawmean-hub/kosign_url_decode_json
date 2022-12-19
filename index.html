@@ -5,13 +5,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOSIGN</title>
+    <title>URL Decode;</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
+    <script src="js/popUp.js"></script>
     <script src="js/js.js"></script>
     <style>
         .layout {
@@ -46,6 +48,21 @@
         .boolean { color: blue; }
         .null { color: magenta; }
         .key { color: red; }
+
+        .message-main {
+            position: absolute;
+            bottom: 50px;
+            right: -250px;
+            background-color: #ffffff;
+            border-radius: 7px;
+            padding: 20px;
+            font-size: 16px;
+            width: 250px;
+            border-left: 3px solid rgb(0, 255, 21);
+            color: rgb(73, 73, 73);
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        }
+
 
         .dark .string { color: rgb(218, 218, 218); }
         .dark .number { color: rgb(32, 192, 17); }
@@ -106,10 +123,17 @@
             background-color: rgb(27, 27, 27);
             color: white;
         }
-
+        .dark .btn_box_close {
+            background: rgb(26, 0, 0) !important; 
+            color: rgb(209, 60, 60) !important;
+        }
         .dark pre, .dark .formUrl, .dark #url_text {
             background: rgb(63, 63, 63);
             color: white;
+        }
+        .dark .btn_zoom, .dark .btn_zoom2 {
+            background: rgb(51, 51, 51) !important;
+            color: rgb(201, 201, 201) !important;
         }
         .dark pre {
             outline: 1px solid rgb(26, 26, 26);
@@ -139,8 +163,9 @@
 
 <body class="">
     <div style="background-color: rgb(30, 68, 190); padding: 10px 20px; display: flex; justify-content: space-between;">
-        <div>
-            <h3 style="color: white; margin: 0; padding: 0;">KOSIGN Json url decode</h3>
+        <div style="display: flex; align-items: center;">
+            <img src="icon.png" alt="" width="30px">
+            <h2 style="margin: 0; padding: 0; margin-left: 10px; color: white; font-size: 18px;">URL Decode; </h2>  <small class="text-white" style="margin-left: 10px; margin-top: 3px;"> KOSIGN(B2B)</small>
         </div>
        <div>
         <button class="ui button red mini btn_clear_data" style="margin-right: 20px;">Clear Data</button>
@@ -156,7 +181,7 @@
         <div>
             <div class="ui form">
                 <div class="field">
-                    <label>
+                    <label style="margin-bottom: 20px;">
                         <div style="display: flex; justify-content: space-between;">
                         URL
                         <div class="ui label btn_zoom">
@@ -180,13 +205,6 @@
                 <button class="ui button tiny circular right floated btn_format">FORMAT</button>
                 <button class="ui button tiny circular right floated btn_copy">COPY</button>
             </div>
-
-            <div class="ui info message" style="display: none;">
-                <div class="header">
-                  Copies to cliboard.
-                </div>
-              </div>
-
             <div class="ui form" style="margin-top: 10px;">
                 <div class="field">
                     <label>Result</label>
@@ -209,11 +227,15 @@
                 </div>
                 
             </div>
-            <div style="height: 165px;">
+            <div style="height: 170px; margin-top: 10px;">
                 <div>
                     <div style="display: flex; overflow-x: auto;" id="save_data_rec">
                       <div style="padding: 30px; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">No Data</h4></div>
                     </div>
+                </div>
+                <div style="margin-top: 50px; margin-right: 5px;">
+                    <button class="ui button tiny circular right floated btn_format2">FORMAT</button>
+                    <button class="ui button tiny circular right floated btn_copy2">COPY</button>
                 </div>
             </div>
             <div class="save1">
@@ -221,7 +243,8 @@
             </div>
         </div>
     </div>
-
+    <div id="pop-main"></div>
+    <div id="message-block"></div>
     <div style="padding: 20px;">
         <!-- <h3>Compare</h3> -->
 
@@ -248,8 +271,18 @@
 
                 var oldData = localStorage.getItem('kosign_save_data')
                 if(!isNull(oldData)){
-                    oldData = JSON.parse(oldData)
-                    newObj.name = 'Save ' + oldData.length;
+                    oldData = JSON.parse(oldData)   
+                    oldData.sort(function(a,b){
+                        //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
+                        return a.name > b.name ? -1 : 1;
+                    });
+
+                    var rank = 1;
+                    if(oldData.length > 1) {
+                        rank = Number(oldData[0].name.slice(-1)) + 1;
+                    }
+                   
+                    newObj.name = 'Save ' + rank;
                     oldData.push(newObj)
                     localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
                 }else{
@@ -261,8 +294,6 @@
                 
             }
             loadData();
-            $('.box').eq(0).addClass('active_select')
-           
         })
 
         //
@@ -303,13 +334,18 @@
         $('.btn_format').click(function () {
             formatJson('#url_result');
         })
+        $('.btn_format2').click(function () {
+            formatJson('.save1 pre');
+        })
 
         $('.btn_copy').click(function () {
             copy($('#url_result').text())
-            $('.message').show()
-            setTimeout(function () {
-                $('.message').hide()
-            }, 1000)
+            onMessage('Copies to clipboard.')
+        })
+
+        $('.btn_copy2').click(function () {
+            copy($('.save1 pre').text())
+            onMessage('Copies to clipboard.')
         })
 
         $('#dark_mode').change(function () {
@@ -331,21 +367,28 @@
         })
 
         $('.btn_clear_data').click(function () {
-            if (confirm('Do you really want to clear all data.') == true) {
-                localStorage.removeItem('kosign_save_data')
-                loadData();
-                $('.save1 pre').html('');
-            }
-         
+            onConfirm({
+                description: 'Do you really want to clear all data?',
+                onConfirm: function(){
+                    localStorage.removeItem('kosign_save_data')
+                    loadData();
+                    $('.save1 pre').html('');
+                    onMessage('All data is cleared.')
+                }
+            })
         })
 
         $(document).on('click','.btn_box_close', function () {
             var index = $(this).parent().index()
-            if (confirm('Do you really want to clear data.') == true) {
-                console.log('>>> ',index)
-                onRemoveData(index)
-            }
-           
+            var isAct = $(this).parent().hasClass('active_select');
+            onConfirm({
+                description: 'Do you really want to remove this data?',
+                onConfirm: function(){
+                    onRemoveData(index)
+                    loadData()
+                    onMessage('The data is remove.')
+                }
+            })
         })
 
         checkLiveMode()
