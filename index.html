@@ -8,6 +8,7 @@
     <title>URL Decode;</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+    <link rel="stylesheet" href="css/css.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     
@@ -15,150 +16,8 @@
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
     <script src="js/popUp.js"></script>
     <script src="js/js.js"></script>
-    <style>
-        .layout {
-            display: grid;
-            grid-template-columns: 50% 50%;
-            margin: 20px;
-            
-        }
-        .layout>div{
-            overflow-x: hidden;
-        }
-        .formUrl {
-            margin-top: 20px;
-            border-radius: 5px;
-            padding: 10px;
-            height: 51px;
-            background-color: rgb(243, 243, 243);
-            border: 1px solid rgb(218, 218, 218);
-        }
-        pre {
-            outline: 1px solid #ccc; padding: 5px; margin: 5px;
-            white-space: pre-wrap;       /* css-3 */
-            white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-            white-space: -pre-wrap;      /* Opera 4-6 */
-            white-space: -o-pre-wrap;    /* Opera 7 */
-            word-wrap: break-word;       /* Internet Explorer 5.5+ */
-            border-radius: 5px;
-            background-color: rgb(255, 255, 255);
-        }
-        .string { color: rgb(107, 107, 107); }
-        .number { color: rgb(32, 192, 17); }
-        .boolean { color: blue; }
-        .null { color: magenta; }
-        .key { color: red; }
+    <script src="js/jex223.js"></script>
 
-        .message-main {
-            position: absolute;
-            bottom: 50px;
-            right: -250px;
-            background-color: #ffffff;
-            border-radius: 7px;
-            padding: 20px;
-            font-size: 16px;
-            width: 250px;
-            border-left: 3px solid rgb(0, 255, 21);
-            color: rgb(73, 73, 73);
-            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-        }
-
-
-        .dark .string { color: rgb(218, 218, 218); }
-        .dark .number { color: rgb(32, 192, 17); }
-        .dark .boolean { color: blue; }
-        .dark .null { color: magenta; }
-        .dark .key { color: rgb(238, 60, 60); }
-
-        .right_part{
-            padding: 0px 20px 20px 50px;
-        }
-        textarea {
-            font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;
-        }
-        .btn_zoom, .btn_zoom2, .formUrl button{
-            cursor: pointer;
-        }
-        #url_text {
-            color: rgb(146, 146, 146);
-        }
-
-        .text-white{
-            color: white !important;
-        }
-        .text-black{
-            color: rgb(36, 36, 36) !important;
-        }
-        
-        .box {
-            border-radius: 5px;
-            border: 1px solid rgb(212, 212, 212);
-            background: rgb(240, 240, 240);
-            padding: 10px;
-            margin: 10px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .box p{
-            margin: 0px;
-            min-width: 115px;
-        }
-        .active_select {
-            background-color: yellow;
-            border: 1px solid rgb(255, 209, 109);
-        }
-        .btn_box_close{
-            position: absolute;
-            background: rgba(228, 228, 228, 0.747) !important;
-            right: -10px;
-            top: -10px;
-        }
-
-
-
-
-        /* Dark */
-        body.dark {
-            background-color: rgb(27, 27, 27);
-            color: white;
-        }
-        .dark .btn_box_close {
-            background: rgb(26, 0, 0) !important; 
-            color: rgb(209, 60, 60) !important;
-        }
-        .dark pre, .dark .formUrl, .dark #url_text {
-            background: rgb(63, 63, 63);
-            color: white;
-        }
-        .dark .btn_zoom, .dark .btn_zoom2 {
-            background: rgb(51, 51, 51) !important;
-            color: rgb(201, 201, 201) !important;
-        }
-        .dark pre {
-            outline: 1px solid rgb(26, 26, 26);
-        }
-        .dark .formUrl {
-            border: 1px solid rgb(26, 26, 26);
-        }
-        .dark h3, .dark h4, .dark label {
-            color: white !important;
-        }
-        .dark .box {
-            border: 1px solid rgb(22, 22, 22);
-            background: rgb(46, 46, 46);
-        }
-        .dark .active_select {
-            border: 1px solid rgb(22, 22, 22);
-            background: rgb(161, 134, 12);
-        }
-
-        /* Light */
-        .light h3, .light h4,  .light label {
-            color: rgb(48, 48, 48) !important;
-        }
-       
-    </style>
 </head>
 
 <body class="">
@@ -175,76 +34,141 @@
         </div>
        </div>
     </div>
-    <div class="layout">
 
-        <!-- left -->
-        <div>
-            <div class="ui form">
-                <div class="field">
-                    <label style="margin-bottom: 20px;">
+    <div style="margin: 20px;">
+        <div class="ui pointing secondary menu">
+            <div class="active item" data-tab="first">URL Decode</div>
+            <div class="item" data-tab="jsondiff">JSON Diff</div>
+            <div class="item" data-tab="second">Convert Jex 2.0 to Jex 3.0</div>
+            
+        </div>
+        
+        <div class="ui bottom attached active tab ">
+            <div class="ui bottom attached tab " data-tab="first">
+                <div class="layout">
+
+                    <!-- left -->
+                    <div>
+                        <div class="ui form">
+                            <div class="field">
+                                <label style="margin-bottom: 20px;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                    URL
+                                    <div class="ui label btn_zoom">
+                                        <i class="zoom icon"></i> Zoom In
+                                    </div>
+                                    </div>
+                                </label> 
+                                <textarea rows="2" id="url_text"></textarea>
+                            </div>
+                        </div>
+                        
+                    
+                        <div class="ui form mini formUrl">
+                        
+                            <div class="ui toggle checkbox" style="margin-top: 4px;">
+                                <input type="checkbox" id="live_mode">
+                                <label>Live mode</label>
+                            </div>
+                            <button class="ui button blue tiny circular right floated btn_decode">DECODE</button>
+                            <button class="ui button green tiny circular right floated btn_save">SAVE</button>
+                            <button class="ui button tiny circular right floated btn_format">FORMAT</button>
+                            <button class="ui button tiny circular right floated btn_copy">COPY</button>
+                            <button class="ui button tiny circular right floated"><a href="https://json-diff.com/" target="_blank">JSON Diff</a></button>
+                        </div>
+                        <div class="ui form" style="margin-top: 10px;">
+                            <div class="field">
+                                <label>Result</label>
+                                <!-- <textarea rows="26" id="url_result"></textarea> -->
+                                <pre id="url_result" contenteditable="true">
+            
+                                </pre>
+                            </div>
+                        </div>
+            
+                    </div>
+                    <!-- Right -->
+                    <div class="right_part">
                         <div style="display: flex; justify-content: space-between;">
-                        URL
-                        <div class="ui label btn_zoom">
-                            <i class="zoom icon"></i> Zoom In
+                            <div>
+                                <h4>Recent</h4>
+                            </div>
+                            <div class="ui label btn_zoom2">
+                                <i class="zoom icon"></i> Zoom In
+                            </div>
+                            
                         </div>
+                        <div style="height: 170px; margin-top: 10px;">
+                            <div>
+                                <div style="display: flex; overflow-x: auto;" id="save_data_rec">
+                                <div style="padding: 30px; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">No Data</h4></div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 50px; margin-right: 5px; overflow: hidden;">
+                                <button class="ui button tiny circular right floated btn_format2">FORMAT</button>
+                                <button class="ui button tiny circular right floated btn_copy2">COPY</button>
+                            </div>
                         </div>
-                    </label> 
-                    <textarea rows="2" id="url_text"></textarea>
+                        <div class="save1">
+                            <pre contenteditable="true"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Tab  -->
+            <!-- ================================================================= -->
+            <div class="ui bottom attached active tab" data-tab="second">
+                
+                <div class="ui form" style="margin: 20px;">
+                    <div class="ui form">
+                        <div class="fields columns two">
+                          <!-- <div class="field">
+                            <label>Include Variable Name</label>
+                            <input type="text" placeholder="Include" id="include_txt" >
+                          </div> -->
+                          <div class="field">
+                            <label>Exclude variable</label>
+                            <input spellcheck="false" type="text" placeholder="Exclude" id="exclude_txt" value="">
+                            
+                          </div>
+                          
+                          <div class="field">
+                            <label>Save Exclude</label>
+                            <button class="ui button">Save</button>
+                          </div> 
+                        </div>
+                      </div>
+                      <small>Replace All</small>
+                      <div class="ui form mini" id="check_con" style="margin-bottom: 20px;">
+                        
+                      </div>
+
+                    <div class="fields column two">
+                        <div class="field">
+                            
+                            <textarea spellcheck="false" rows="50" id="div_text1"></textarea>
+                        </div>
+                        <div class="field">
+                            <textarea spellcheck="false" rows="50" id="div_text2"></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-           
-            <div class="ui form mini formUrl">
-               
-                <div class="ui toggle checkbox" style="margin-top: 4px;">
-                    <input type="checkbox" id="live_mode">
-                    <label>Live mode</label>
-                </div>
-                <button class="ui button blue tiny circular right floated btn_decode">DECODE</button>
-                <button class="ui button green tiny circular right floated btn_save">SAVE</button>
-                <button class="ui button tiny circular right floated btn_format">FORMAT</button>
-                <button class="ui button tiny circular right floated btn_copy">COPY</button>
-            </div>
-            <div class="ui form" style="margin-top: 10px;">
-                <div class="field">
-                    <label>Result</label>
-                    <!-- <textarea rows="26" id="url_result"></textarea> -->
-                    <pre id="url_result" contenteditable="true">
-
-                    </pre>
-                </div>
-            </div>
-
-        </div>
-        <!-- Right -->
-        <div class="right_part">
-            <div style="display: flex; justify-content: space-between;">
-                <div>
-                    <h4>Recent</h4>
-                </div>
-                <div class="ui label btn_zoom2">
-                    <i class="zoom icon"></i> Zoom In
-                </div>
-                
-            </div>
-            <div style="height: 170px; margin-top: 10px;">
-                <div>
-                    <div style="display: flex; overflow-x: auto;" id="save_data_rec">
-                      <div style="padding: 30px; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">No Data</h4></div>
-                    </div>
-                </div>
-                <div style="margin-top: 50px; margin-right: 5px;">
-                    <button class="ui button tiny circular right floated btn_format2">FORMAT</button>
-                    <button class="ui button tiny circular right floated btn_copy2">COPY</button>
-                </div>
-            </div>
-            <div class="save1">
-                <pre contenteditable="true"></pre>
+            <!-- Third Tab -->
+            <!-- ====================================================== -->
+            <div class="ui bottom attached tab" data-tab="jsondiff">
+                <iframe src="https://json-diff.com/" style="border: 0; width: 100%; height: 100vh"></iframe>
             </div>
         </div>
     </div>
+
+    
+
+
     <div id="pop-main"></div>
-    <div id="message-block"></div>
+    <div id="message-block"></div> 
     <div style="padding: 20px;">
         <!-- <h3>Compare</h3> -->
 
@@ -253,147 +177,6 @@
     </div>
 
     <input type="hidden" name="" id="tem_input">
-
-    <script>
-        //Event
-
-        $('.btn_decode').click(function () {
-            decode();
-        })
-        $('.btn_save').click(function () {
-            save();
-            try {
-                var newObj = {
-                    name: 'Save',
-                    date: moment().format('YYYY-MM-DD | hh:mm a'),
-                    data: JSON.parse($('#url_result').text())
-                }
-
-                var oldData = localStorage.getItem('kosign_save_data')
-                if(!isNull(oldData)){
-                    oldData = JSON.parse(oldData)   
-                    oldData.sort(function(a,b){
-                        //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
-                        return a.name > b.name ? -1 : 1;
-                    });
-
-                    var rank = 1;
-                    if(oldData.length > 1) {
-                        rank = Number(oldData[0].name.slice(-1)) + 1;
-                    }
-                   
-                    newObj.name = 'Save ' + rank;
-                    oldData.push(newObj)
-                    localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
-                }else{
-                    var ls = [];
-                    ls.push(newObj);
-                    localStorage.setItem('kosign_save_data', JSON.stringify(ls))
-                }
-            } catch (error) {
-                
-            }
-            loadData();
-        })
-
-        //
-        $('#live_mode').change(function() {
-            var mode = $(this).prop('checked');
-            localStorage.setItem('kosign_live_mode', mode)
-            if(mode){
-                decode()
-            }
-            checkLiveMode()
-        })
-
-        var isHide =false;
-        $('.btn_zoom').click(function () {
-            if(isHide){
-                isHide = false;
-                $('.btn_zoom').empty().append('<i class="zoom-in icon"></i> Zoom In')
-                $('.layout').css('gridTemplateColumns', '50% 50%')
-            }else{
-                isHide = true;
-                $('.btn_zoom').empty().append('<i class="zoom-out icon"></i> Zoom Out')
-                $('.layout').css('gridTemplateColumns', '100% 0%')
-            }
-        })
-
-        $('.btn_zoom2').click(function () {
-            if(isHide){
-                isHide = false;
-                $('.btn_zoom2').empty().append('<i class="zoom-in icon"></i> Zoom In')
-                $('.layout').css('gridTemplateColumns', '50% 50%')
-            }else{
-                isHide = true;
-                $('.btn_zoom2').empty().append('<i class="zoom-out icon"></i> Zoom Out')
-                $('.layout').css('gridTemplateColumns', '0% 100%')
-            }
-        })
-
-        $('.btn_format').click(function () {
-            formatJson('#url_result');
-        })
-        $('.btn_format2').click(function () {
-            formatJson('.save1 pre');
-        })
-
-        $('.btn_copy').click(function () {
-            copy($('#url_result').text())
-            onMessage('Copies to clipboard.')
-        })
-
-        $('.btn_copy2').click(function () {
-            copy($('.save1 pre').text())
-            onMessage('Copies to clipboard.')
-        })
-
-        $('#dark_mode').change(function () {
-            if($(this).prop('checked')){
-                $('body').removeClass('light')
-                $('body').addClass('dark')
-            }else{
-                $('body').removeClass('dark')
-                $('body').addClass('light')
-            }
-        })
-
-        $(document).on('click', '.btn_box',function () {
-            var str = JSON.stringify(JSON.parse(decodeURIComponent($(this).attr('data-val'))), undefined, 4);
-            $('.save1 pre').html(syntaxHighlight(str))
-
-            $('.box').removeClass('active_select');
-            $(this).parent().addClass('active_select')
-        })
-
-        $('.btn_clear_data').click(function () {
-            onConfirm({
-                description: 'Do you really want to clear all data?',
-                onConfirm: function(){
-                    localStorage.removeItem('kosign_save_data')
-                    loadData();
-                    $('.save1 pre').html('');
-                    onMessage('All data is cleared.')
-                }
-            })
-        })
-
-        $(document).on('click','.btn_box_close', function () {
-            var index = $(this).parent().index()
-            var isAct = $(this).parent().hasClass('active_select');
-            onConfirm({
-                description: 'Do you really want to remove this data?',
-                onConfirm: function(){
-                    onRemoveData(index)
-                    loadData()
-                    onMessage('The data is remove.')
-                }
-            })
-        })
-
-        checkLiveMode()
-        loadData();
-    </script>
+    <script src="js/main.js"></script>
 </body>
-
 </html>
