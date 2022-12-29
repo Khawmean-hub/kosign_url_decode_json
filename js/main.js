@@ -134,10 +134,21 @@ $(document).on('click','.btn_box_close', function () {
     })
 })
 
+ $(document).on('change', '.m_check',function() {
+    var include = "";
+    var exclude = $('#exclude_txt').val();
+    $('#div_text2').val(conVertJexInput($('#div_text1').val(), include, exclude, true))
+})
+
 $('#div_text1, #exclude_txt').on('input',function(){
     var include = "";
     var exclude = $('#exclude_txt').val();
-    $('#div_text2').val(conVertJexInput($('#div_text1').val(), include, exclude))
+    $('#div_text2').val(conVertJexInput($('#div_text1').val(), include, exclude, true))
+})
+
+$('#btn_save_ex').click(function () {
+    localStorage.setItem('my_exclude',  $('#exclude_txt').val())
+    onMessage('Save exclude done.')
 })
 
 
@@ -152,6 +163,22 @@ function buildCheck(){
 
     $('#check_con').empty().append(html)
 }
+
+function onCheckExcludeSave() {
+    try{
+        var exclude = localStorage.getItem('my_exclude');
+        if (isNull(exclude)){
+            exclude = defalutExclude;
+            localStorage.setItem('my_exclude', exclude)
+        }
+        $('#exclude_txt').val(exclude)
+
+    }catch(e){
+
+    }
+}
+
+onCheckExcludeSave();
 buildCheck();
 checkLiveMode()
 loadData();

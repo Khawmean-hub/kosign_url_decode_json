@@ -1,16 +1,32 @@
 // regex
 var letterUperCaseReg   = /[A-Z]/g;
-var getValueReg         = ".get";                   var getValueTo = ".getString(";
-var setValueReg         = ".set";                   var setValueTo = ".put(";
+var getValueReg         = ".get";                   
+var getValueTo          = ".getString(";
+var setValueReg         = ".set";                   
+var setValueTo          = ".put(";
 var getvalueStReg       = /.get+[a-zA-Z0-9]+\(\)/g;
 var setvalueStReg       = /.set+[a-zA-Z0-9]+\(/g;
+var jexDataIn           = /D+[a-zA-Z0-9_]+In/gm
+var jexDataOut          = /D+[a-zA-Z0-9_]+Out/gm;
+// var jexDataIdoIn        = /D+[a-z0-9_]+In/gm                                                                                                                                                                      = /D+[a-z0-9_]+Out/gm;
+var inputJex            = /\(D+[a-z0-9_]+In\)+[a-zA-Z]+.getInputDomain\(\)/gm;
+var inputJexTo          = '.getInputDomain()';
+var resultJex           = /\(D+[a-z0-9_]+Out\)+[a-zA-Z]+.createResultDomain\(/gm;
+var resultJexTo         = '.createResultDomain()';
+var idoJexIn            = /\(+[A-Z0-9_]+In+\)+[a-zA-Z0-9]+.createIDOData+\(+[A-Z0-9_]+In.class+\)/gm;
+var idoVariIn           = /D+[A-Z0-9_]+In/gm;
+var idoVariOut          = /D+[A-Z0-9_]+Out/gm;
+
 var replaceJson = [
     {from: 'JexDynamicIDOData',     to: 'IDODynamic'},
     {from: 'JexPTCommonUtil',       to: 'WebCommonUtil'},
     {from: 'JexRecordDataList',     to: 'JexDataList'},
-    {from: 'CARDRPT_SESSION',       to: 'CARDMIS_SESSION'}, 
+    {from: 'CARDRPT_SESSION',       to: 'CARDMIS_SESSION'},
+    {from: 'JexDomainUtil',         to: 'DomainUtil'},
+    {from: 'JexBIZException',       to: 'JexWebBIZException'},
+    {from: 'JexIDOManager',         to: 'JexConnectionManager'}
 ]
-
+var defalutExclude = 'DateTime, cardrptSession, DateTimeUtils, StringUtils';
 
 
 
@@ -117,9 +133,37 @@ function getExclude(str, exclude, filter){
     return str;
 }
 
-function conVertJexInput(str, include, exclude) {
+function findObjexToJexData(str){
+
+}
+
+
+function toJexData(){
+    var regex = [jexDataIn, jexDataOut];
+    res
+}
+
+
+
+
+
+
+function replaceAllStr(str) {
+    $.each(replaceJson,function(i, v){
+        if($('.m_check').eq(i).prop('checked')){
+            str = str.replaceAll(v.from, v.to);
+        }
+    })
+    return str;
+}
+
+
+function conVertJexInput(str, include, exclude, isReplace) {
     var res = convertGetInput(str, include, exclude);
     res = convertSetInput(res, include, exclude);
+    if(isReplace){
+        res = replaceAllStr(res);
+    }
     return res;
 }
 
