@@ -1,6 +1,25 @@
-  //Event
 
-  $('.btn_decode').click(function () {
+var colors = [
+    '#EB455F',
+    '#F5B512',
+    '#A555EC',
+    '#BCE29E',
+    '#82CD47',
+    '#6C00FF',
+    '#3F0071'
+]
+
+
+function changeColor() {
+    var d = new Date().getDay();
+    $('.nav_bar').css('backgroundColor', colors[d])
+}
+changeColor()
+//Event
+
+
+
+$('.btn_decode').click(function () {
     decode();
 })
 $('.btn_save').click(function () {
