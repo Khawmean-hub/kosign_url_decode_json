@@ -21,13 +21,21 @@
 </head>
 
 <body class="">
-    <div style="background-color: rgb(30, 68, 190); padding: 10px 20px; display: flex; justify-content: space-between;">
+    <div style="background-color: rgb(255, 190, 92); padding: 10px 20px; display: flex; justify-content: space-between;">
         <div style="display: flex; align-items: center;">
             <img src="icon.png" alt="" width="30px">
             <h2 style="margin: 0; padding: 0; margin-left: 10px; color: white; font-size: 18px;">URL Decode; </h2>  <small class="text-white" style="margin-left: 10px; margin-top: 3px;"> KOSIGN(B2B)</small>
         </div>
+        <div class="ui mini images">
+            <img class="ui image circular" src="/img/b ratha2.jpg">
+            <img class="ui image circular" src="/img/khaw2.jpg">
+            <img class="ui image circular" src="/img/vimean2.jpg">
+            <img class="ui image circular" src="/img/vanda2.jpg">
+            <img class="ui image circular" src="/img/both2.jpg">
+            <img class="ui image circular" src="/img/yuth2.jpg">
+            <img class="ui image circular" src="/img/boonlin2.jpg">
+          </div>
        <div>
-        <button class="ui button red mini btn_clear_data" style="margin-right: 20px;">Clear Data</button>
         <div class="ui toggle checkbox">
             <input type="checkbox" id="dark_mode">
             <label class="text-white">Dark Mode </label>
@@ -40,8 +48,6 @@
             <div class="active item" data-tab="first">URL Decode</div>
             <div class="item" data-tab="jsondiff">JSON Diff</div>
             <div class="item" data-tab="second">Convert Jex 2.0 to Jex 3.0</div>
-            <div class="item" data-tab="cardr_dev">CARDRPT Console</div>
-            
         </div>
         
         <div class="ui bottom attached active tab ">
@@ -94,8 +100,11 @@
                             <div>
                                 <h4>Recent</h4>
                             </div>
-                            <div class="ui label btn_zoom2">
-                                <i class="zoom icon"></i> Zoom In
+                            <div>
+                                <button class="ui button mini btn_clear_data" style="margin-right: 20px;">Clear Data</button>
+                                <div class="ui label btn_zoom2">
+                                    <i class="zoom icon"></i> Zoom In
+                                </div>
                             </div>
                             
                         </div>
@@ -119,7 +128,7 @@
 
             <!-- Second Tab  -->
             <!-- ================================================================= -->
-            <div class="ui bottom attached  tab" data-tab="second">
+            <div class="ui bottom attached tab" data-tab="second">
                 
                 <div class="ui form" style="margin: 20px;">
                     <div class="ui form">
@@ -161,12 +170,6 @@
             <!-- ====================================================== -->
             <div class="ui bottom attached tab" data-tab="jsondiff">
                 <iframe src="https://json-diff.com/" style="border: 0; width: 100%; height: 100vh"></iframe>
-            </div>
-            
-            <!-- four Tab -->
-            <!-- ====================================================== -->
-            <div class="ui bottom attached tab" data-tab="cardr_dev">
-                <iframe src="https://cardrpt-dev.appplay.co.kr/consoleAPI.jsp" style="border: 0; width: 100%; height: 100vh"></iframe>
             </div>
         </div>
     </div>

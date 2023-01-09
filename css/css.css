@@ -102,6 +102,10 @@ textarea {
     color: #ccc !important;
 }
 
+.ui.mini.images .ui.image.circular{
+    margin: 0px 2px;
+    padding: 0px;
+}
 
 /* Dark */
 body.dark {
@@ -112,9 +116,9 @@ body.dark {
     background: rgb(26, 0, 0) !important; 
     color: rgb(209, 60, 60) !important;
 }
-.dark pre, .dark .formUrl, .dark #url_text {
-    background: rgb(63, 63, 63);
-    color: white;
+.dark pre, .dark .formUrl, .dark #url_text, .dark textarea {
+    background: rgb(63, 63, 63) !important;
+    color: white !important;
 }
 .dark .btn_zoom, .dark .btn_zoom2 {
     background: rgb(51, 51, 51) !important;

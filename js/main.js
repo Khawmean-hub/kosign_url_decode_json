@@ -95,9 +95,11 @@ $('#dark_mode').change(function () {
     if($(this).prop('checked')){
         $('body').removeClass('light')
         $('body').addClass('dark')
+        change_theme(true);
     }else{
         $('body').removeClass('dark')
         $('body').addClass('light')
+        change_theme(false);
     }
 })
 
