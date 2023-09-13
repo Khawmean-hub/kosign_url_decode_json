@@ -72,21 +72,23 @@
 <!--                            </div>-->
 <!--                            <button class="ui button blue tiny circular right floated btn_decode">DECODE</button>-->
 
-                            <button data-tooltip="Save in local" data-inverted="" data-position="top left" class="ui button blue tiny circular btn_save">Save</button>
-                            <button class="ui button tiny circular btn_format">Format</button>
-                            <button class="ui button tiny circular btn_copy">Copy</button>
-                            <button data-tooltip="Ex: getData => GET_DATA" data-inverted="" data-position="top left" class="ui button tiny circular btn_snake_case">Snake Case</button>
-                            <button data-tooltip="Ex: GET_DATA => getData" data-inverted="" data-position="top left" class="ui button tiny circular btn_camel_case">Camel Case</button>
-                        </div>
-                        <div class="ui form" style="margin-top: 20px;">
-                            <div class="field">
-<!--                                <label>Result</label>-->
-                                <!-- <textarea rows="26" id="url_result"></textarea> -->
-                                <pre id="url_result" contenteditable="true" style="margin: 0">
+                            <button data-tooltip="Save in local" data-inverted="" data-position="top left" class="ui button blue tiny  btn_save">Save</button>
+                            <button class="ui button tiny btn_format">Format</button>
+                            <button class="ui button tiny btn_copy">Copy</button>
+                            <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted="" data-position="top left" class="ui button tiny btn_keys_json">Key to JSON</button>
+                            <button data-tooltip="Ex: getData => GET_DATA" data-inverted="" data-position="top left" class="ui button tiny btn_snake_case">Snake Case</button>
+                            <button data-tooltip="Ex: GET_DATA => getData" data-inverted="" data-position="top left" class="ui button tiny btn_camel_case">Camel Case</button>
+                            <div class="ui form" style="margin-top: 10px;">
+                                <div class="field">
+                                    <!--                                <label>Result</label>-->
+                                    <!-- <textarea rows="26" id="url_result"></textarea> -->
+                                    <pre id="url_result" contenteditable="true" style="margin: 0">
 
                                 </pre>
+                                </div>
                             </div>
                         </div>
+
             
                     </div>
                     <div></div>
@@ -104,20 +106,24 @@
                             </div>
                             
                         </div>
-                        <div style="height: 154px; margin-top: 10px;">
+                        <div style="height: 67px; margin-top: 10px;">
                             <div>
                                 <div style="display: flex; overflow-x: auto;" id="save_data_rec">
                                 <div style="padding: 30px; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">No Data</h4></div>
                                 </div>
                             </div>
-                            <div style="margin-top: 20px; margin-right: 5px; overflow: hidden;">
-                                <button class="ui button tiny circular right floated btn_format2">FORMAT</button>
-                                <button class="ui button tiny circular right floated btn_copy2">COPY</button>
+
+                        </div>
+                        <div class="formUrl">
+
+                            <button class="ui button tiny btn_format2">FORMAT</button>
+                            <button class="ui button tiny btn_copy2">COPY</button>
+
+                            <div class="save1" style="margin-top: 10px">
+                                <pre contenteditable="true" style="margin: 0"></pre>
                             </div>
                         </div>
-                        <div class="save1">
-                            <pre contenteditable="true"></pre>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -152,7 +158,6 @@
 
                     <div class="fields column two">
                         <div class="field">
-                            
                             <textarea spellcheck="false" rows="50" id="div_text1"></textarea>
                         </div>
                         <div class="field">

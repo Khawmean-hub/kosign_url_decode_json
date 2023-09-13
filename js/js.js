@@ -246,3 +246,33 @@ function isUpperCase(str) {
 function isLowerCase(str) {
     return str === str.toLowerCase();
 }
+
+
+function onlyKeyToJson(str){
+
+    try {
+        JSON.parse(str);
+        return str;
+    }catch (e){
+        var keys = [];
+        if(str.includes('\\n')){
+            keys = str.split('\n');
+        }
+        if (str.includes(',')){
+            keys = str.split(',');
+        }
+        if (str.includes(' ')){
+            keys = str.split(' ');
+        }
+        if (keys.length === 0) return;
+        var jsonString = '{';
+        keys.forEach(v=>{
+            v= v.trim();
+            if(v !== ''){
+                jsonString += '"'+v+'": "",'
+            }
+        })
+        jsonString = jsonString.substring(0, jsonString.length - 1);
+        return jsonString + '}';
+    }
+}

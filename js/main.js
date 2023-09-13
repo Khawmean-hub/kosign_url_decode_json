@@ -82,6 +82,11 @@ $('.btn_zoom').click(function () {
 })
 
 
+$('.btn_keys_json').click(function (){
+    $('#url_result').text(onlyKeyToJson($('#url_result').text()))
+    formatJson('#url_result')
+})
+
 $('.btn_format').click(function () {
     formatJson('#url_result');
 })

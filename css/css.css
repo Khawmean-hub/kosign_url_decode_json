@@ -12,9 +12,8 @@
     margin-top: 20px;
     border-radius: 5px;
     padding: 10px;
-    height: 51px;
-    background-color: rgb(243, 243, 243);
-    border: 1px solid rgb(218, 218, 218);
+    background-color: rgb(244 244 244);
+    border: none;
 }
 pre {
     outline: 1px solid #e0e0ff;
@@ -149,5 +148,5 @@ body.dark {
     color: rgb(48, 48, 48) !important;
 }
 body {
-    background: #f6f6f6;
+    background: rgb(247 249 255);
 }
