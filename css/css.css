@@ -89,8 +89,8 @@ textarea {
     min-width: 115px;
 }
 .active_select {
-    background-color: yellow;
-    border: 1px solid rgb(255, 209, 109);
+    background-color: #dfe8ff;
+    border: 1px solid rgb(123, 180, 255);
 }
 .btn_box_close{
     position: absolute;
