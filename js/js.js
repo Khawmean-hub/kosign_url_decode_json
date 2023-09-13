@@ -255,7 +255,7 @@ function onlyKeyToJson(str){
         return str;
     }catch (e){
         var keys = [];
-        if(str.includes('\\n')){
+        if(str.includes('\n')){
             keys = str.split('\n');
         }
         if (str.includes(',')){
