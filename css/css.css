@@ -1,6 +1,6 @@
 .layout {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: calc(50% - 5px) 10px calc(50% - 5px);
     margin: 20px;
     
 }
@@ -146,4 +146,7 @@ body.dark {
 /* Light */
 .light h3, .light h4,  .light label {
     color: rgb(48, 48, 48) !important;
+}
+body {
+    background: #f6f6f6;
 }

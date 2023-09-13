@@ -73,25 +73,14 @@ $('.btn_zoom').click(function () {
     if(isHide){
         isHide = false;
         $('.btn_zoom').empty().append('<i class="zoom-in icon"></i> Zoom In')
-        $('.layout').css('gridTemplateColumns', '50% 50%')
+        $('.layout').css('gridTemplateColumns', 'calc(50% - 5px) 10px calc(50% - 5px)')
     }else{
         isHide = true;
         $('.btn_zoom').empty().append('<i class="zoom-out icon"></i> Zoom Out')
-        $('.layout').css('gridTemplateColumns', '100% 0%')
+        $('.layout').css('gridTemplateColumns', '100%')
     }
 })
 
-$('.btn_zoom2').click(function () {
-    if(isHide){
-        isHide = false;
-        $('.btn_zoom2').empty().append('<i class="zoom-in icon"></i> Zoom In')
-        $('.layout').css('gridTemplateColumns', '50% 50%')
-    }else{
-        isHide = true;
-        $('.btn_zoom2').empty().append('<i class="zoom-out icon"></i> Zoom Out')
-        $('.layout').css('gridTemplateColumns', '0% 100%')
-    }
-})
 
 $('.btn_format').click(function () {
     formatJson('#url_result');
@@ -172,6 +161,15 @@ $('#btn_save_ex').click(function () {
     onMessage('Save exclude done.')
 })
 
+$('.btn_camel_case').click(function (){
+    $('#url_result').text(replaceAllToCamelCase($('#url_result').text()))
+    formatJson('#url_result')
+})
+
+$('.btn_snake_case').click(function (){
+    $('#url_result').text(replaceAllToSnakeCase($('#url_result').text()))
+    formatJson('#url_result')
+})
 
 function buildCheck(){
     var html='';
@@ -201,7 +199,10 @@ function onCheckExcludeSave() {
 
 onCheckExcludeSave();
 buildCheck();
-checkLiveMode()
+// checkLiveMode()
 loadData();
+$('#url_text').on('input',function(){
+    decode();
+})
 
 $('.menu .item').tab();

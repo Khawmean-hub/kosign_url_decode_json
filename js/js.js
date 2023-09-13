@@ -188,3 +188,61 @@ function change_theme(dark_mode) {
 		$(".dark_mode_toggle:checkbox").prop("checked", false);
 	}
 }
+
+function camelToSnakeCase(str) {
+    return str.replace(/([A-Z])/g, '_$1').toUpperCase();
+}
+function snakeToCamelCase(str) {
+    return str.toLowerCase().replace(/_([a-z])/g, function(match) {
+        return match[1].toUpperCase();
+    });
+}
+function findKey(jsonString){
+    const regex = /"([^"]+)":/g;
+    const keys = [];
+    let matches = regex.exec(jsonString);
+    while (matches !== null) {
+        keys.push(matches[1]);
+        matches = regex.exec(jsonString);
+    }
+    return keys;
+}
+
+function replaceAllToCamelCase(str){
+    var keys = findKey(str);
+    keys.forEach(v=>{
+        if(isSnakeCase(v)){
+            str = str.replaceAll('"'+v+'"', '"'+snakeToCamelCase(v)+'"')
+        }else if(isUpperCase(v)){
+            str = str.replaceAll('"'+v+'"', '"'+v.toLowerCase()+'"')
+        }
+    })
+    return str;
+}
+
+function replaceAllToSnakeCase(str){
+    var keys = findKey(str);
+    keys.forEach(v=>{
+        if(isLowerCase(v)){
+            str = str.replaceAll('"'+v+'"', '"'+v.toUpperCase()+'"')
+        }else if(isCamelCase(v) && !isUpperCase(v)){
+            str = str.replaceAll('"'+v+'"', '"'+camelToSnakeCase(v)+'"')
+        }
+    })
+    return str;
+}
+
+
+function isSnakeCase(str) {
+    return str.indexOf('_') !== -1;
+}
+function isCamelCase(str) {
+    return str.indexOf('_') === -1;
+}
+
+function isUpperCase(str) {
+    return str === str.toUpperCase();
+}
+function isLowerCase(str) {
+    return str === str.toLowerCase();
+}

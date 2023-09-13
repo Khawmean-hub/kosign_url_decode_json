@@ -21,24 +21,23 @@
 </head>
 
 <body class="">
-    <div class="nav_bar" style="padding: 10px 20px; display: flex; justify-content: space-between;">
-        <div style="display: flex; align-items: center;">
-            <img src="icon.png" alt="" width="30px">
-            <h2 style="margin: 0; padding: 0; margin-left: 10px; color: white; font-size: 18px;">URL Decode; </h2>  <small class="text-white" style="margin-left: 10px; margin-top: 3px;"> KOSIGN(B2B)</small>
-        </div>
-       <div>
-       <div style="display: flex;align-items: center;">
-        <img class="ui mini image circular" src="https://lh3.googleusercontent.com/a/AEdFTp4ep1CHV34BvJdRCYBp6-OQaFAZyA23GoaxCmhEgQ=s96-c-rg-br100" style="margin-right: 10px;">
-        <div class="ui toggle checkbox">
-            <input type="checkbox" id="dark_mode">
-            <label class="text-white">Dark Mode </label>
-        </div>
-       </div>
-       </div>
-    </div>
-
-    <div style="margin: 20px;">
-        <div class="ui pointing secondary menu">
+<!--    <div class="nav_bar" style="padding: 10px 20px; display: flex; justify-content: space-between;">-->
+<!--        <div style="display: flex; align-items: center;">-->
+<!--            <img src="icon.png" alt="" width="30px">-->
+<!--            <h2 style="margin: 0; padding: 0; margin-left: 10px; color: white; font-size: 18px;">URL Decode; </h2>  <small class="text-white" style="margin-left: 10px; margin-top: 3px;"> KOSIGN(B2B)</small>-->
+<!--        </div>-->
+<!--       <div>-->
+<!--       <div style="display: flex;align-items: center;">-->
+<!--        <img class="ui mini image circular" src="https://lh3.googleusercontent.com/a/AEdFTp4ep1CHV34BvJdRCYBp6-OQaFAZyA23GoaxCmhEgQ=s96-c-rg-br100" style="margin-right: 10px;">-->
+<!--        <div class="ui toggle checkbox">-->
+<!--            <input type="checkbox" id="dark_mode">-->
+<!--            <label class="text-white">Dark Mode </label>-->
+<!--        </div>-->
+<!--       </div>-->
+<!--       </div>-->
+<!--    </div>-->
+    <div>
+        <div class="ui secondary menu inverted" style="background-color: #2662e3; padding: 3px 20px">
             <div class="active item" data-tab="first">URL Decode</div>
             <div class="item" data-tab="jsondiff">JSON Diff</div>
             <div class="item" data-tab="second">Convert Jex 2.0 to Jex 3.0</div>
@@ -49,7 +48,7 @@
                 <div class="layout">
 
                     <!-- left -->
-                    <div>
+                    <div style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 20px" class="left_part">
                         <div class="ui form">
                             <div class="field">
                                 <label style="margin-bottom: 20px;">
@@ -67,38 +66,41 @@
                     
                         <div class="ui form mini formUrl">
                         
-                            <div class="ui toggle checkbox" style="margin-top: 4px;">
-                                <input type="checkbox" id="live_mode">
-                                <label>Live mode</label>
-                            </div>
-                            <button class="ui button blue tiny circular right floated btn_decode">DECODE</button>
-                            <button class="ui button green tiny circular right floated btn_save">SAVE</button>
-                            <button class="ui button tiny circular right floated btn_format">FORMAT</button>
-                            <button class="ui button tiny circular right floated btn_copy">COPY</button>
-                            <button class="ui button tiny circular right floated"><a href="https://json-diff.com/" target="_blank">JSON Diff</a></button>
+<!--                            <div class="ui toggle checkbox" style="margin-top: 4px;">-->
+<!--                                <input type="checkbox" id="live_mode">-->
+<!--                                <label>Live mode</label>-->
+<!--                            </div>-->
+<!--                            <button class="ui button blue tiny circular right floated btn_decode">DECODE</button>-->
+
+                            <button data-tooltip="Save in local" data-inverted="" data-position="top left" class="ui button green tiny circular btn_save">Save</button>
+                            <button class="ui button tiny circular btn_format">Format</button>
+                            <button class="ui button tiny circular btn_copy">Copy</button>
+                            <button data-tooltip="Ex: getData => GET_DATA" data-inverted="" data-position="top left" class="ui button tiny circular btn_snake_case">Snake Case</button>
+                            <button data-tooltip="Ex: GET_DATA => getData" data-inverted="" data-position="top left" class="ui button tiny circular btn_camel_case">Camel Case</button>
                         </div>
                         <div class="ui form" style="margin-top: 10px;">
                             <div class="field">
                                 <label>Result</label>
                                 <!-- <textarea rows="26" id="url_result"></textarea> -->
                                 <pre id="url_result" contenteditable="true">
-            
+
                                 </pre>
                             </div>
                         </div>
             
                     </div>
+                    <div></div>
                     <!-- Right -->
-                    <div class="right_part">
+                    <div class="right_part" style="background-color: white; border-radius: 10px; padding: 20px;margin-bottom: 20px">
                         <div style="display: flex; justify-content: space-between;">
                             <div>
                                 <h4>Recent</h4>
                             </div>
                             <div>
-                                <button class="ui button mini btn_clear_data" style="margin-right: 20px;">Clear Data</button>
-                                <div class="ui label btn_zoom2">
-                                    <i class="zoom icon"></i> Zoom In
-                                </div>
+                                <button class="ui button mini btn_clear_data" >Clear Data</button>
+<!--                                <div class="ui label btn_zoom2">-->
+<!--                                    <i class="zoom icon"></i> Zoom In-->
+<!--                                </div>-->
                             </div>
                             
                         </div>
