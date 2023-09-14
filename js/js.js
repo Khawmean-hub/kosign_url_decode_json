@@ -254,16 +254,7 @@ function onlyKeyToJson(str){
         JSON.parse(str);
         return str;
     }catch (e){
-        var keys = [];
-        if(str.includes('\n')){
-            keys = str.split('\n');
-        }
-        if (str.includes(',')){
-            keys = str.split(',');
-        }
-        if (str.includes(' ')){
-            keys = str.split(' ');
-        }
+        var keys = str.match(/\w+/g)
         if (keys.length === 0) return;
         var jsonString = '{';
         keys.forEach(v=>{
