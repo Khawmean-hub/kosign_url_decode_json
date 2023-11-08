@@ -15,6 +15,23 @@
     background-color: rgb(244 244 244);
     border: none;
 }
+
+.icon_mini {
+    font-size: 10px;
+}
+.mini_menu i {
+    cursor: pointer;
+}
+.mini_menu {
+    position: absolute;
+    top: 0;
+    right: -30px;
+    width: 25px;
+    padding: 3px 4px;
+    background: #f1f1f1;
+    border-radius: 4px;
+    z-index: 1;
+}
 pre {
     outline: 1px solid #e0e0ff;
     padding: 5px; margin: 5px;
@@ -93,12 +110,17 @@ textarea {
     border: 1px solid rgb(123, 180, 255);
 }
 .btn_box_close{
-    position: absolute;
-    background: rgba(228, 228, 228, 0.747) !important;
-    right: -10px;
-    top: -10px;
+    position: absolute !important;
+    right: 0px;
+    top: 4px;
+}
+#save_data_rec .box:first-child{
+    margin-left: 0px;
 }
 
+.btn_box_close .menu .item, .btn_box_close .menu i{
+    font-size: 11px !important;
+}
 #m_check{
     color: #ccc !important;
 }

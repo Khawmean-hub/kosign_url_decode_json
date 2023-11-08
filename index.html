@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
     <link rel="stylesheet" href="css/css.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
-        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
     <script src="js/popUp.js"></script>
@@ -36,160 +36,168 @@
 <!--       </div>-->
 <!--       </div>-->
 <!--    </div>-->
-    <div>
-        <div class="ui secondary menu inverted" style="background-color: #2662e3; padding: 3px 20px">
-            <div class="active item" data-tab="first">URL Decode</div>
-            <div class="item" data-tab="jsondiff">JSON Diff</div>
-            <div class="item" data-tab="second">Convert Jex 2.0 to Jex 3.0</div>
-        </div>
-        
-        <div class="ui bottom attached active tab ">
-            <div class="ui bottom attached active tab " data-tab="first">
-                <div class="layout">
+<div>
+    <div class="ui secondary menu inverted" style="background-color: #2662e3; padding: 3px 20px">
+        <div class="active item" data-tab="first">URL Decode</div>
+        <div class="item" data-tab="jsondiff">JSON Diff</div>
+        <div class="item" data-tab="second">Convert Jex 2.0 to Jex 3.0</div>
+    </div>
 
-                    <!-- left -->
-                    <div style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 20px" class="left_part">
-                        <div class="ui form">
-                            <div class="field">
-                                <label style="margin-bottom: 20px;">
-                                    <div style="display: flex; justify-content: space-between;">
+    <div class="ui bottom attached active tab ">
+        <div class="ui bottom attached active tab " data-tab="first">
+            <div class="layout">
+
+                <!-- left -->
+                <div style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 20px"
+                     class="left_part">
+                    <div class="ui form">
+                        <div class="field">
+                            <label style="margin-bottom: 20px;">
+                                <div style="display: flex; justify-content: space-between;">
                                     URL
                                     <div class="ui label btn_zoom">
                                         <i class="zoom icon"></i> Zoom In
                                     </div>
-                                    </div>
-                                </label> 
-                                <textarea rows="2" id="url_text"></textarea>
-                            </div>
+                                </div>
+                            </label>
+                            <textarea rows="2" id="url_text"></textarea>
                         </div>
-                        
-                    
-                        <div class="ui form mini formUrl">
-                        
-<!--                            <div class="ui toggle checkbox" style="margin-top: 4px;">-->
-<!--                                <input type="checkbox" id="live_mode">-->
-<!--                                <label>Live mode</label>-->
-<!--                            </div>-->
-<!--                            <button class="ui button blue tiny circular right floated btn_decode">DECODE</button>-->
+                    </div>
 
-                            <button data-tooltip="Save in local" data-inverted="" data-position="top left" class="ui button blue tiny  btn_save">Save</button>
-                            <button class="ui button tiny btn_format">Format</button>
-                            <button class="ui button tiny btn_copy">Copy</button>
-                            <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted="" data-position="top left" class="ui button tiny btn_keys_json">Key to JSON</button>
-                            <button data-tooltip="Ex: getData => GET_DATA" data-inverted="" data-position="top left" class="ui button tiny btn_snake_case">Snake Case</button>
-                            <button data-tooltip="Ex: GET_DATA => getData" data-inverted="" data-position="top left" class="ui button tiny btn_camel_case">Camel Case</button>
-                            <div class="ui form" style="margin-top: 10px;">
-                                <div class="field">
-                                    <!--                                <label>Result</label>-->
-                                    <!-- <textarea rows="26" id="url_result"></textarea> -->
-                                    <pre id="url_result" contenteditable="true" style="margin: 0">
+
+                    <div class="ui form mini formUrl">
+
+                        <!--                            <div class="ui toggle checkbox" style="margin-top: 4px;">-->
+                        <!--                                <input type="checkbox" id="live_mode">-->
+                        <!--                                <label>Live mode</label>-->
+                        <!--                            </div>-->
+                        <!--                            <button class="ui button blue tiny circular right floated btn_decode">DECODE</button>-->
+
+                        <button data-tooltip="Save in local" data-inverted="" data-position="top left"
+                                class="ui button blue tiny  btn_save">Save
+                        </button>
+                        <button class="ui button tiny btn_format">Format</button>
+                        <button class="ui button tiny btn_copy">Copy</button>
+                        <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted="" data-position="top left"
+                                class="ui button tiny btn_keys_json">Key to JSON
+                        </button>
+                        <button data-tooltip="Ex: getData => GET_DATA" data-inverted="" data-position="top left"
+                                class="ui button tiny btn_snake_case">Snake Case
+                        </button>
+                        <button data-tooltip="Ex: GET_DATA => getData" data-inverted="" data-position="top left"
+                                class="ui button tiny btn_camel_case">Camel Case
+                        </button>
+                        <div class="ui form" style="margin-top: 10px;">
+                            <div class="field">
+                                <!--                                <label>Result</label>-->
+                                <!-- <textarea rows="26" id="url_result"></textarea> -->
+                                <pre id="url_result" contenteditable="true" style="margin: 0">
 
                                 </pre>
-                                </div>
                             </div>
                         </div>
-
-            
                     </div>
-                    <div></div>
-                    <!-- Right -->
-                    <div class="right_part" style="background-color: white; border-radius: 10px; padding: 20px;margin-bottom: 20px">
-                        <div style="display: flex; justify-content: space-between;">
-                            <div>
-                                <h4>Recent</h4>
-                            </div>
-                            <div>
-                                <button class="ui button mini btn_clear_data" >Clear Data</button>
-<!--                                <div class="ui label btn_zoom2">-->
-<!--                                    <i class="zoom icon"></i> Zoom In-->
-<!--                                </div>-->
-                            </div>
-                            
-                        </div>
-                        <div style="height: 67px; margin-top: 10px;">
-                            <div>
-                                <div style="display: flex; overflow-x: auto;" id="save_data_rec">
-                                <div style="padding: 30px; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">No Data</h4></div>
-                                </div>
-                            </div>
 
-                        </div>
-                        <div class="formUrl">
 
-                            <button class="ui button tiny btn_format2">FORMAT</button>
-                            <button class="ui button tiny btn_copy2">COPY</button>
-
-                            <div class="save1" style="margin-top: 10px">
-                                <pre contenteditable="true" style="margin: 0"></pre>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
-            </div>
-
-            <!-- Second Tab  -->
-            <!-- ================================================================= -->
-            <div class="ui bottom attached tab" data-tab="second">
-                
-                <div class="ui form" style="margin: 20px;">
-                    <div class="ui form">
-                        <div class="fields columns two">
-                          <!-- <div class="field">
-                            <label>Include Variable Name</label>
-                            <input type="text" placeholder="Include" id="include_txt" >
-                          </div> -->
-                          <div class="field">
-                            <label>Exclude variable</label>
-                            <input spellcheck="false" type="text" placeholder="Exclude" id="exclude_txt" value="">
-                            
-                          </div>
-                          
-                          <div class="field">
-                            <label>Save Exclude</label>
-                            <button class="ui button" id="btn_save_ex">Save</button>
-                          </div> 
+                <div></div>
+                <!-- Right -->
+                <div class="right_part"
+                     style="background-color: white; border-radius: 10px; padding: 20px;margin-bottom: 20px">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>
+                            <h4>Recent</h4>
                         </div>
-                      </div>
-                      <small>Replace All</small>
-                      <div class="ui form mini" id="check_con" style="margin-bottom: 20px;">
-                        
-                      </div>
-
-                    <div class="fields column two">
-                        <div class="field">
-                            <textarea spellcheck="false" rows="50" id="div_text1"></textarea>
+                        <div>
+                            <button class="ui button mini btn_clear_data">Clear Data</button>
+                            <!--                                <div class="ui label btn_zoom2">-->
+                            <!--                                    <i class="zoom icon"></i> Zoom In-->
+                            <!--                                </div>-->
                         </div>
-                        <div class="field">
-                            <textarea spellcheck="false" rows="50" id="div_text2"></textarea>
+
+                    </div>
+                    <div style="height: 67px; margin-top: 10px;">
+                        <div>
+                            <div style="display: flex; overflow-x: auto;" id="save_data_rec">
+                                <div style="padding: 30px; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">
+                                    No Data</h4></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="formUrl">
+
+                        <button class="ui button tiny btn_format2">FORMAT</button>
+                        <button class="ui button tiny btn_copy2">COPY</button>
+
+                        <div class="save1" style="margin-top: 10px">
+                            <pre contenteditable="true" style="margin: 0"></pre>
                         </div>
                     </div>
+
                 </div>
-            </div>
-            
-            <!-- Third Tab -->
-            <!-- ====================================================== -->
-            <div class="ui bottom attached tab" data-tab="jsondiff">
-                <iframe src="https://json-diff.com/" style="border: 0; width: 100%; height: 100vh"></iframe>
             </div>
         </div>
+
+        <!-- Second Tab  -->
+        <!-- ================================================================= -->
+        <div class="ui bottom attached tab" data-tab="second">
+
+            <div class="ui form" style="margin: 20px;">
+                <div class="ui form">
+                    <div class="fields columns two">
+                        <!-- <div class="field">
+                          <label>Include Variable Name</label>
+                          <input type="text" placeholder="Include" id="include_txt" >
+                        </div> -->
+                        <div class="field">
+                            <label>Exclude variable</label>
+                            <input spellcheck="false" type="text" placeholder="Exclude" id="exclude_txt" value="">
+
+                        </div>
+
+                        <div class="field">
+                            <label>Save Exclude</label>
+                            <button class="ui button" id="btn_save_ex">Save</button>
+                        </div>
+                    </div>
+                </div>
+                <small>Replace All</small>
+                <div class="ui form mini" id="check_con" style="margin-bottom: 20px;">
+
+                </div>
+
+                <div class="fields column two">
+                    <div class="field">
+                        <textarea spellcheck="false" rows="50" id="div_text1"></textarea>
+                    </div>
+                    <div class="field">
+                        <textarea spellcheck="false" rows="50" id="div_text2"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Third Tab -->
+        <!-- ====================================================== -->
+        <div class="ui bottom attached tab" data-tab="jsondiff">
+            <iframe src="https://json-diff.com/" style="border: 0; width: 100%; height: 100vh"></iframe>
+        </div>
     </div>
-
-    
-
-
-    <div id="pop-main"></div>
-    <div id="message-block"></div> 
-    <div style="padding: 20px;">
-        <!-- <h3>Compare</h3> -->
+</div>
 
 
+<div id="pop-main"></div>
+<div id="message-block"></div>
+<div style="padding: 20px;">
+    <!-- <h3>Compare</h3> -->
 
-    </div>
 
-    <input type="hidden" name="" id="tem_input">
-    <script src="js/main.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1060662052369608"
-     crossorigin="anonymous"></script>
+</div>
+
+<input type="hidden" name="" id="tem_input">
+<script src="js/main.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1060662052369608"
+        crossorigin="anonymous"></script>
 </body>
 </html>

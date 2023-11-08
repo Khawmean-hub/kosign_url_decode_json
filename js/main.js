@@ -136,9 +136,8 @@ $('.btn_clear_data').click(function () {
     })
 })
 
-$(document).on('click','.btn_box_close', function () {
+$(document).on('click','.btn_delete', function () {
     var index = $(this).parent().index()
-    var isAct = $(this).parent().hasClass('active_select');
     onConfirm({
         description: 'Do you really want to remove this data?',
         onConfirm: function(){
@@ -147,6 +146,42 @@ $(document).on('click','.btn_box_close', function () {
             onMessage('The data is remove.')
         }
     })
+})
+
+$(document).on('click','.btn_rename', function () {
+    const parent = $(this).parent().parent().parent();
+    $(parent).find('.btn_box p').hide()
+    $(parent).find('.icon_mini').hide()
+    $(parent).find('.btn_box .input').show()
+    $(parent).find('.btn_box .input input').val($(parent).find('.btn_box p').text())
+    $(parent).find('.btn_box .input input').focus()
+    $(parent).find('.mini_menu').show();
+    $(parent).css('margin-right', '24px')
+})
+$(document).on('click','.btn_cancel', function () {
+    const parent = $(this).parent().parent();
+    $(parent).css('margin-right', '10px')
+    $(parent).find('.btn_box p').show()
+    $(parent).find('.icon_mini').show()
+    $(parent).find('.btn_box .input').hide()
+    $(parent).find('.mini_menu').hide();
+})
+
+$(document).on('click','.btn_done', function () {
+    const parent = $(this).parent().parent();
+    var index = $(parent).index()
+    var oldData = localStorage.getItem('kosign_save_data')
+    if(!isNull(oldData)){
+        oldData = JSON.parse(oldData)
+
+        oldData.sort(function(a,b){
+            //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
+            return moment(a.date, 'YYYY-MM-DD | hh:mm a').format('YYYYMMDDhhmm') > moment(b.date, 'YYYY-MM-DD | hh:mm a').format('YYYYMMDDhhmm') ? -1 : 1;
+        });
+        oldData[index].name = $(parent).find('.btn_box .input input').val();
+        localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
+    }
+    loadData()
 })
 
  $(document).on('change', '.m_check',function() {
@@ -210,4 +245,9 @@ $('#url_text').on('input',function(){
     decode();
 })
 
-$('.menu .item').tab();
+$(document).ready(function () {
+    $('.menu .item').tab();
+    $('.ui.dropdown')
+        .dropdown()
+    ;
+})

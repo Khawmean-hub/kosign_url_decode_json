@@ -76,7 +76,7 @@ function formatJson(id) {
             var str = JSON.stringify(JSON.parse(obj), undefined, 4);
             $(id).html(syntaxHighlight((str)))
         } catch (error) {
-            
+            onMessage('Invalid json', 'error')
         }
     }
 }
@@ -89,18 +89,38 @@ function loadData() {
             oldData = JSON.parse(oldData)
             oldData.sort(function(a,b){
                 //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
-                return a.name > b.name ? -1 : 1;
+                return moment(a.date, 'YYYY-MM-DD | hh:mm a').format('YYYYMMDDhhmm') > moment(b.date, 'YYYY-MM-DD | hh:mm a').format('YYYYMMDDhhmm') ? -1 : 1;
               });
 
             var html = '';
             $.each(oldData, function(i, v){
-                html += `<div class="box">
-                    <button class="circular ui icon button mini btn_box_close">
-                       <i class="close icon"></i>
-                    </button>
-                       <div class="btn_box" data-val="${encodeURIComponent(JSON.stringify(v.data))}"> <p>${v.name}</p>
-                       <small>${v.date}</small></div>
-               </div>`
+                html += `<div class="box" id="${'md'+i}">
+                        <div class="ui icon left pointing dropdown mini icon_mini btn_box_close">
+                            <i class="ellipsis vertical icon"></i>
+                            <div class="menu">
+                                <div class="item btn_rename" style="padding: 6px !important;">
+                                    <i class="edit outline icon blue"></i>
+                                    Rename</div>
+                                <div class="item btn_delete" style="padding: 6px !important;">
+                                    <i class="trash alternate outline icon red"></i>
+                                    Delete</div>
+                            </div>
+                        </div>
+                        <div class="btn_box" data-val="${encodeURIComponent(JSON.stringify(v.data))}">
+                            <p>${v.name}</p>
+                            <div class="ui input mini" style="display: none">
+                                <input type="text" placeholder="Rename" value="${v.name}">
+                            </div>
+                            <div><small>${v.date}</small></div></div>
+                        <div class="mini_menu" style="display: none">
+                            <a class="item btn_done">
+                                <i class="check circle outline icon"></i>
+                            </a>
+                            <a class="item btn_cancel">
+                                <i class="close icon red"></i>
+                            </a>
+                        </div>
+                    </div>`
                 
             })
             $('#save_data_rec').empty().append(html);
@@ -111,6 +131,9 @@ function loadData() {
     } catch (error) {
         
     }
+    $('.ui.dropdown')
+        .dropdown()
+    ;
 }
 
 function saveNoData(){
@@ -266,4 +289,9 @@ function onlyKeyToJson(str){
         jsonString = jsonString.substring(0, jsonString.length - 1);
         return jsonString + '}';
     }
+}
+
+function getLastName(str){
+    var ls = str.split('|');
+    return ls[ls.length - 1];
 }
