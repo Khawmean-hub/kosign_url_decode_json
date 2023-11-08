@@ -302,6 +302,9 @@ function sortByDate(a, b){
 
 function onRename(parent){
     var index = $(parent).index()
+    if(isNull($(parent).find('.btn_box .input input').val())){
+        return;
+    }
     var oldData = localStorage.getItem('kosign_save_data')
     if(!isNull(oldData)){
         oldData = JSON.parse(oldData)
