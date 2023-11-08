@@ -1,4 +1,4 @@
-
+var rank = Math.floor(Math.random() * 100) + 1;
 var colors = [
     '#EB455F',
     '#F5B512',
@@ -27,7 +27,7 @@ $('.btn_save').click(function () {
     try {
         var newObj = {
             name: 'Save',
-            date: moment().format('YYYY-MM-DD | hh:mm a'),
+            date: moment().format('YYYY-MM-DD | hh:mm:ss a'),
             data: JSON.parse($('#url_result').text())
         }
 
@@ -39,12 +39,7 @@ $('.btn_save').click(function () {
                 return a.name > b.name ? -1 : 1;
             });
 
-            var rank = 1;
-            if(oldData.length > 1) {
-                rank = Number(oldData[0].name.slice(-1)) + 1;
-            }
-           
-            newObj.name = 'Save ' + rank;
+            newObj.name = 'Save ' + rank++;
             oldData.push(newObj)
             localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
         }else{
@@ -137,7 +132,7 @@ $('.btn_clear_data').click(function () {
 })
 
 $(document).on('click','.btn_delete', function () {
-    var index = $(this).parent().index()
+    var index = $(this).parent().parent().parent().index()
     onConfirm({
         description: 'Do you really want to remove this data?',
         onConfirm: function(){
@@ -149,6 +144,8 @@ $(document).on('click','.btn_delete', function () {
 })
 
 $(document).on('click','.btn_rename', function () {
+    onCancel($(this).parent().parent().parent().parent())
+    $(this).parent().parent().parent().parent().find('.box').css('margin-right', '10px')
     const parent = $(this).parent().parent().parent();
     $(parent).find('.btn_box p').hide()
     $(parent).find('.icon_mini').hide()
@@ -159,30 +156,27 @@ $(document).on('click','.btn_rename', function () {
     $(parent).css('margin-right', '24px')
 })
 $(document).on('click','.btn_cancel', function () {
-    const parent = $(this).parent().parent();
+    onCancel($(this).parent().parent())
+})
+function onCancel(parent) {
     $(parent).css('margin-right', '10px')
     $(parent).find('.btn_box p').show()
     $(parent).find('.icon_mini').show()
     $(parent).find('.btn_box .input').hide()
     $(parent).find('.mini_menu').hide();
-})
-
+}
 $(document).on('click','.btn_done', function () {
-    const parent = $(this).parent().parent();
-    var index = $(parent).index()
-    var oldData = localStorage.getItem('kosign_save_data')
-    if(!isNull(oldData)){
-        oldData = JSON.parse(oldData)
-
-        oldData.sort(function(a,b){
-            //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
-            return moment(a.date, 'YYYY-MM-DD | hh:mm a').format('YYYYMMDDhhmm') > moment(b.date, 'YYYY-MM-DD | hh:mm a').format('YYYYMMDDhhmm') ? -1 : 1;
-        });
-        oldData[index].name = $(parent).find('.btn_box .input input').val();
-        localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
-    }
-    loadData()
+    onRename($(this).parent().parent());
 })
+
+$(document).on('keyup','.btn_box .input input' ,function(e) {
+    if(e.which == 13) {
+        onRename($(this).parent().parent().parent());
+    }else if (e.key === 'Escape'){
+        onCancel($(this).parent().parent().parent())
+    }
+});
+
 
  $(document).on('change', '.m_check',function() {
     var include = "";

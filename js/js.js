@@ -89,7 +89,7 @@ function loadData() {
             oldData = JSON.parse(oldData)
             oldData.sort(function(a,b){
                 //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
-                return moment(a.date, 'YYYY-MM-DD | hh:mm a').format('YYYYMMDDhhmm') > moment(b.date, 'YYYY-MM-DD | hh:mm a').format('YYYYMMDDhhmm') ? -1 : 1;
+                return sortByDate(a, b);
               });
 
             var html = '';
@@ -111,7 +111,7 @@ function loadData() {
                             <div class="ui input mini" style="display: none">
                                 <input type="text" placeholder="Rename" value="${v.name}">
                             </div>
-                            <div><small>${v.date}</small></div></div>
+                            <div><small>${new moment(v.date.replace('|','')).format('YYYY-MM-DD | hh:mm a')}</small></div></div>
                         <div class="mini_menu" style="display: none">
                             <a class="item btn_done">
                                 <i class="check circle outline icon"></i>
@@ -148,11 +148,11 @@ function onRemoveData(index){
             oldData = JSON.parse(oldData)
             oldData.sort(function(a,b){
                 //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
-                return a.name > b.name ? -1 : 1;
+                return sortByDate(a, b);
             });
             var newList =[] 
             $.each(oldData, function(i, v) {
-                if(i != index){
+                if(i !== index){
                     newList.push(v);
                 }
             })
@@ -294,4 +294,24 @@ function onlyKeyToJson(str){
 function getLastName(str){
     var ls = str.split('|');
     return ls[ls.length - 1];
+}
+
+function sortByDate(a, b){
+    return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
+}
+
+function onRename(parent){
+    var index = $(parent).index()
+    var oldData = localStorage.getItem('kosign_save_data')
+    if(!isNull(oldData)){
+        oldData = JSON.parse(oldData)
+
+        oldData.sort(function(a,b){
+            //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
+            return sortByDate(a, b);
+        });
+        oldData[index].name = $(parent).find('.btn_box .input input').val();
+        localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
+    }
+    loadData()
 }
