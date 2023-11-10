@@ -1,3 +1,4 @@
+
 .layout {
     display: grid;
     grid-template-columns: calc(50% - 5px) 10px calc(50% - 5px);
@@ -9,7 +10,7 @@
 }
 
 .formUrl {
-    margin-top: 20px;
+    margin-top: 30px;
     border-radius: 5px;
     padding: 10px;
     background-color: rgb(244 244 244);
@@ -90,20 +91,34 @@ textarea {
 .text-black{
     color: rgb(36, 36, 36) !important;
 }
-
+/* width */
+/* width */
+::-webkit-scrollbar {
+    width: 5px !important;
+    height: 5px !important;
+}
 .box {
     border-radius: 5px;
-    border: 1px solid rgb(212, 212, 212);
-    background: rgb(240, 240, 240);
+    border: 1px solid rgba(212, 212, 212, 0);
+    background: #f5f5f5;
     padding: 10px;
-    margin: 10px;
+    margin: 0 5px;
     cursor: pointer;
     position: relative;
+    height: 70%;
+}
+.btn_box_close .item i {
+    margin-right: 5px !important;
+    margin-left: 3px !important;
+}
+.btn_box small {
+    color: #797979 !important;
 }
 
 .box p{
-    margin: 0px;
+    margin: 0;
     min-width: 115px;
+    font-family: 'Inter','Nokora', sans-serif;
 }
 .active_select {
     background-color: #dfe8ff;

@@ -94,13 +94,38 @@ function loadData() {
 
             var html = '';
             $.each(oldData, function(i, v){
-                html += `<div class="box" id="${'md'+i}">
+                html += `<div class="box" style="background: ${isNull(v['color']) ? '#f5f5f5' : v['color']}">
                         <div class="ui icon left pointing dropdown mini icon_mini btn_box_close">
                             <i class="ellipsis vertical icon"></i>
                             <div class="menu">
+                            <div class="item btn_change_color" style="padding: 6px !important;">
+                                <i class="dropdown icon"></i>
+                                <span class="text"><i class="circle icon pink"></i>
+                                    Color</span>
+                                    <div class="menu">
+                                    <div class="item" style="padding: 6px !important;">
+                                       <div class="btn_colors" style="display: grid; grid-template-columns: auto auto auto auto auto; grid-gap: 5px">
+                                       <a class="ui red empty circular label" data-color="#ffbfbf"></a>
+                                        <a class="ui orange empty circular label" data-color="#ffcfbf"></a>
+                                        <a class="ui yellow empty circular label" data-color="#ffedbf"></a>
+                                        <a class="ui olive empty circular label" data-color="#f7ffbf"></a>
+                                        <a class="ui green empty circular label" data-color="#ccffbf"></a>
+                                        <a class="ui teal empty circular label" data-color="#bfffdf"></a>
+                                        <a class="ui blue empty circular label" data-color="#bfe1ff"></a>  
+                                        <a class="ui violet empty circular label" data-color="#dfd9ff"></a>
+                                        <a class="ui purple empty circular label" data-color="#e9bfff"></a>
+                                        <a class="ui pink empty circular label" data-color="#ffbff5"></a>
+                                        <a class="ui brown empty circular label" data-color="#ffe0cc"></a>
+                                        <a class="ui grey empty circular label" data-color="#f5f5f5"></a>
+<!--                                        <a class="ui black empty circular label" data-color="#ffb3b3"></a>-->
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
                                 <div class="item btn_rename" style="padding: 6px !important;">
                                     <i class="edit outline icon blue"></i>
                                     Rename</div>
+                                
                                 <div class="item btn_delete" style="padding: 6px !important;">
                                     <i class="trash alternate outline icon red"></i>
                                     Delete</div>
@@ -111,7 +136,7 @@ function loadData() {
                             <div class="ui input mini" style="display: none">
                                 <input type="text" placeholder="Rename" value="${v.name}">
                             </div>
-                            <div><small>${new moment(v.date.replace('|','')).format('YYYY-MM-DD | hh:mm a')}</small></div></div>
+                            <div style="margin-top: 3px;"><small>${new moment(v.date.replace('|','')).format('YYYY-MM-DD | hh:mm a')}</small></div></div>
                         <div class="mini_menu" style="display: none">
                             <a class="item btn_done">
                                 <i class="check circle outline icon"></i>
@@ -308,13 +333,13 @@ function onRename(parent){
     var oldData = localStorage.getItem('kosign_save_data')
     if(!isNull(oldData)){
         oldData = JSON.parse(oldData)
-
         oldData.sort(function(a,b){
-            //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
             return sortByDate(a, b);
         });
         oldData[index].name = $(parent).find('.btn_box .input input').val();
+        $(parent).find('.btn_box p').text($(parent).find('.btn_box .input input').val())
         localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
     }
-    loadData()
+    onCancel($(parent))
+    // loadData()
 }

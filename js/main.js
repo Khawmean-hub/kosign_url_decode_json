@@ -36,7 +36,7 @@ $('.btn_save').click(function () {
             oldData = JSON.parse(oldData)   
             oldData.sort(function(a,b){
                 //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
-                return a.name > b.name ? -1 : 1;
+                return sortByDate(a, b);
             });
 
             newObj.name = 'Save ' + rank++;
@@ -119,6 +119,23 @@ $(document).on('click', '.btn_box',function () {
     $(this).parent().addClass('active_select')
 })
 
+$(document).on('click', '.btn_colors a',function () {
+    const color = $(this).attr('data-color');
+    const parent = $(this).parents('.box')
+    $(parent).css('background', color)
+
+    var oldData = localStorage.getItem('kosign_save_data')
+    if(!isNull(oldData)){
+        oldData = JSON.parse(oldData)
+        oldData.sort(function(a,b){
+            return sortByDate(a, b);
+        });
+        oldData[$(parent).index()]['color'] = color;
+
+        localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
+    }
+})
+
 $('.btn_clear_data').click(function () {
     onConfirm({
         description: 'Do you really want to clear all data?',
@@ -145,7 +162,7 @@ $(document).on('click','.btn_delete', function () {
 
 $(document).on('click','.btn_rename', function () {
     onCancel($(this).parent().parent().parent().parent())
-    $(this).parent().parent().parent().parent().find('.box').css('margin-right', '10px')
+    $(this).parent().parent().parent().parent().find('.box').css('margin-right', '5px')
     const parent = $(this).parent().parent().parent();
     $(parent).find('.btn_box p').hide()
     $(parent).find('.icon_mini').hide()
@@ -153,13 +170,13 @@ $(document).on('click','.btn_rename', function () {
     $(parent).find('.btn_box .input input').val($(parent).find('.btn_box p').text())
     $(parent).find('.btn_box .input input').focus()
     $(parent).find('.mini_menu').show();
-    $(parent).css('margin-right', '24px')
+    $(parent).css('margin-right', '30px')
 })
 $(document).on('click','.btn_cancel', function () {
     onCancel($(this).parent().parent())
 })
 function onCancel(parent) {
-    $(parent).css('margin-right', '10px')
+    $(parent).css('margin-right', '5px')
     $(parent).find('.btn_box p').show()
     $(parent).find('.icon_mini').show()
     $(parent).find('.btn_box .input').hide()
