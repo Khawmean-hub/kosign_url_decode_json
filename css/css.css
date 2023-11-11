@@ -187,3 +187,7 @@ body.dark {
 body {
     background: rgb(247 249 255);
 }
+
+#code_pre, #code_pre2 {
+  min-height: 300px;
+}
