@@ -105,13 +105,13 @@ function loadData() {
                                     <div class="menu">
                                     <div class="item" style="padding: 6px !important;">
                                        <div class="btn_colors" style="display: grid; grid-template-columns: auto auto auto auto auto; grid-gap: 5px">
-                                       <a class="ui red empty circular label" data-color="#ffbfbf"></a>
+                                       <a class="ui red empty circular label" data-color="#ffdede"></a>
                                         <a class="ui orange empty circular label" data-color="#ffcfbf"></a>
                                         <a class="ui yellow empty circular label" data-color="#ffedbf"></a>
                                         <a class="ui olive empty circular label" data-color="#f7ffbf"></a>
                                         <a class="ui green empty circular label" data-color="#ccffbf"></a>
                                         <a class="ui teal empty circular label" data-color="#bfffdf"></a>
-                                        <a class="ui blue empty circular label" data-color="#bfe1ff"></a>  
+                                        <a class="ui blue empty circular label" data-color="#cfe8ff"></a>  
                                         <a class="ui violet empty circular label" data-color="#dfd9ff"></a>
                                         <a class="ui purple empty circular label" data-color="#e9bfff"></a>
                                         <a class="ui pink empty circular label" data-color="#ffbff5"></a>
@@ -343,3 +343,4 @@ function onRename(parent){
     onCancel($(parent))
     // loadData()
 }
+
