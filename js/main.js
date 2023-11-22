@@ -26,7 +26,7 @@ $('.btn_save').click(function () {
     save();
     try {
         var newObj = {
-            name: 'Save',
+            name: Object.keys(JSON.parse($('#url_result').text()))[0],
             date: moment().format('YYYY-MM-DD | hh:mm:ss a'),
             data: JSON.parse($('#url_result').text())
         }
@@ -39,7 +39,7 @@ $('.btn_save').click(function () {
                 return sortByDate(a, b);
             });
 
-            newObj.name = 'Save ' + rank++;
+            // newObj.name = 'Save ' + rank++;
             oldData.push(newObj)
             localStorage.setItem('kosign_save_data', JSON.stringify(oldData))
         }else{
