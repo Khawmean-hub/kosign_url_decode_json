@@ -197,7 +197,7 @@ $(document).on('keyup','.btn_box .input input' ,function(e) {
 function onReplaceJex(){
     var include = "";
     var exclude = $('#exclude_txt').val();
-    $('#code_pre2').html(conVertJexInput($('#code_pre').html(), include, exclude, true))
+    $('#code_pre2').val(conVertJexInput($('#code_pre').val(), include, exclude, true))
 }
 
 
