@@ -274,7 +274,27 @@ function updateEmailValidity(variable) {
 }
 
 function html2jsResult(){
-    const html = $('#raw_html').val();
+    let html = $('#raw_html').val();
+    options = {
+        "indent":"auto",
+        "indent-spaces":2,
+        "wrap":80,
+        "markup":true,
+        "output-xml":false,
+        "numeric-entities":true,
+        "quote-marks":true,
+        "quote-nbsp":false,
+        "show-body-only":true,
+        "quote-ampersand":false,
+        "break-before-br":true,
+        "uppercase-tags":false,
+        "uppercase-attributes":false,
+        "drop-font-tags":true,
+        "tidy-mark":false
+    }
+    if($("#is_format").prop("checked")){
+        html = tidy_html5(html, options);
+    }
 
     const qout = $("#is_double_q").prop("checked") ? '"' : "'";
     let vari = $('#vari_nm').val() || 'result';
