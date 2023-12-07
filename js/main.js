@@ -294,6 +294,7 @@ function html2jsResult(){
     }
     if($("#is_format").prop("checked")){
         html = tidy_html5(html, options);
+        $('#raw_html').val(html);
     }
 
     const qout = $("#is_double_q").prop("checked") ? '"' : "'";
