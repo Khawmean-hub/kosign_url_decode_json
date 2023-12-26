@@ -117,6 +117,8 @@ $(document).on('click', '.btn_box',function () {
 
     $('.box').removeClass('active_select');
     $(this).parent().addClass('active_select')
+
+    $('#table-container2').empty().append(jsonToTable(JSON.parse(decodeURIComponent($(this).attr('data-val')))));
 })
 
 $(document).on('click', '.btn_colors a',function () {
@@ -215,7 +217,16 @@ $('#code_pre, #exclude_txt').on('input',function(){
 })
 
 $('#btn_save_ex').click(function () {
-    localStorage.setItem('my_exclude',  $('#exclude_txt').val())
+    if(isNull(activeProjectId)){
+        onMessage('Please select project.', 'error')
+        return;
+    }
+    projects.forEach((v, i)=>{
+        if(v.id === activeProjectId){
+            v.exclude = $('#exclude_txt').val();
+        }
+    })
+    saveProjectToLocal(projects);
     onMessage('Save exclude done.')
 })
 
@@ -228,33 +239,6 @@ $('.btn_snake_case').click(function (){
     $('#url_result').text(replaceAllToSnakeCase($('#url_result').text()))
     formatJson('#url_result')
 })
-
-function buildCheck(){
-    var html='';
-    replaceJson.forEach(v=>{
-        html += `<div class="ui checkbox" style="margin-right: 20px">
-                    <input type="checkbox" class="m_check" checked>
-                    <label>${v.from} => ${v.to}</label>
-                </div>`;
-    })
-
-    $('#check_con').empty().append(html)
-}
-
-function onCheckExcludeSave() {
-    try{
-        var exclude = localStorage.getItem('my_exclude');
-        if (isNull(exclude)){
-            exclude = defalutExclude;
-            localStorage.setItem('my_exclude', exclude)
-        }
-        $('#exclude_txt').val(exclude)
-
-    }catch(e){
-
-    }
-}
-
 
 
 function validateVariable(variablename) {
@@ -342,13 +326,42 @@ $(document).on('change, input', '#vari_nm, #raw_html, #setting_box input', funct
 $(document).on('click', '#vari_type', function () {
     html2jsResult();
 })
+$(".btn_2table2").click(function () {
+    if($(this).hasClass('olive')){
+        $(this).removeClass('olive');
+        $(this).empty().append('Show Table')
+        $('#table-container2').hide();
+        $(".save1 pre").show()
+    }else{
+        $(this).addClass('olive');
+        $(this).empty().append('Show JSON')
+        $('#table-container2').show();
+        $(".save1 pre").hide()
+    }
+})
 
+$(".btn_2table").click(function () {
+    if($(this).hasClass('olive')){
+        $(this).removeClass('olive');
+        $(this).empty().append('Show Table')
+        $('#table-container').hide();
+        $("#url_result").show();
+    }else{
+        $(this).addClass('olive');
+        $(this).empty().append('Show JSON')
+        $('#table-container').show();
+        $("#url_result").hide();
+    }
+})
 
 
 onCheckExcludeSave();
-buildCheck();
 // checkLiveMode()
 loadData();
+
+confirmSaveDefault();
+buildProjectDrop();
+
 $('#url_text').on('input',function(){
     decode();
 })

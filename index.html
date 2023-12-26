@@ -71,7 +71,7 @@
     </div>
 
     <div class="ui bottom attached active tab ">
-        <div class="ui bottom attached active tab " data-tab="first">
+        <div class="ui bottom attached tab active" data-tab="first">
             <div class="layout">
 
                 <!-- left -->
@@ -103,16 +103,19 @@
                         <button data-tooltip="Save in local" data-inverted="" data-position="top left"
                                 class="ui button blue tiny  btn_save">Save
                         </button>
-                        <button class="ui button tiny btn_format">Format</button>
-                        <button class="ui button tiny btn_copy">Copy</button>
+                        <button class="ui icon button tiny btn_format">Format</button>
+                        <button class="ui icon button tiny btn_copy">Copy</button>
                         <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted="" data-position="top left"
-                                class="ui button tiny btn_keys_json">Key to JSON
+                                class="ui icon button tiny btn_keys_json">Key to JSON
                         </button>
                         <button data-tooltip="Ex: getData => GET_DATA" data-inverted="" data-position="top left"
-                                class="ui button tiny btn_snake_case">Snake Case
+                                class="ui icon button tiny btn_snake_case">Snake Case
                         </button>
                         <button data-tooltip="Ex: GET_DATA => getData" data-inverted="" data-position="top left"
-                                class="ui button tiny btn_camel_case">Camel Case
+                                class="ui icon button tiny btn_camel_case">Camel Case
+                        </button>
+                        <button class="ui button icon tiny btn_2table">
+                            Show Table
                         </button>
                         <div class="ui form" style="margin-top: 10px;">
                             <div class="field">
@@ -124,8 +127,7 @@
                             </div>
                         </div>
                     </div>
-
-
+                    <div id="table-container" style="display: none"></div>
                 </div>
                 <div></div>
                 <!-- Right -->
@@ -154,14 +156,16 @@
                     </div>
                     <div class="formUrl">
 
-                        <button class="ui button tiny btn_format2">Format</button>
-                        <button class="ui button tiny btn_copy2">Copy</button>
-
+                        <button class="ui icon button tiny btn_format2">Format</button>
+                        <button class="ui icon button tiny btn_copy2">Copy</button>
+                        <button class="ui button icon tiny btn_2table2">
+                            Show Table
+                        </button>
                         <div class="save1" style="margin-top: 10px">
                             <pre contenteditable="true" style="margin: 0"></pre>
                         </div>
                     </div>
-
+                    <div id="table-container2" style="display: none"></div>
                 </div>
             </div>
         </div>
@@ -178,19 +182,33 @@
                           <input type="text" placeholder="Include" id="include_txt" >
                         </div> -->
                         <div class="field">
+                            <label>Project
+                                <i class="plus icon" style="color: #2662e3; margin-left: 5px" id="new_project_button"></i>
+                                <i class="trash alternate outline red icon disabled" id="btn_delete_project"></i>
+                            </label>
+                            <div class="ui selection dropdown" id="project_drop" onchange="onChangeProject()">
+                                <input type="hidden" name="gender">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Please create new project</div>
+                                <div class="menu">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
                             <label>Exclude variable</label>
                             <input spellcheck="false" type="text" placeholder="Exclude" id="exclude_txt" value="">
 
                         </div>
 
                         <div class="field">
-                            <label>Save Exclude</label>
+                            <label style="height: 20px"></label>
                             <button class="ui button" id="btn_save_ex">Save</button>
                         </div>
                     </div>
                 </div>
-                <small>Replace All</small>
-                <div class="ui form mini" id="check_con" style="margin-bottom: 20px;">
+                <label style="font-size: 12px">Replace All <i class="plus icon" style="color: #2662e3; margin-left: 5px" id="replace_management_button"></i></label>
+                <div class="ui form mini" id="check_con" style="margin-bottom: 20px; margin-top: 5px">
 
                 </div>
 
@@ -203,6 +221,69 @@
                         <textarea spellcheck="false" rows="50" id="code_pre2"></textarea>
 <!--                        <pre id="code_pre2" spellcheck="false" contenteditable="true" style="margin: 0"></pre>-->
                     </div>
+                </div>
+            </div>
+
+<!--            Modal for new project   -->
+            <div class="ui modal mini" id="new_project_modal">
+                <div class="content">
+                    <div class="ui form">
+                        <div class="field">
+                            <label>Project Name</label>
+                            <input type="text" placeholder="Project Name" id="new_project_name">
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <div class="ui approve button" id="btn_save_new_project">Save</div>
+                </div>
+            </div>
+            <!--  Replace management   -->
+            <div class="coupled ui modal small" id="replace_management_modal">
+                <div class="header">
+                    CARDRPT
+                </div>
+                <div class="scrolling content">
+                    <div class="ui form">
+                        <div class="field">
+<!--                            <label>Replacement</label>-->
+                            <div style="display: grid; grid-template-columns: auto 10px auto 70px 130px">
+                                <input type="text" placeholder="From" id="from_txt">
+                                <div></div>
+                                <input type="text" placeholder="To" id="to_txt">
+                                <button class="button ui small" style="margin-left: 5px" id="save_new_replace_btn">Add</button>
+                                <button class="button ui small" style="margin-left: 5px" id="show_other_replace">From Others</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <h4></h4>
+                    <table class="ui single line table" id="replace_table">
+                        <thead>
+                        <tr>
+                            <th style="width: 30px">No</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th style="width: 30px"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+<!--                <div class="actions">-->
+<!--                    <div class="ui approve button">Save</div>-->
+<!--                </div>-->
+            </div>
+
+            <!--  Replace from other project   -->
+            <div class="coupled ui modal tiny" id="loard_other_replace">
+                <div class="content">
+
+                </div>
+                <div class="actions">
+                    <button class="mini ui approve button">Done</button>
                 </div>
             </div>
         </div>
@@ -307,6 +388,7 @@
 
 <input type="hidden" name="" id="tem_input">
 <script src='https://lovasoa.github.io/tidy-html5/tidy.js'></script>
+<script src="js/jex223event.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

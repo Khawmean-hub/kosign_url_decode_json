@@ -30,6 +30,7 @@ function decode() {
         var urlStr = $('#url_text').val()
         var str = JSON.stringify(JSON.parse(decodeURIComponent(urlStr)), undefined, 4);
         $('#url_result').html(syntaxHighlight((str)))
+        $('#table-container').empty().append(jsonToTable(JSON.parse(decodeURIComponent(urlStr))));
     }catch(e){
        if($('#url_text').val() != ''){
         onMessage(e, 'error')
@@ -75,6 +76,11 @@ function formatJson(id) {
         try {
             var str = JSON.stringify(JSON.parse(obj), undefined, 4);
             $(id).html(syntaxHighlight((str)))
+            if(id==='#url_result'){
+                $('#table-container').empty().append(jsonToTable(obj));
+            }else{
+                $('#table-container2').empty().append(jsonToTable(obj));
+            }
         } catch (error) {
             onMessage('Invalid json', 'error')
         }
@@ -150,6 +156,7 @@ function loadData() {
             })
             $('#save_data_rec').empty().append(html);
             $('.save1 pre').html('');
+            $('#table-container2').empty();
         }else{
             saveNoData();
         }
@@ -344,3 +351,64 @@ function onRename(parent){
     // loadData()
 }
 
+//JSON to Table
+function jsonToTable(json) {
+    if(isNull(json)){
+        return;
+    }
+    if(typeof json === 'string'){
+        json = JSON.parse(json);
+    }
+    let html = '<table class="ui celled table small compact striped"><tbody>';
+    html += buildObjectTable(json);
+    html += '</tbody></table>'
+    return html;
+}
+
+
+function buildObjectTable(obj){
+    let html = '';
+
+    if(Array.isArray(obj)){
+        // isArrayObject
+        if(typeof obj[0] === 'object'){
+            html += buildArrayTable(obj);
+        }else if(typeof obj[0] === 'string' || typeof obj[0] === 'number' || typeof obj[0] === 'boolean'){
+            html += '<tr><td>' + obj.join('</td><td>') + '</td></tr>'
+        }
+
+    }else{
+        $.each(obj, function(i, v){
+            if(typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean'){
+                html += `<tr><td>${i}</td><td>${v}</td></tr>`
+            }else if(typeof v === 'object'){
+                html += `<tr><td colspan="2">${i}</td></tr>${buildObjectTable(v)}</tr>`
+            }
+        })
+    }
+
+    return html;
+}
+
+function buildArrayTable(arr){
+    let html = '<table class="ui celled table small compact striped"><thead>';
+    $.each(arr[0], function(i, v){
+        html += `<th>${i}</th>`
+    })
+    html += '</thead><tbody>'
+    $.each(arr, function(i, v){
+        html += '<tr>'
+        $.each(v, function(i, v){
+            if(typeof v === 'object'){
+                html += `<td>${buildObjectTable(v)}</td>`
+            }else if(Array.isArray(v)){
+                html += `<td>${buildArrayTable(v)}</td>`
+            }else{
+                html += `<td>${v}</td>`
+            }
+        })
+        html += '</tr>'
+    })
+    html += '</tbody></table>'
+    return html;
+}
