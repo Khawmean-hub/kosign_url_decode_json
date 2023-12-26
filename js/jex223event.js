@@ -52,3 +52,31 @@ $(document).on('click','.btn_add_key',function () {
     $(this).parent().empty().append('<a className="ui label" style="background: #e3e3e3">Added</a>');
     onReplaceJex();
 });
+
+
+$('#btn_export_data').click(function () {
+    copy(localStorage.getItem('projects_list'))
+    onMessage('Copies to clipboard.')
+})
+
+$('#btn_import_data').click(function () {
+    $('#import_data_modal').modal('show');
+})
+
+$('#btn_save_import_data').click(function () {
+    if(isNull($('#import_data_input').val())){
+        alert('Please enter import data.')
+        return;
+    }
+    // isNotJson
+    if(isNotJson($('#import_data_input').val())){
+        alert('Please enter valid json.')
+        $('#import_data_input').val('');
+        return;
+    }
+
+    localStorage.setItem('projects_list', $('#import_data_input').val());
+    buildProjectDrop();
+    onMessage('Import data successfully.')
+    $('#import_data_input').val('');
+})

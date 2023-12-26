@@ -317,7 +317,6 @@ $(document).on('input', '#vari_nm', function () {
     updateEmailValidity(this);
 });
 
-
 // HTML 2 JS
 $(document).on('change, input', '#vari_nm, #raw_html, #setting_box input', function () {
     html2jsResult();

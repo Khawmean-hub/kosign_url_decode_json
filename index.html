@@ -185,6 +185,8 @@
                             <label>Project
                                 <i class="plus icon" style="color: #2662e3; margin-left: 5px" id="new_project_button"></i>
                                 <i class="trash alternate outline red icon disabled" id="btn_delete_project"></i>
+                                <i id="btn_export_data" style="background: #dae6ff; border-radius: 10px; padding: 0 5px; cursor: pointer; color: #797979;margin-left: 5px">Copy export data</i>
+                                <i id="btn_import_data" style="background: #dae6ff; border-radius: 10px; padding: 0 5px; cursor: pointer; color: #797979; margin-left: 5px">Import data</i>
                             </label>
                             <div class="ui selection dropdown" id="project_drop" onchange="onChangeProject()">
                                 <input type="hidden" name="gender">
@@ -236,6 +238,20 @@
                 </div>
                 <div class="actions">
                     <div class="ui approve button" id="btn_save_new_project">Save</div>
+                </div>
+            </div>
+            <!--            Modal for new project   -->
+            <div class="ui modal mini" id="import_data_modal">
+                <div class="content">
+                    <div class="ui form">
+                        <div class="field">
+                            <label>Export Data</label>
+                            <input type="text" placeholder="Please paste export data here" id="import_data_input">
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <div class="ui approve button" id="btn_save_import_data">Save</div>
                 </div>
             </div>
             <!--  Replace management   -->

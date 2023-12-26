@@ -412,3 +412,12 @@ function buildArrayTable(arr){
     html += '</tbody></table>'
     return html;
 }
+
+function isNotJson(str){
+    try{
+        JSON.parse(str);
+        return false;
+    }catch(e){
+        return true;
+    }
+}
