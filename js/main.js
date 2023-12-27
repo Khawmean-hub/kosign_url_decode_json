@@ -281,7 +281,7 @@ function html2jsResult(){
         $('#raw_html').val(html);
     }
 
-    const qout = $("#is_double_q").prop("checked") ? '"' : "'";
+    const qout = $("#is_double_q").prop("checked") ? '"' : $("#is_double_d").prop("checked") ? '`' : "'";
     let vari = $('#vari_nm').val() || 'result';
     vari = vari.trim();
     const showVari = $("#is_show_vari").prop("checked") ? $("#type_vari").text()+' ' + vari + " = '';\n" : '';
