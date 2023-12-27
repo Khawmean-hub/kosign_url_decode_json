@@ -30,7 +30,7 @@ function decode() {
         var urlStr = $('#url_text').val()
         var str = JSON.stringify(JSON.parse(decodeURIComponent(urlStr)), undefined, 4);
         $('#url_result').html(syntaxHighlight((str)))
-        $('#table-container').empty().append(jsonToTable(JSON.parse(decodeURIComponent(urlStr))));
+        $('#table-container').empty().append(generateJson2Table(JSON.parse(decodeURIComponent(urlStr))));
     }catch(e){
        if($('#url_text').val() != ''){
         onMessage(e, 'error')
@@ -77,9 +77,9 @@ function formatJson(id) {
             var str = JSON.stringify(JSON.parse(obj), undefined, 4);
             $(id).html(syntaxHighlight((str)))
             if(id==='#url_result'){
-                $('#table-container').empty().append(jsonToTable(obj));
+                $('#table-container').empty().append(generateJson2Table(obj));
             }else{
-                $('#table-container2').empty().append(jsonToTable(obj));
+                $('#table-container2').empty().append(generateJson2Table(obj));
             }
         } catch (error) {
             onMessage('Invalid json', 'error')
@@ -351,66 +351,148 @@ function onRename(parent){
     // loadData()
 }
 
-//JSON to Table
-function jsonToTable(json) {
-    if(isNull(json)){
-        return;
+
+const type = {
+    isObject: (obj) => Object.prototype.toString.call(obj) === '[object Object]',
+    isArray: (arr) => Object.prototype.toString.call(arr) === '[object Array]',
+    isString: (str) => Object.prototype.toString.call(str) === '[object String]',
+    isNumber: (num) => Object.prototype.toString.call(num) === '[object Number]',
+}
+
+const tableString = {
+    table: () => '<table class="ui celled table small compact striped">',
+    table2: (val) => '<table class="ui celled table small compact striped">' + val + '</table>',
+    thead: () => '<thead>',
+    tbody: () => '<tbody>',
+    tr: () => '<tr>',
+    td: () => '<td>',
+    th: () => '<th>',
+    td: (val) => '<td>' + val + '</td>',
+    th: (val) => '<th>' + val + '</th>',
+    tableEnd: () => '</table>',
+    theadEnd: () => '</thead>',
+    tbodyEnd: () => '</tbody>',
+    trEnd: () => '</tr>',
+    tdEnd: () => '</td>',
+    thEnd: () => '</th>'
+}
+
+function generateJson2Table(json){
+    let html = tableString.table();
+    if(type.isObject(json)){
+        html += builder.objectBuilder(json);
+    }else if(type.isArray(json)){
+        html += builder.arrayBuilder(json);
     }
-    if(typeof json === 'string'){
-        json = JSON.parse(json);
-    }
-    let html = '<table class="ui celled table small compact striped"><tbody>';
-    html += buildObjectTable(json);
-    html += '</tbody></table>'
+    html += tableString.tableEnd();
     return html;
 }
 
-
-function buildObjectTable(obj){
-    let html = '';
-
-    if(Array.isArray(obj)){
-        // isArrayObject
-        if(typeof obj[0] === 'object'){
-            html += buildArrayTable(obj);
-        }else if(typeof obj[0] === 'string' || typeof obj[0] === 'number' || typeof obj[0] === 'boolean'){
-            html += '<tr><td>' + obj.join('</td><td>') + '</td></tr>'
-        }
-
-    }else{
-        $.each(obj, function(i, v){
-            if(typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean'){
-                html += `<tr><td>${i}</td><td>${v}</td></tr>`
-            }else if(typeof v === 'object'){
-                html += `<tr><td colspan="2">${i}</td></tr>${buildObjectTable(v)}</tr>`
-            }
-        })
-    }
-
-    return html;
-}
-
-function buildArrayTable(arr){
-    let html = '<table class="ui celled table small compact striped"><thead>';
-    $.each(arr[0], function(i, v){
-        html += `<th>${i}</th>`
-    })
-    html += '</thead><tbody>'
-    $.each(arr, function(i, v){
-        html += '<tr>'
-        $.each(v, function(i, v){
-            if(typeof v === 'object'){
-                html += `<td>${buildObjectTable(v)}</td>`
-            }else if(Array.isArray(v)){
-                html += `<td>${buildArrayTable(v)}</td>`
+const builder = {
+    objectBuilder: (obj) => {
+        let html = '';
+        $.each(obj, (key, value) => {
+            if(type.isObject(value)){
+                html += builder.objectObjectBuilder(key, value);
+            }else if(type.isArray(value)){
+                html += builder.objectArrayBuilder(key, value);
             }else{
-                html += `<td>${v}</td>`
+                html += builder.stringBuilder(key, value);
             }
         })
-        html += '</tr>'
-    })
-    html += '</tbody></table>'
-    return html;
+        return html;
+    },
+    arrayBuilder: (arr) => {
+        let html = '';
+        if(arr.length===0) return '';
+        if(type.isObject(arr[0])){
+            html += builder.arrayObjectBuilder(arr);
+        }else if(type.isArray(arr[0])){
+            html += builder.arrayArrayBuilder(arr);
+        }else{
+            html += builder.arrayStringBuilder(arr);
+        }
+        return html;
+    },
+    objectObjectBuilder: (key, value) => {
+        let html = '';
+        html += tableString.tr();
+        html += tableString.td(key);
+        html += tableString.td(builder.objectBuilder(value));
+        html += tableString.trEnd();
+        return html;
+    },
+    objectArrayBuilder: (key, value) => {
+        let html = '';
+        html += tableString.tr();
+        html += tableString.td(key);
+        html += tableString.td(builder.arrayBuilder(value));
+        html += tableString.trEnd();
+        return html;
+    },
+    objectStringBuilder: (obj) => {
+        let html = '';
+        $.each(obj, (key, value) => {
+            html += builder.stringBuilder(value);
+        })
+        return html;
+    },
+    arrayObjectBuilder: (obj) => {
+        let html = tableString.table();
+        html += tableString.thead();
+        html += tableString.tr();
+        $.each(obj[0], (k, v) => {
+            html += tableString.th(k);
+        })
+        html += tableString.trEnd();
+        html += tableString.theadEnd();
+        html += tableString.tbody();
+        $.each(obj, (k, v) => {
+            html += tableString.tr();
+            $.each(v, (key, value) => {
+                if(type.isObject(value)){
+                    html += tableString.td(tableString.table2(builder.objectBuilder(value)));
+                }else if(type.isArray(value)){
+                    html += tableString.td(builder.arrayBuilder(value));
+                }else{
+                    html += tableString.td(value);
+                }
+            })
+            html += tableString.trEnd();
+        })
+        html += tableString.tbodyEnd();
+        html += tableString.tableEnd();
+        return html;
+    },
+    arrayArrayBuilder: (obj) => {
+        let html = tableString.table();
+        $.each(obj, (k, v) => {
+            html += tableString.tr();
+            html += tableString.td(builder.arrayBuilder(v));
+            html += tableString.trEnd();
+        })
+        html += tableString.tableEnd();
+        return html;
+    },
+    arrayStringBuilder: (obj) => {
+        let html = tableString.table();
+        html += tableString.tbody();
+        $.each(obj, (k, v) => {
+            html += tableString.tr();
+            html += tableString.td(v);
+            html += tableString.trEnd();
+        })
+        html += tableString.tbodyEnd();
+        html += tableString.tableEnd();
+        return html;
+    },
+    stringBuilder: (key, value) => {
+        let html = tableString.tr();
+        html += tableString.td(key);
+        html += tableString.td(value);
+        html += tableString.trEnd();
+        return html;
+    },
 }
 
 function isNotJson(str){

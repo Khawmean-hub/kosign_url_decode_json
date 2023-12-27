@@ -118,7 +118,7 @@ $(document).on('click', '.btn_box',function () {
     $('.box').removeClass('active_select');
     $(this).parent().addClass('active_select')
 
-    $('#table-container2').empty().append(jsonToTable(JSON.parse(decodeURIComponent($(this).attr('data-val')))));
+    $('#table-container2').empty().append(generateJson2Table(JSON.parse(decodeURIComponent($(this).attr('data-val')))));
 })
 
 $(document).on('click', '.btn_colors a',function () {
