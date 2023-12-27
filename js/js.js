@@ -359,15 +359,17 @@ const type = {
     isNumber: (num) => Object.prototype.toString.call(num) === '[object Number]',
 }
 
+
 const tableString = {
     table: () => '<table class="ui celled table small compact striped">',
     table2: (val) => '<table class="ui celled table small compact striped">' + val + '</table>',
     thead: () => '<thead>',
     tbody: () => '<tbody>',
     tr: () => '<tr>',
+    tr1: (val) => '<tr>' + val + '</tr>',
     td: () => '<td>',
     th: () => '<th>',
-    td: (val) => '<td>' + val + '</td>',
+    td: (val, col) => '<td colspan="' + col + '">' + val + '</td>',
     th: (val) => '<th>' + val + '</th>',
     tableEnd: () => '</table>',
     theadEnd: () => '</thead>',
@@ -425,8 +427,9 @@ const builder = {
     objectArrayBuilder: (key, value) => {
         let html = '';
         html += tableString.tr();
-        html += tableString.td(key);
-        html += tableString.td(builder.arrayBuilder(value));
+        html += tableString.td('<b>'+key+'</b>', 2);
+        //html += tableString.td(builder.arrayBuilder(value));
+        html += tableString.tr1(tableString.td(builder.arrayBuilder(value),2));
         html += tableString.trEnd();
         return html;
     },
