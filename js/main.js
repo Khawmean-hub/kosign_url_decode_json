@@ -276,6 +276,13 @@ function html2jsResult(){
         "drop-font-tags":true,
         "tidy-mark":false
     }
+
+    if($("#is_remove_cmd").prop("checked")){
+        //remove empty commend
+        const regex = /<!--[\s\S]*?-->/g;
+        html = html.replace(regex, '');
+    }
+
     if($("#is_format").prop("checked")){
         html = tidy_html5(html, options);
         $('#raw_html').val(html);
