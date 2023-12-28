@@ -90,6 +90,7 @@ function jsonToSql(arr) {
     //remove duplicate
     // let findDuplicates = mainLs => mainLs.filter((item, index) => mainLs.indexOf(item) !== index)
     // mainLs = [...new Set(findDuplicates(mainLs))];
+
     return mainLs.join('\n');
 }
 
