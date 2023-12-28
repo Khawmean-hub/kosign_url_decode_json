@@ -191,3 +191,7 @@ body {
 #code_pre, #code_pre2 {
   min-height: 300px;
 }
+
+.my_container {
+    margin: 20px;
+}

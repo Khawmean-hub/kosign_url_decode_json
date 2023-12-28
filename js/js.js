@@ -188,7 +188,6 @@ function onRemoveData(index){
                     newList.push(v);
                 }
             })
-            console.log(newList)
             localStorage.setItem('kosign_save_data', JSON.stringify(newList))
         }
     } catch (error) {

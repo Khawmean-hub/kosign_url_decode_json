@@ -27,6 +27,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
     <link rel="stylesheet" href="css/css.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
@@ -68,10 +69,11 @@
         <div class="item" data-tab="dbdiagram">DB Diagram</div>
         <div class="item" data-tab="jshtml">HTML 2 Js</div>
         <div class="item" data-tab="second">Convert Jex 2.0 to Jex 3.0</div>
+        <div class="item" data-tab="calendar_excel">Calendar read excel to SQL</div>
     </div>
 
     <div class="ui bottom attached active tab ">
-        <div class="ui bottom attached tab active" data-tab="first">
+        <div class="ui bottom attached tab" data-tab="first">
             <div class="layout">
 
                 <!-- left -->
@@ -304,6 +306,56 @@
             </div>
         </div>
 
+
+        <!-- Calendar tab  -->
+        <!-- ================================================================= -->
+        <div class="ui bottom attached tab active" data-tab="calendar_excel">
+            <div class="my_container">
+                <div class="ui form">
+                    <div class="field">
+                        <label>Excel File</label>
+                        <input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="excel_file">
+                    </div>
+
+                    <div class="two fields">
+                        <div class="three wide field">
+                            <label>Table Name</label>
+                            <input type="text" value="txaf_schd" id="table_name" oninput="readExcel()">
+                        </div>
+                        <div class="three wide field">
+                            <label>Change Sheet</label>
+                            <select class="ui fluid search dropdown" id="sheet_select" onchange="onChangeSheet()">
+                            </select>
+                        </div>
+                        <div class="three wide field">
+                            <label>Change year</label>
+                            <select class="ui fluid search dropdown" id="year_select" onchange="readExcel()">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Result</label>
+                        <div class="ui top attached tabular menu">
+                            <div class="active item" data-tab="cal_result">SQL</div>
+                            <div class="item" data-tab="cal_table">Table</div>
+                        </div>
+                        <div class="ui bottom attached active tab segment" data-tab="cal_result">
+                            <textarea rows="40" id="result_sql"></textarea>
+                        </div>
+                        <div class="ui bottom attached tab segment" data-tab="cal_table">
+                            <div id="cal_table">
+
+                            </div>
+                        </div>
+<!--                        <label>Result</label>-->
+<!--                        <textarea rows="25" id="result_sql"></textarea>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <!-- Third Tab -->
         <!-- ====================================================== -->
         <div class="ui bottom attached tab" data-tab="jsondiff">
@@ -417,6 +469,7 @@
 <input type="hidden" name="" id="tem_input">
 <script src='https://lovasoa.github.io/tidy-html5/tidy.js'></script>
 <script src="js/jex223event.js"></script>
+<script src="js/calendar.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

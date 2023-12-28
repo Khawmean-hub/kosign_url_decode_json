@@ -172,7 +172,6 @@ function changeInputAndResult(str) {
 // change IDOIn
 function changeIdoIn(str) {
     var ls = str.match(jexRegex.idoJexIn)
-    console.log(ls)
     if(!isNull(ls)){
         ls.forEach(v=>{
             var namels = v.match(jexRegex.idoInName)
