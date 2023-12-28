@@ -78,6 +78,18 @@ function jsonToSql(arr) {
             };
         }
     })
+
+    const counts = {};
+    mainLs.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
+    const totalCounts = Object.values(counts);
+    const arr5 =totalCounts
+    const sum = arr5.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    if(totalCounts > 0){
+        alert('There are duplicate values. total dup: (' + sum + ')')
+    }
+    //remove duplicate
+    // let findDuplicates = mainLs => mainLs.filter((item, index) => mainLs.indexOf(item) !== index)
+    // mainLs = [...new Set(findDuplicates(mainLs))];
     return mainLs.join('\n');
 }
 
@@ -121,7 +133,6 @@ $('#excel_file').on('change', function (e) {
         $('#year_select').dropdown('set selected', Object.keys(excelData[0])[0].slice(0, 4));
         buildSelectSheet(myWorkbook.SheetNames);
         readExcel();
-
         // oReq.send();
     }
     reader.readAsArrayBuffer(this.files[0]);
