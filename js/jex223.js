@@ -44,6 +44,7 @@ let projects = [];
 
 
 function findUpercase(str) {
+    if(str.split('').every(e => e.match(jexRegex.letterUperCaseReg))) return [];
     var res = str.match(jexRegex.letterUperCaseReg);
     if(isNull(res))
         return [];
