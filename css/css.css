@@ -145,6 +145,23 @@ textarea {
     padding: 0px;
 }
 
+
+.mini_btn {
+    padding: 0 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    color: #797979;
+}
+.mini_btn:hover {
+    background-color: #d4d4f5;
+    color: #2662e3;
+}
+
+
+
+
+
+
 /* Dark */
 body.dark {
     background-color: rgb(27, 27, 27);

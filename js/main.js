@@ -378,3 +378,34 @@ $(document).ready(function () {
         .dropdown()
     ;
 })
+
+
+
+// Drage box 
+// ================================================================================
+$(document).on('click','.btn_mini_format', function () {
+    $(this).parents('.draggable').find('pre').html(formatJsonRaw($(this).parents('.draggable').find('pre').text()))
+})
+
+$(document).on('click','.btn_mini_copy', function () {
+    copy($(this).parents('.draggable').find('pre').text())
+    onMessage('Copies to clipboard.')
+})
+
+$(document).on('click','.btn_detroy', function () {
+    $(this).parents('.draggable').remove();
+})
+
+$('#btn_make_drag_box').click(function () {
+    if(!isNull($('.save1 pre').text())){
+        if($('.draggable').length < 10){
+            createDragBox($('.save1 pre').text());
+        }else{
+            onMessage('You can only have 10 popup box.')
+            return;
+        }
+    }else{
+        onMessage('No data to pop.')
+        return;
+    }
+})

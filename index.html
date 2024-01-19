@@ -26,10 +26,12 @@
             crossorigin="anonymous"></script>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="css/css.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
@@ -46,21 +48,9 @@
 </head>
 
 <body class="">
-<!--    <div class="nav_bar" style="padding: 10px 20px; display: flex; justify-content: space-between;">-->
-<!--        <div style="display: flex; align-items: center;">-->
-<!--            <img src="icon.png" alt="" width="30px">-->
-<!--            <h2 style="margin: 0; padding: 0; margin-left: 10px; color: white; font-size: 18px;">URL Decode; </h2>  <small class="text-white" style="margin-left: 10px; margin-top: 3px;"> KOSIGN(B2B)</small>-->
-<!--        </div>-->
-<!--       <div>-->
-<!--       <div style="display: flex;align-items: center;">-->
-<!--        <img class="ui mini image circular" src="https://lh3.googleusercontent.com/a/AEdFTp4ep1CHV34BvJdRCYBp6-OQaFAZyA23GoaxCmhEgQ=s96-c-rg-br100" style="margin-right: 10px;">-->
-<!--        <div class="ui toggle checkbox">-->
-<!--            <input type="checkbox" id="dark_mode">-->
-<!--            <label class="text-white">Dark Mode </label>-->
-<!--        </div>-->
-<!--       </div>-->
-<!--       </div>-->
-<!--    </div>-->
+    <div class="all_drage_box">
+        
+    </div>
 <div>
     <div class="ui secondary menu inverted mini" style="background-color: #2662e3; padding: 3px 20px; margin: 0">
         <div class="active item" data-tab="first">URL Decode</div>
@@ -158,13 +148,22 @@
                     </div>
                     <div class="formUrl">
 
-                        <button class="ui icon button tiny btn_format2">Format</button>
-                        <button class="ui icon button tiny btn_copy2">Copy</button>
-                        <button class="ui button icon tiny btn_2table2">
-                            Show Table
-                        </button>
+                        <div style="display: grid; grid-template-columns: auto 30px;">
+                            <div>
+                                <button class="ui icon button tiny btn_format2">Format</button>
+                                <button class="ui icon button tiny btn_copy2">Copy</button>
+                                <button class="ui button icon tiny btn_2table2">
+                                    Show Table
+                                </button>
+                            </div>
+
+                            <div>
+                                <button class="ui button icon tiny" id="btn_make_drag_box"><i class="external square alternate icon"></i></button>
+                            </div>
+                        </div>
+
                         <div class="save1" style="margin-top: 10px">
-                            <pre contenteditable="true" style="margin: 0"></pre>
+                            <pre contenteditable="true" style="margin: 0" spellcheck="false"></pre>
                         </div>
                     </div>
                     <div id="table-container2" style="display: none; overflow-x: auto"></div>
@@ -341,7 +340,7 @@
                             <div class="item" data-tab="cal_table">Table</div>
                         </div>
                         <div class="ui bottom attached active tab segment" data-tab="cal_result">
-                            <textarea rows="40" id="result_sql"></textarea>
+                            <textarea rows="40" id="result_sql" spellcheck="false"></textarea>
                         </div>
                         <div class="ui bottom attached tab segment" data-tab="cal_table">
                             <div id="cal_table">

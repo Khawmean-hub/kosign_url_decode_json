@@ -1,5 +1,5 @@
 function isNull(str) {
-    if(str === undefined || str === '' || str === null || str === []){
+    if(str === undefined || str === '' || str === null || str == []){
         return true
     }else
         return false;
@@ -81,6 +81,18 @@ function formatJson(id) {
             }else{
                 $('#table-container2').empty().append(generateJson2Table(obj));
             }
+        } catch (error) {
+            onMessage('Invalid json', 'error')
+        }
+    }
+}
+
+
+function formatJsonRaw(obj) {
+    if(!isNull(obj)){
+        try {
+            var str = JSON.stringify(JSON.parse(obj), undefined, 4);
+            return syntaxHighlight((str));
         } catch (error) {
             onMessage('Invalid json', 'error')
         }
@@ -504,4 +516,33 @@ function isNotJson(str){
     }catch(e){
         return true;
     }
+}
+
+
+function createDragBox(data){
+    const id ='drage_box_id_'+ Math.floor(Math.random() * (1000 - 100 + 1) + 100) // Generate ID for modal
+    const html = `<div id="${id}" class="ui-widget-content draggable" style="border-radius: 10px;">
+            <div id="${id+'_resize'}" class="ui-widget-content" style="border-radius: 10px; min-width: 210px; min-height: 80px; max-height: 100vh; height: 300px;">
+                <h3 class="ui-widget-header" style="display: grid; grid-template-columns: auto 25px; border-radius: 10px 10px 0 0; margin: 0;">
+                    <div style="padding-left: 10px;">
+                        <span class="mini_btn btn_mini_format"><i class="quidditch icon small"></i></span>
+                        <span class="mini_btn btn_mini_copy"><i class="copy icon small"></i></span>
+                    </div>
+                    <div style="padding-top: 2px;">
+                        <i class="times circle outline icon btn_detroy" style="color: #bbb9b9; cursor: pointer;"></i>
+                    </div>
+                </h3>
+                <div style="background: rgb(244 244 244); height: calc(100% - 26px);border-radius: 0 0 10px 10px; padding: 10px">
+                    <div style="height: 100%; ">
+                        <pre contenteditable="true" style="margin: 0; height: 100%; overflow: auto;" spellcheck="false">
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>`
+    $('.all_drage_box').append(html);
+    $('#'+id+'_resize pre').html(formatJsonRaw(data))
+    $('#'+id).css({position: "absolute", zIndex: 999999})
+    $( "#"+id ).draggable({ handle: ".ui-widget-header",});
+    $( "#"+id+'_resize' ).resizable();
 }
