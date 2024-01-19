@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="url" content="https:khaw.life">
+    <meta name="keywords" content="URL Decoder, Decode URL to JSON, URL to JSON Converter, JSON Saver from URL, Web URL Decoder, Online URL Decoder, Decode URL Parameters to JSON, URL Parser and JSON Saver,jex, jex framework, json diff,
+     khaw json, URL Decoding Tool, Convert URL to JSON Online, Decode URI to JSON, kosign url decode, URL Decode, URL, Web Tool for URL Decoding, URL DECODE, JSON FORMAT,
+     khaw_url_decode, url_decode, url decode online, online decode, json online decode, decode online, json decode online,
+     json decode, javascript json decode,
+     save json, json save, format, json format, pretty json, key to json, joson snakecase">
+    <meta name="description" content="URL Decode is a free website for programmer who usedly work with json.">
+    <meta content="URL Decode" property="og:title">
+    <meta content="Decode url to json" property="og:description">
+    <meta content="URL Decode" property="twitter:title">
+    <meta content="Decode url to json" property="twitter:description">
+    <meta property="og:type" content="website">
+    <meta content="summary_large_image" name="twitter:card">
+    <meta content="Webflow" name="generator">
+
+    <meta name="google-adsense-account" content="ca-pub-1060662052369608">
+    <title>URL Decode;</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1060662052369608"
+            crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/css.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
+    <script src="js/popUp.js"></script>
+    <script src="js/js.js"></script>
+    <script src="js/jex223.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nokora:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+
+
+
+
+</head>
+<body>
+    <div class="formUrl" style="margin: 0;">
+
+        <div style="display: grid; grid-template-columns: auto 30px;">
+            <div>
+                <button class="ui icon button tiny btn_format2">Format</button>
+                <button class="ui icon button tiny btn_copy2">Copy</button>
+                <button class="ui button icon tiny btn_2table2">
+                    Show Table
+                </button>
+            </div>
+
+            <div>
+                <!-- <button class="ui button icon tiny" id="btn_make_drag_box"><i class="external square alternate icon"></i></button> -->
+            </div>
+        </div>
+
+        <div class="save1" style="margin-top: 10px">
+            <pre contenteditable="true" style="margin: 0" spellcheck="false"></pre>
+        </div>
+    </div>
+    <div id="table-container2" style="display: none; overflow-x: auto"></div>
+    <div id="pop-main"></div>
+    <div id="message-block"></div>
+    <div style="padding: 20px;">
+        <!-- <h3>Compare</h3> -->
+    
+    
+    </div>
+    
+    <input type="hidden" name="" id="tem_input">
+    <script src='https://lovasoa.github.io/tidy-html5/tidy.js'></script>
+    <script src="js/jex223event.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        try{
+            const json = decodeURIComponent(window.location.search).split("_JSON_=")[1]
+            $('.save1 pre').html(formatJsonRaw(json))
+            $('#table-container2').empty().append(generateJson2Table(JSON.parse(json)));
+        }catch(e){
+
+        }
+    </script>
+</body>
+</html>
+
+

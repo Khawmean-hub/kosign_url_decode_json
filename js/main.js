@@ -396,14 +396,34 @@ $(document).on('click','.btn_detroy', function () {
     $(this).parents('.draggable').remove();
 })
 
-$('#btn_make_drag_box').click(function () {
+$('#btn_make_drag_box').on('click', function () {
     if(!isNull($('.save1 pre').text())){
-        if($('.draggable').length < 10){
-            createDragBox($('.save1 pre').text());
-        }else{
-            onMessage('You can only have 10 popup box.')
-            return;
-        }
+
+        var timer = setTimeout(function() {
+            if($('.draggable').length < 10){
+                createDragBox($('.save1 pre').text());
+            }else{
+                onMessage('You can only have 10 popup box.')
+                return;
+            }
+          }, 200);
+
+          $(this).on('dblclick', function() {
+            clearTimeout(timer);
+            // Double click logic here
+            try{
+                const json  = JSON.parse($('.save1 pre').text());
+                let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+                width=600,height=300,left=100,top=100`;
+            
+                open('popup.html?_JSON_='+JSON.stringify(json), 'test', params);
+            }catch(e){
+                onMessage(e.message)
+                return;
+            }
+          });
+
+       
     }else{
         onMessage('No data to pop.')
         return;
