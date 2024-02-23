@@ -58,12 +58,13 @@
         <div class="item" data-tab="transformtools">Transform</div>
         <div class="item" data-tab="dbdiagram">DB Diagram</div>
         <div class="item" data-tab="jshtml">HTML 2 Js</div>
+        <div class="item" data-tab="sortEx">Sort File Name</div>
         <div class="item" data-tab="second">Convert Jex 2.0 to Jex 3.0</div>
         <div class="item" data-tab="calendar_excel">Calendar read excel to SQL</div>
     </div>
 
     <div class="ui bottom attached active tab ">
-        <div class="ui bottom attached tab active" data-tab="first">
+        <div class="ui bottom attached tab" data-tab="first">
             <div class="layout">
 
                 <!-- left -->
@@ -373,6 +374,25 @@
             <iframe src="https://dbdiagram.io/d?utm_referrer=https%3A%2F%2Fwww.google.com%2F" style="border: 0; width: 100%; height: 100vh"></iframe>
         </div>
 
+
+        <!-- Sort Exention -->
+        <!-- ====================================================== -->
+        <div class="ui bottom attached tab active" data-tab="sortEx">
+            <div class="ui container" style="margin-top: 20px">
+                <form class="ui form small">
+                    <div class="field">
+                        <label>past String here</label>
+                        <textarea rows="3" id="raw_string"></textarea>
+                    </div>
+                    <div class="field">
+                        <label>Result
+                        </label>
+                        <textarea rows="25" id="show_ex_result"></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- HTML 2 JS -->
         <!-- ====================================================== -->
         <div class="ui bottom attached tab" data-tab="jshtml">
@@ -470,5 +490,6 @@
 <script src="js/jex223event.js"></script>
 <script src="js/calendar.js"></script>
 <script src="js/main.js"></script>
+<script src="js/sortEx.js"></script>
 </body>
 </html>
