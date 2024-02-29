@@ -429,3 +429,11 @@ $('#btn_make_drag_box').on('click', function () {
         return;
     }
 })
+
+$('#my_sharing').click(function(){
+    navigator.share({
+        url: 'https://khawmean-hub.github.io/kosign_url_decode_json/',
+        title: "Testing",
+        text: "Copy here",
+      });
+})
