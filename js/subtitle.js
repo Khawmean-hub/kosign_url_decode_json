@@ -148,7 +148,7 @@ function minusOrPlush(isMinus){
 }
 
 function createFile(data){
-    var blob = new Blob([data.text], { type: 'text/plain' });
+    var blob = new Blob([data.text], { type: 'text/plain;charset=utf-8' });
     var downloadUrl = URL.createObjectURL(blob);
     var a = document.createElement("a");
     a.href = downloadUrl;
@@ -173,7 +173,7 @@ function onSaveSub(){
                                 ly = lyricList[i]
                             }
                             if(e){
-                                e = `[${e}.00]  ` + ly
+                                e = `[${e.substring(3)}.00]  ` + ly
                             }
                             return e
                         })
