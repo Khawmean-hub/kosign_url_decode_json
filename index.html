@@ -23,15 +23,15 @@
     <meta name="google-adsense-account" content="ca-pub-1060662052369608">
     <title>URL Decode;</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1060662052369608"
-            crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="css/css.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
-            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-            <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
@@ -40,7 +40,9 @@
     <script src="js/jex223.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nokora:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nokora:wght@100;300;400;700;900&display=swap"
+        rel="stylesheet">
 
 
 
@@ -49,335 +51,353 @@
 
 <body class="">
     <div class="all_drage_box">
-        
+
     </div>
-<div>
-    <div class="ui secondary menu inverted mini" style="background-color: #2662e3; padding: 3px 20px; margin: 0">
-        <div class="active item" data-tab="first">URL Decode</div>
-        <div class="item" data-tab="jsondiff">JSON Diff</div>
-        <div class="item" data-tab="transformtools">Transform</div>
-        <div class="item" data-tab="dbdiagram">DB Diagram</div>
-        <div class="item" data-tab="jshtml">HTML 2 Js</div>
-        <div class="item" data-tab="sortEx">Sort File Name</div>
-        <div class="item" data-tab="second">Convert Jex 2.0 to Jex 3.0</div>
-        <div class="item" data-tab="calendar_excel">Calendar read excel to SQL</div>
-    </div>
-
-    <div class="ui bottom attached active tab ">
-        <div class="ui bottom attached active tab" data-tab="first">
-            <div class="layout">
-
-                <!-- left -->
-                <div style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 20px"
-                     class="left_part">
-                    <div class="ui form">
-                        <div class="field">
-                            <label style="margin-bottom: 20px;">
-                                <div style="display: flex; justify-content: space-between;">
-                                    URL
-                                    <div class="ui label btn_zoom">
-                                        <i class="zoom icon"></i> Zoom In
-                                    </div>
-                                </div>
-                            </label>
-                            <textarea rows="2" id="url_text"></textarea>
-                        </div>
-                    </div>
-
-
-                    <div class="ui form mini formUrl">
-
-                        <!--                            <div class="ui toggle checkbox" style="margin-top: 4px;">-->
-                        <!--                                <input type="checkbox" id="live_mode">-->
-                        <!--                                <label>Live mode</label>-->
-                        <!--                            </div>-->
-                        <!--                            <button class="ui button blue tiny circular right floated btn_decode">DECODE</button>-->
-
-                        <button data-tooltip="Save in local" data-inverted="" data-position="top left"
-                                class="ui button blue tiny  btn_save">Save
-                        </button>
-                        <button class="ui icon button tiny btn_format">Format</button>
-                        <button class="ui icon button tiny btn_copy">Copy</button>
-                        <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted="" data-position="top left"
-                                class="ui icon button tiny btn_keys_json">Key to JSON
-                        </button>
-                        <button data-tooltip="Ex: getData => GET_DATA" data-inverted="" data-position="top left"
-                                class="ui icon button tiny btn_snake_case">Snake Case
-                        </button>
-                        <button data-tooltip="Ex: GET_DATA => getData" data-inverted="" data-position="top left"
-                                class="ui icon button tiny btn_camel_case">Camel Case
-                        </button>
-                        <button class="ui button icon tiny btn_2table">
-                            Show Table
-                        </button>
-                        <div class="ui form" style="margin-top: 10px;">
-                            <div class="field">
-                                <!--                                <label>Result</label>-->
-                                <!-- <textarea rows="26" id="url_result"></textarea> -->
-                                <pre id="url_result" contenteditable="true" style="margin: 0">
-
-                                </pre>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="table-container" style="display: none; overflow-x: auto"></div>
-                </div>
-                <div></div>
-                <!-- Right -->
-                <div class="right_part"
-                     style="background-color: white; border-radius: 10px; padding: 20px;margin-bottom: 20px">
-                    <div style="display: flex; justify-content: space-between;">
-                        <div>
-                            <h4>Recent</h4>
-                        </div>
-                        <div>
-                            <button class="ui button mini btn_clear_data">Clear Data</button>
-                            <!--                                <div class="ui label btn_zoom2">-->
-                            <!--                                    <i class="zoom icon"></i> Zoom In-->
-                            <!--                                </div>-->
-                        </div>
-
-                    </div>
-                    <div style="height: 67px; margin-top: 5px;">
-                        <div>
-                            <div style="display: flex; overflow-x: auto; height: 83px" id="save_data_rec">
-                                <div style="padding: 30px; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">
-                                    No Data</h4></div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="formUrl">
-
-                        <div style="display: grid; grid-template-columns: auto 30px;">
-                            <div>
-                                <button class="ui icon button tiny btn_format2">Format</button>
-                                <button class="ui icon button tiny btn_copy2">Copy</button>
-                                <button class="ui button icon tiny btn_2table2">
-                                    Show Table
-                                </button>
-                            </div>
-
-                            <div>
-                                <button data-tooltip="double click to pop new window" data-inverted="" data-position="top right" class="ui button icon tiny" id="btn_make_drag_box"><i class="external square alternate icon"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="save1" style="margin-top: 10px">
-                            <pre contenteditable="true" style="margin: 0" spellcheck="false"></pre>
-                        </div>
-                    </div>
-                    <div id="table-container2" style="display: none; overflow-x: auto"></div>
-                </div>
-            </div>
+    <div>
+        <div class="ui secondary menu inverted mini" style="background-color: #2662e3; padding: 3px 20px; margin: 0">
+            <div class="active item" data-tab="first">URL Decode</div>
+            <div class="item" data-tab="jsondiff">JSON Diff</div>
+            <div class="item" data-tab="transformtools">Transform</div>
+            <div class="item" data-tab="dbdiagram">DB Diagram</div>
+            <div class="item" data-tab="jshtml">HTML 2 Js</div>
+            <!-- <div class="item" data-tab="sortEx">Sort File Name</div> -->
+            <div class="item" data-tab="second">Convert Jex 2.0 to Jex 3.0</div>
+            <div class="item" data-tab="calendar_excel">Calendar read excel to SQL</div>
+            <div class="item" data-tab="subtitle_maker">Subtitle maker</div>
         </div>
 
-        <!-- Second Tab  -->
-        <!-- ================================================================= -->
-        <div class="ui bottom attached tab" data-tab="second">
+        <div class="ui bottom attached active tab ">
+            <div class="ui bottom attached active tab" data-tab="first">
+                <div class="layout">
 
-            <div class="ui form" style="margin: 20px;">
-                <div class="ui form">
-                    <div class="fields columns two">
-                        <!-- <div class="field">
+                    <!-- left -->
+                    <div style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 20px"
+                        class="left_part">
+                        <div class="ui form">
+                            <div class="field">
+                                <label style="margin-bottom: 20px;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        URL
+                                        <div class="ui label btn_zoom">
+                                            <i class="zoom icon"></i> Zoom In
+                                        </div>
+                                    </div>
+                                </label>
+                                <textarea rows="2" id="url_text"></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="ui form mini formUrl">
+
+                            <!--                            <div class="ui toggle checkbox" style="margin-top: 4px;">-->
+                            <!--                                <input type="checkbox" id="live_mode">-->
+                            <!--                                <label>Live mode</label>-->
+                            <!--                            </div>-->
+                            <!--                            <button class="ui button blue tiny circular right floated btn_decode">DECODE</button>-->
+
+                            <button data-tooltip="Save in local" data-inverted="" data-position="top left"
+                                class="ui button blue tiny  btn_save">Save
+                            </button>
+                            <button class="ui icon button tiny btn_format">Format</button>
+                            <button class="ui icon button tiny btn_copy">Copy</button>
+                            <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted=""
+                                data-position="top left" class="ui icon button tiny btn_keys_json">Key to JSON
+                            </button>
+                            <button data-tooltip="Ex: getData => GET_DATA" data-inverted="" data-position="top left"
+                                class="ui icon button tiny btn_snake_case">Snake Case
+                            </button>
+                            <button data-tooltip="Ex: GET_DATA => getData" data-inverted="" data-position="top left"
+                                class="ui icon button tiny btn_camel_case">Camel Case
+                            </button>
+                            <button class="ui button icon tiny btn_2table">
+                                Show Table
+                            </button>
+                            <div class="ui form" style="margin-top: 10px;">
+                                <div class="field">
+                                    <!--                                <label>Result</label>-->
+                                    <!-- <textarea rows="26" id="url_result"></textarea> -->
+                                    <pre id="url_result" contenteditable="true" style="margin: 0">
+
+                                </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="table-container" style="display: none; overflow-x: auto"></div>
+                    </div>
+                    <div></div>
+                    <!-- Right -->
+                    <div class="right_part"
+                        style="background-color: white; border-radius: 10px; padding: 20px;margin-bottom: 20px">
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <h4>Recent</h4>
+                            </div>
+                            <div>
+                                <button class="ui button mini btn_clear_data">Clear Data</button>
+                                <!--                                <div class="ui label btn_zoom2">-->
+                                <!--                                    <i class="zoom icon"></i> Zoom In-->
+                                <!--                                </div>-->
+                            </div>
+
+                        </div>
+                        <div style="height: 67px; margin-top: 5px;">
+                            <div>
+                                <div style="display: flex; overflow-x: auto; height: 83px" id="save_data_rec">
+                                    <div style="padding: 30px; border-radius: 10px;">
+                                        <h4 style="color: rgb(146, 146, 146);">
+                                            No Data</h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="formUrl">
+
+                            <div style="display: grid; grid-template-columns: auto 30px;">
+                                <div>
+                                    <button class="ui icon button tiny btn_format2">Format</button>
+                                    <button class="ui icon button tiny btn_copy2">Copy</button>
+                                    <button class="ui button icon tiny btn_2table2">
+                                        Show Table
+                                    </button>
+                                </div>
+
+                                <div>
+                                    <button data-tooltip="double click to pop new window" data-inverted=""
+                                        data-position="top right" class="ui button icon tiny" id="btn_make_drag_box"><i
+                                            class="external square alternate icon"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="save1" style="margin-top: 10px">
+                                <pre contenteditable="true" style="margin: 0" spellcheck="false"></pre>
+                            </div>
+                        </div>
+                        <div id="table-container2" style="display: none; overflow-x: auto"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Tab  -->
+            <!-- ================================================================= -->
+            <div class="ui bottom attached tab" data-tab="second">
+
+                <div class="ui form" style="margin: 20px;">
+                    <div class="ui form">
+                        <div class="fields columns two">
+                            <!-- <div class="field">
                           <label>Include Variable Name</label>
                           <input type="text" placeholder="Include" id="include_txt" >
                         </div> -->
-                        <div class="field">
-                            <label>Project
-                                <i class="plus icon" style="color: #2662e3; margin-left: 5px" id="new_project_button"></i>
-                                <i class="trash alternate outline red icon disabled" id="btn_delete_project"></i>
-                                <i id="btn_export_data" style="background: #dae6ff; border-radius: 10px; padding: 0 5px; cursor: pointer; color: #797979;margin-left: 5px">Copy export data</i>
-                                <i id="btn_import_data" style="background: #dae6ff; border-radius: 10px; padding: 0 5px; cursor: pointer; color: #797979; margin-left: 5px">Import data</i>
-                            </label>
-                            <div class="ui selection dropdown" id="project_drop" onchange="onChangeProject()">
-                                <input type="hidden" name="gender">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Please create new project</div>
-                                <div class="menu">
+                            <div class="field">
+                                <label>Project
+                                    <i class="plus icon" style="color: #2662e3; margin-left: 5px"
+                                        id="new_project_button"></i>
+                                    <i class="trash alternate outline red icon disabled" id="btn_delete_project"></i>
+                                    <i id="btn_export_data"
+                                        style="background: #dae6ff; border-radius: 10px; padding: 0 5px; cursor: pointer; color: #797979;margin-left: 5px">Copy
+                                        export data</i>
+                                    <i id="btn_import_data"
+                                        style="background: #dae6ff; border-radius: 10px; padding: 0 5px; cursor: pointer; color: #797979; margin-left: 5px">Import
+                                        data</i>
+                                </label>
+                                <div class="ui selection dropdown" id="project_drop" onchange="onChangeProject()">
+                                    <input type="hidden" name="gender">
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Please create new project</div>
+                                    <div class="menu">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="field">
-                            <label>Exclude variable</label>
-                            <input spellcheck="false" type="text" placeholder="Exclude" id="exclude_txt" value="">
+                            <div class="field">
+                                <label>Exclude variable</label>
+                                <input spellcheck="false" type="text" placeholder="Exclude" id="exclude_txt" value="">
 
-                        </div>
-
-                        <div class="field">
-                            <label style="height: 20px"></label>
-                            <button class="ui button" id="btn_save_ex">Save</button>
-                        </div>
-                    </div>
-                </div>
-                <label style="font-size: 12px">Replace All <i class="plus icon" style="color: #2662e3; margin-left: 5px" id="replace_management_button"></i></label>
-                <div class="ui form mini" id="check_con" style="margin-bottom: 20px; margin-top: 5px">
-
-                </div>
-
-                <div class="fields column two">
-                    <div class="field">
-                        <textarea spellcheck="false" rows="50" id="code_pre"></textarea>
-<!--                        <pre id="code_pre" spellcheck="false" contenteditable="true" style="margin: 0"></pre>-->
-                    </div>
-                    <div class="field">
-                        <textarea spellcheck="false" rows="50" id="code_pre2"></textarea>
-<!--                        <pre id="code_pre2" spellcheck="false" contenteditable="true" style="margin: 0"></pre>-->
-                    </div>
-                </div>
-            </div>
-
-<!--            Modal for new project   -->
-            <div class="ui modal mini" id="new_project_modal">
-                <div class="content">
-                    <div class="ui form">
-                        <div class="field">
-                            <label>Project Name</label>
-                            <input type="text" placeholder="Project Name" id="new_project_name">
-                        </div>
-                    </div>
-                </div>
-                <div class="actions">
-                    <div class="ui approve button" id="btn_save_new_project">Save</div>
-                </div>
-            </div>
-            <!--            Modal for new project   -->
-            <div class="ui modal mini" id="import_data_modal">
-                <div class="content">
-                    <div class="ui form">
-                        <div class="field">
-                            <label>Export Data</label>
-                            <input type="text" placeholder="Please paste export data here" id="import_data_input">
-                        </div>
-                    </div>
-                </div>
-                <div class="actions">
-                    <div class="ui approve button" id="btn_save_import_data">Save</div>
-                </div>
-            </div>
-            <!--  Replace management   -->
-            <div class="coupled ui modal small" id="replace_management_modal">
-                <div class="header">
-                    CARDRPT
-                </div>
-                <div class="scrolling content">
-                    <div class="ui form">
-                        <div class="field">
-<!--                            <label>Replacement</label>-->
-                            <div style="display: grid; grid-template-columns: auto 10px auto 70px 130px">
-                                <input type="text" placeholder="From" id="from_txt">
-                                <div></div>
-                                <input type="text" placeholder="To" id="to_txt">
-                                <button class="button ui small" style="margin-left: 5px" id="save_new_replace_btn">Add</button>
-                                <button class="button ui small" style="margin-left: 5px" id="show_other_replace">From Others</button>
                             </div>
 
+                            <div class="field">
+                                <label style="height: 20px"></label>
+                                <button class="ui button" id="btn_save_ex">Save</button>
+                            </div>
                         </div>
                     </div>
-                    <h4></h4>
-                    <table class="ui single line table" id="replace_table">
-                        <thead>
-                        <tr>
-                            <th style="width: 30px">No</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th style="width: 30px"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
+                    <label style="font-size: 12px">Replace All <i class="plus icon"
+                            style="color: #2662e3; margin-left: 5px" id="replace_management_button"></i></label>
+                    <div class="ui form mini" id="check_con" style="margin-bottom: 20px; margin-top: 5px">
 
-<!--                <div class="actions">-->
-<!--                    <div class="ui approve button">Save</div>-->
-<!--                </div>-->
-            </div>
-
-            <!--  Replace from other project   -->
-            <div class="coupled ui modal tiny" id="loard_other_replace">
-                <div class="content">
-
-                </div>
-                <div class="actions">
-                    <button class="mini ui approve button">Done</button>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Calendar tab  -->
-        <!-- ================================================================= -->
-        <div class="ui bottom attached tab" data-tab="calendar_excel">
-            <div class="my_container">
-                <div class="ui form">
-                    <div class="field">
-                        <label>Excel File</label>
-                        <input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="excel_file">
                     </div>
 
-                    <div class="two fields">
-                        <div class="three wide field">
-                            <label>Table Name</label>
-                            <input type="text" value="txaf_schd" id="table_name" oninput="readExcel()">
+                    <div class="fields column two">
+                        <div class="field">
+                            <textarea spellcheck="false" rows="50" id="code_pre"></textarea>
+                            <!--                        <pre id="code_pre" spellcheck="false" contenteditable="true" style="margin: 0"></pre>-->
                         </div>
-                        <div class="three wide field">
-                            <label>Change Sheet</label>
-                            <select class="ui fluid search dropdown" id="sheet_select" onchange="onChangeSheet()">
-                            </select>
-                        </div>
-                        <div class="three wide field">
-                            <label>Change year</label>
-                            <select class="ui fluid search dropdown" id="year_select" onchange="readExcel()">
-                            </select>
+                        <div class="field">
+                            <textarea spellcheck="false" rows="50" id="code_pre2"></textarea>
+                            <!--                        <pre id="code_pre2" spellcheck="false" contenteditable="true" style="margin: 0"></pre>-->
                         </div>
                     </div>
+                </div>
 
-                    <div class="field">
-                        <label>Result <small style="color:#3743ec;" id="total_row"></small> <small style="color: red" id="duplicate_msg"></small></label>
-                        <div class="ui top attached tabular menu">
-                            <div class="active item" data-tab="cal_result">SQL</div>
-                            <div class="item" data-tab="cal_table">Table</div>
+                <!--            Modal for new project   -->
+                <div class="ui modal mini" id="new_project_modal">
+                    <div class="content">
+                        <div class="ui form">
+                            <div class="field">
+                                <label>Project Name</label>
+                                <input type="text" placeholder="Project Name" id="new_project_name">
+                            </div>
                         </div>
-                        <div class="ui bottom attached active tab segment" data-tab="cal_result">
-                            <textarea rows="40" id="result_sql" spellcheck="false"></textarea>
+                    </div>
+                    <div class="actions">
+                        <div class="ui approve button" id="btn_save_new_project">Save</div>
+                    </div>
+                </div>
+                <!--            Modal for new project   -->
+                <div class="ui modal mini" id="import_data_modal">
+                    <div class="content">
+                        <div class="ui form">
+                            <div class="field">
+                                <label>Export Data</label>
+                                <input type="text" placeholder="Please paste export data here" id="import_data_input">
+                            </div>
                         </div>
-                        <div class="ui bottom attached tab segment" data-tab="cal_table">
-                            <div id="cal_table">
+                    </div>
+                    <div class="actions">
+                        <div class="ui approve button" id="btn_save_import_data">Save</div>
+                    </div>
+                </div>
+                <!--  Replace management   -->
+                <div class="coupled ui modal small" id="replace_management_modal">
+                    <div class="header">
+                        CARDRPT
+                    </div>
+                    <div class="scrolling content">
+                        <div class="ui form">
+                            <div class="field">
+                                <!--                            <label>Replacement</label>-->
+                                <div style="display: grid; grid-template-columns: auto 10px auto 70px 130px">
+                                    <input type="text" placeholder="From" id="from_txt">
+                                    <div></div>
+                                    <input type="text" placeholder="To" id="to_txt">
+                                    <button class="button ui small" style="margin-left: 5px"
+                                        id="save_new_replace_btn">Add</button>
+                                    <button class="button ui small" style="margin-left: 5px"
+                                        id="show_other_replace">From Others</button>
+                                </div>
 
                             </div>
                         </div>
-<!--                        <label>Result</label>-->
-<!--                        <textarea rows="25" id="result_sql"></textarea>-->
+                        <h4></h4>
+                        <table class="ui single line table" id="replace_table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30px">No</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th style="width: 30px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!--                <div class="actions">-->
+                    <!--                    <div class="ui approve button">Save</div>-->
+                    <!--                </div>-->
+                </div>
+
+                <!--  Replace from other project   -->
+                <div class="coupled ui modal tiny" id="loard_other_replace">
+                    <div class="content">
+
+                    </div>
+                    <div class="actions">
+                        <button class="mini ui approve button">Done</button>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-        <!-- Third Tab -->
-        <!-- ====================================================== -->
-        <div class="ui bottom attached tab" data-tab="jsondiff">
-            <iframe src="https://json-diff.com/" style="border: 0; width: 100%; height: 100vh"></iframe>
-        </div>
+            <!-- Calendar tab  -->
+            <!-- ================================================================= -->
+            <div class="ui bottom attached tab" data-tab="calendar_excel">
+                <div class="my_container">
+                    <div class="ui form">
+                        <div class="field">
+                            <label>Excel File</label>
+                            <input type="file"
+                                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                id="excel_file">
+                        </div>
 
-        <!-- Forth Tab -->
-        <!-- ====================================================== -->
-        <div class="ui bottom attached tab" data-tab="transformtools">
-            <iframe src="https://transform.tools/json-to-typescript" style="border: 0; width: 100%; height: 100vh"></iframe>
-        </div>
+                        <div class="two fields">
+                            <div class="three wide field">
+                                <label>Table Name</label>
+                                <input type="text" value="txaf_schd" id="table_name" oninput="readExcel()">
+                            </div>
+                            <div class="three wide field">
+                                <label>Change Sheet</label>
+                                <select class="ui fluid search dropdown" id="sheet_select" onchange="onChangeSheet()">
+                                </select>
+                            </div>
+                            <div class="three wide field">
+                                <label>Change year</label>
+                                <select class="ui fluid search dropdown" id="year_select" onchange="readExcel()">
+                                </select>
+                            </div>
+                        </div>
 
-        <!-- Forth Tab -->
-        <!-- ====================================================== -->
-        <div class="ui bottom attached tab" data-tab="dbdiagram">
-            <iframe src="https://dbdiagram.io/d?utm_referrer=https%3A%2F%2Fwww.google.com%2F" style="border: 0; width: 100%; height: 100vh"></iframe>
-        </div>
+                        <div class="field">
+                            <label>Result <small style="color:#3743ec;" id="total_row"></small> <small
+                                    style="color: red" id="duplicate_msg"></small></label>
+                            <div class="ui top attached tabular menu">
+                                <div class="active item" data-tab="cal_result">SQL</div>
+                                <div class="item" data-tab="cal_table">Table</div>
+                            </div>
+                            <div class="ui bottom attached active tab segment" data-tab="cal_result">
+                                <textarea rows="40" id="result_sql" spellcheck="false"></textarea>
+                            </div>
+                            <div class="ui bottom attached tab segment" data-tab="cal_table">
+                                <div id="cal_table">
+
+                                </div>
+                            </div>
+                            <!--                        <label>Result</label>-->
+                            <!--                        <textarea rows="25" id="result_sql"></textarea>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
-        <!-- Sort Exention -->
-        <!-- ====================================================== -->
-        <div class="ui bottom attached tab" data-tab="sortEx">
+            <!-- Third Tab -->
+            <!-- ====================================================== -->
+            <div class="ui bottom attached tab" data-tab="jsondiff">
+                <iframe src="https://json-diff.com/" style="border: 0; width: 100%; height: 100vh"></iframe>
+            </div>
+
+            <!-- Forth Tab -->
+            <!-- ====================================================== -->
+            <div class="ui bottom attached tab" data-tab="transformtools">
+                <iframe src="https://transform.tools/json-to-typescript"
+                    style="border: 0; width: 100%; height: 100vh"></iframe>
+            </div>
+
+            <!-- Forth Tab -->
+            <!-- ====================================================== -->
+            <div class="ui bottom attached tab" data-tab="dbdiagram">
+                <iframe src="https://dbdiagram.io/d?utm_referrer=https%3A%2F%2Fwww.google.com%2F"
+                    style="border: 0; width: 100%; height: 100vh"></iframe>
+            </div>
+
+
+            <!-- Sort Exention -->
+            <!-- ====================================================== -->
+            <!-- <div class="ui bottom attached tab" data-tab="sortEx">
             <div class="ui container" style="margin-top: 20px">
                 <form class="ui form small">
                     <div class="field">
@@ -392,105 +412,196 @@
                 </form>
                 <button class="ui button" id="my_sharing">Click here to share</button>
             </div>
-        </div>
+        </div> -->
 
-        <!-- HTML 2 JS -->
-        <!-- ====================================================== -->
-        <div class="ui bottom attached tab" data-tab="jshtml">
-            <div class="ui container" style="margin-top: 20px">
-                <form class="ui form small">
-                    <div class="field">
-                        <label>Variable Name</label>
-                        <div class="ui left labeled input">
-                            <div class="ui dropdown label" id="vari_type">
-                                <div class="text" id="type_vari">var</div>
-                                <i class="dropdown icon"></i>
-                                <div class="menu">
-                                    <div class="item">var</div>
-                                    <div class="item">let</div>
-                                    <div class="item">const</div>
+            <!-- HTML 2 JS -->
+            <!-- ====================================================== -->
+            <div class="ui bottom attached tab" data-tab="jshtml">
+                <div class="ui container" style="margin-top: 20px">
+                    <form class="ui form small">
+                        <div class="field">
+                            <label>Variable Name</label>
+                            <div class="ui left labeled input">
+                                <div class="ui dropdown label" id="vari_type">
+                                    <div class="text" id="type_vari">var</div>
+                                    <i class="dropdown icon"></i>
+                                    <div class="menu">
+                                        <div class="item">var</div>
+                                        <div class="item">let</div>
+                                        <div class="item">const</div>
+                                    </div>
                                 </div>
+                                <input type="text" placeholder="variable name" id="vari_nm">
                             </div>
-                            <input type="text" placeholder="variable name" id="vari_nm">
                         </div>
-                    </div>
-                    <div class="field">
-                        <label>past HTML here</label>
-                        <textarea rows="3" id="raw_html"></textarea>
-                    </div>
-                    <div class="field">
-                        <label>Result
-                            <div class="ui icon top left pointing dropdown">
-                                <i class="cog icon"></i>
-                                <div class="menu" id="setting_box">
-                                    <div class="header">Settings</div>
-                                    <div class="item">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" id="is_show_vari">
-                                            <label>Show Variable Declaration</label>
+                        <div class="field">
+                            <label>past HTML here</label>
+                            <textarea rows="3" id="raw_html"></textarea>
+                        </div>
+                        <div class="field">
+                            <label>Result
+                                <div class="ui icon top left pointing dropdown">
+                                    <i class="cog icon"></i>
+                                    <div class="menu" id="setting_box">
+                                        <div class="header">Settings</div>
+                                        <div class="item">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" id="is_show_vari">
+                                                <label>Show Variable Declaration</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" id="is_double_q">
-                                            <label>Used double quotes "</label>
+                                        <div class="item">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" id="is_double_q">
+                                                <label>Used double quotes "</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" id="is_double_d">
-                                            <label>Used `</label>
+                                        <div class="item">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" id="is_double_d">
+                                                <label>Used `</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" id="is_remove_whitespace">
-                                            <label>Remove whiteSpace</label>
+                                        <div class="item">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" id="is_remove_whitespace">
+                                                <label>Remove whiteSpace</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" id="is_remove_line">
-                                            <label>Remove empty line</label>
+                                        <div class="item">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" id="is_remove_line">
+                                                <label>Remove empty line</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" id="is_remove_cmd">
-                                            <label>Remove comment</label>
+                                        <div class="item">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" id="is_remove_cmd">
+                                                <label>Remove comment</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" id="is_format">
-                                            <label>Format HTML</label>
+                                        <div class="item">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" id="is_format">
+                                                <label>Format HTML</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            </label>
+                            <textarea rows="25" id="result_html"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sort Exention -->
+            <!-- ====================================================== -->
+            <div class="ui bottom attached tab" data-tab="subtitle_maker">
+                <div class="ui container" style="margin-top: 20px">
+                    <form class="ui form" onsubmit="return false;">
+                        <h2 class="ui header">Subtitle Maker</h2>
+                        <div class="field">
+                            <label>Please upload music or video file</label>
+                            <div class="fields">
+                                <div class="fifteen wide field">
+                                    <div class="ui left action input" id="box_file">
+                                        <div class="ui icon button">
+                                            <i class="attach icon"></i>
+                                        </div>
+                                        <input type="text" placeholder="Music or video file" readonly>
+
+                                    </div>
+                                    <input type="file" id="file_up" style="display: none;" accept="audio/*,video/*">
+                                </div>
+                                <div class="field">
+                                    <button class="ui button icon play" style="margin-left: 15px;" disabled
+                                        id="btn_play"><i class="play icon"></i></button>
+                                </div>
                             </div>
-                        </label>
-                        <textarea rows="25" id="result_html"></textarea>
+                        </div>
+                        <div class="field">
+                            <label id="title_l"></label>
+                            <audio id="audioPlayer" controls style="display:none;"></audio>
+                            <video id="videoPlayer" controls style="display:none;" width="640" height="480"></video>
+                        </div>
+                        <div class="field">
+                            <button class="ui button icon tiny violet" style="display: none;" id="btn_pin"><i
+                                    class="map pin icon"></i> Pin time</button>
+                        </div>
+
+                        <div class="fields">
+                            <div class="two wide field">
+                                <label>Duration <i id="btn_minus" class="minus icon grey"
+                                        style="margin-left: 19px; margin-right: 10px;"></i> <i class="plus icon grey"
+                                        id="btn_plus"></i></label>
+                                <textarea id="timer" rows="10"></textarea>
+                            </div>
+                            <div class="fifteen wide field">
+                                <label>Lyric</label>
+                                <textarea id="lyric" rows="10"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="fields">
+                            <div class="four wide field">
+                                <select class="ui dropdown" id="md_type">
+                                    <option value="lrc">Music Lyric</option>
+                                    <option value="srt">Video Subtitle</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <button class="ui button green" id="btn_save">Save</button>
+                            </div>
+                            <div class="fifteen wide field" style="text-align: right;">
+                                <button type="reset" class="ui button mini" id="btn_clear">Clear</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="ui message">
+                        <div class="header">
+                            How to
+                        </div>
+                        <ul class="list">
+                            <li>Paste lyric into lryic box and make newline for each sentence</li>
+                            <li>First upload viedo or music file</li>
+                            <li>Click play to start</li>
+                            <li>Click pin time</li>
+                            <li>Choose type music lyric or video subtitle</li>
+                        </ul>
                     </div>
-                </form>
+
+                    <div class="ui info message">
+                        <div class="header">
+                            Noted
+                        </div>
+                        <ul class="list">
+                            <li>Save file name will follow the file upload's name.</li>
+                            <li>The save file and the music or video must have the name and in the same path.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-<div id="pop-main"></div>
-<div id="message-block"></div>
-<div style="padding: 20px;">
-    <!-- <h3>Compare</h3> -->
+    <div id="pop-main"></div>
+    <div id="message-block"></div>
+    <div style="padding: 20px;">
+        <!-- <h3>Compare</h3> -->
 
 
-</div>
+    </div>
 
-<input type="hidden" name="" id="tem_input">
-<script src='https://lovasoa.github.io/tidy-html5/tidy.js'></script>
-<script src="js/jex223event.js"></script>
-<script src="js/calendar.js"></script>
-<script src="js/main.js"></script>
-<script src="js/sortEx.js"></script>
+    <input type="hidden" name="" id="tem_input">
+    <script src='https://lovasoa.github.io/tidy-html5/tidy.js'></script>
+    <script src="js/jex223event.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/sortEx.js"></script>
+    <script src="js/subtitle.js"></script>
 </body>
+
 </html>
