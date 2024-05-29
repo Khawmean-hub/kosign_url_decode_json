@@ -173,7 +173,7 @@ function onSaveSub(){
                                 ly = lyricList[i]
                             }
                             if(e){
-                                e = '[' + e + ']  ' + ly
+                                e = `[${e}.00]  ` + ly
                             }
                             return e
                         })
