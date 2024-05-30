@@ -33,8 +33,7 @@ $('#timer').on('input', function () {
     this.style.height = 'auto';
     this.style.height = (this.scrollHeight + 5) + 'px';
     // Allow only numbers, colons, and new line characters
-    //this.value = this.value.replace(/[^\d:\n]/g, '');
-    this.value = this.value.replace(/[^\d:]/g, '');
+    this.value = this.value.replace(/[^\d:\n]/g, '');
 });
 
 $("#box_file").click(function () {
