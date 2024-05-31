@@ -495,35 +495,47 @@
                 </div>
             </div>
 
-            <!-- Sort Exention -->
+            <!-- Subtitle Maker -->
             <!-- ====================================================== -->
             <div class="ui bottom attached tab" data-tab="subtitle_maker">
                 <div class="ui container" style="margin-top: 20px">
                     <form class="ui form" onsubmit="return false;">
                         <h2 class="ui header">Subtitle Maker</h2>
-                        <div class="field">
-                            <label>Please upload music or video file</label>
-                            <div class="fields">
-                                <div class="fifteen wide field">
-                                    <div class="ui left action input" id="box_file">
-                                        <div class="ui icon button">
-                                            <i class="attach icon"></i>
-                                        </div>
-                                        <input type="text" placeholder="Music or video file" readonly>
-
+                        <div class="two fields">
+                            
+                            <div class="field">
+                                <label>Please upload music or video file</label>
+                                <div class="ui left action input" id="box_file">
+                                    <div class="ui icon button" onclick="onPickFile()">
+                                        <i class="attach icon"></i>
                                     </div>
-                                    <input type="file" id="file_up" style="display: none;" accept="audio/*,video/*">
+                                    <input onclick="onPickFile()" type="text" id="txt_input" placeholder="Music or video file" readonly>
+                                    <button class="ui button icon play" onclick="onPlay()" id="btn_play" disabled><i class="play icon"></i></button>
                                 </div>
-                                <div class="field">
-                                    <button class="ui button icon play" disabled
-                                        id="btn_play"><i class="play icon"></i></button>
-                                </div>
+                                <input type="file" id="file_up" style="display: none;" accept="audio/*,video/*">
+                            </div>
+                            <div class="field">
+                                <label>Youtube link</label>
+                                    <div class="ui left action input">
+                                        <div class="ui icon button">
+                                            <i class="youtube icon"></i>
+                                        </div>
+                                        <input type="text" id="youtubeUrl" placeholder="You can past youtube video link here">
+                                        <button class="ui button icon play" onclick="youtubePlay()" id="btn_play_you" disabled><i class="play icon"></i></button>
+                                    </div>
                             </div>
                         </div>
+                        
                         <div class="field">
                             <label id="title_l"></label>
-                            <audio id="audioPlayer" controls style="display:none;"></audio>
-                            <video id="videoPlayer" controls style="display:none;" width="640" height="480"></video>
+                            <label id="title_l_u"></label>
+                            <div class="local_media">
+                                <audio id="audioPlayer" controls style="display:none;"></audio>
+                                <video id="videoPlayer" controls style="display:none;" width="640" height="480"></video>
+                            </div>
+                            <div id="you_block">
+                                <div id="youtube_ifr"></div>
+                            </div>
                         </div>
                         <div class="field">
                             <button class="ui button icon tiny violet" style="display: none;" id="btn_pin"><i
@@ -579,6 +591,7 @@
                         <ul class="list">
                             <li>Save file name will follow the file upload's name.</li>
                             <li>The save file and the music or video must have the name and in the same path.</li>
+                            <li>You can click Esc key to pin.</li>
                         </ul>
                     </div>
                 </div>

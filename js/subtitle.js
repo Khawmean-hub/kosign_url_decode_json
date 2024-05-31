@@ -2,26 +2,17 @@
 // Variable
 //-------------------------------------------------------------
 let playCurrentTime;
+let youTubePlay;
+let isYouTubePlay = false;
 
 
 //-------------------------------------------------------------
 // Events
 //-------------------------------------------------------------
 
-$('#btn_play').click(function () {
-    onPlay()    
-});
-
 $('#audioPlayer, #videoPlayer').on('timeupdate', function () {
     var currentTime = this.currentTime;
-    var hours = Math.floor(currentTime / 3600);
-    var minutes = Math.floor((currentTime % 3600) / 60);
-    var seconds = Math.floor(currentTime % 60);
-
-    // Format the time as 00:00:00
-    playCurrentTime = (hours < 10 ? '0' + hours : hours) + ':' +
-        (minutes < 10 ? '0' + minutes : minutes) + ':' +
-        (seconds < 10 ? '0' + seconds : seconds);
+    playCurrentTime = getCurrentTiming(currentTime)
 })
 
 //expand height
@@ -35,11 +26,6 @@ $('#timer').on('input', function () {
     // Allow only numbers, colons, and new line characters
     this.value = this.value.replace(/[^\d:\n]/g, '');
 });
-
-$("#box_file").click(function () {
-    $(this).parent().find("#file_up").click();
-});
-
 
 $('#file_up').on('change', function (e) {
     if ($('#file_up')[0].files.length > 0) {
@@ -57,12 +43,7 @@ $('#file_up').on('change', function (e) {
 });
 
 $('#btn_pin').click(function () {
-    if (playCurrentTime) {
-        var value = $('#timer').val() + playCurrentTime + '\n'
-        $('#timer').val(value);
-    }
-    var timer = document.getElementById('timer')
-    timer.style.height = (timer.scrollHeight + 3) + 'px';
+    onPin()
 })
 
 
@@ -71,6 +52,10 @@ $('#btn_clear').click(function () {
     $('#audioPlayer, #videoPlayer').stop().hide();
     $('#title_l').text('');
     $('#btn_pin').hide();
+    $('#title_l_u').hide()
+    $('#you_block').empty().append('<div id="youtube_ifr"></div>');
+    $('#youtubeUrl').val('')
+    $('#btn_play_you').attr('disabled', 'disabled').removeClass('blue');
 })
 
 $('#btn_minus').click(function(){
@@ -84,6 +69,20 @@ $('#btn_save').click(function () {
     onSaveSub()
 })
 
+$(document).on('input', '#youtubeUrl', function(){
+    var url = $('#youtubeUrl').val()
+    if(url){
+        $('#btn_play_you').removeAttr('disabled').addClass('blue')
+    }else{
+        $('#btn_play_you').attr('disabled', 'disabled').removeClass('blue')
+    }
+})
+
+$(document).keydown(function(event) {
+    if (event.key === "Escape") { // Check if the key is the Escape key
+        onPin()
+    }
+  });
 
 var $textarea1 = $('#timer');
 var $textarea2 = $('#lyric');
@@ -96,14 +95,25 @@ $textarea2.on('scroll', function () {
     $textarea1.scrollTop($textarea2.scrollTop());
 });
 
+
+ // Load the IFrame Player API code asynchronously.
+ var tag = document.createElement('script');
+ tag.src = "https://www.youtube.com/iframe_api";
+ var firstScriptTag = document.getElementsByTagName('script')[0];
+ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+
+
+
 //-------------------------------------------------------------
 // Functions
 //-------------------------------------------------------------
 function onPlay(){
     if ($('#file_up')[0].files.length > 0) {
         var file = $('#file_up')[0].files[0];
-        var link = $('#mediaLink').val();
-        var mediaSrc = file ? URL.createObjectURL(file) : link;
+        var mediaSrc = file ? URL.createObjectURL(file) : '';
+        $('#you_block').empty().append('<div id="youtube_ifr"></div>');
+        $('#title_l_u').hide()
 
         if (file && file.type.startsWith('audio')) {
             $('#audioPlayer').show().attr('src', mediaSrc).get(0).play();
@@ -113,21 +123,67 @@ function onPlay(){
             $('#videoPlayer').show().attr('src', mediaSrc).get(0).play();
             $('#audioPlayer').hide();
             $('#md_type').val('srt');
-        } else if (link) {
-            if (link.match(/\.(mp4|webm|ogg)$/i)) {
-                $('#videoPlayer').show().attr('src', mediaSrc).get(0).play();
-                $('#audioPlayer').hide();
-            } else if (link.match(/\.(mp3|wav|ogg)$/i)) {
-                $('#audioPlayer').show().attr('src', mediaSrc).get(0).play();
-                $('#videoPlayer').hide();
-            }
         }
-        var onlyName = file.name.split('.').slice(0, -1).join('.');
-        $('#title_l').text(onlyName);
-        $('#btn_pin').show()
-        $('.ui.dropdown').dropdown();
+        if(file){
+            var onlyName = file.name.split('.').slice(0, -1).join('.');
+            $('#title_l').text(onlyName).show();
+            $('#btn_pin').show()
+            $('.ui.dropdown').dropdown();
+        }
+        isYouTubePlay = false;
     }
 }
+
+function onPin(){
+    var currentTiming = playCurrentTime;
+    if(isYouTubePlay){
+        currentTiming = getCurrentTiming(youTubePlay.getCurrentTime())
+    }
+    if (currentTiming) {
+        var value = $('#timer').val() + currentTiming + '\n'
+        $('#timer').val(value);
+        var timer = document.getElementById('timer')
+        timer.style.height = (timer.scrollHeight + 3) + 'px';
+    }
+}
+
+function youtubePlay(){
+    var url = $('#youtubeUrl').val();
+    var videoId = getYouTubeVideoId(url);
+    if (videoId) {
+        //var embedUrl = 'https://www.youtube.com/embed/' + videoId;
+        youTubePlay = new YT.Player('youtube_ifr', {
+            height: '390',
+            width: '640',
+            videoId: videoId, // Replace YOUR_VIDEO_ID with the actual video ID
+            events: {
+                'onReady': ()=>{
+                    $('#title_l_u').text(youTubePlay.videoTitle).show();
+                },
+                'onStateChange': ()=>{}
+            }
+        });
+        //$('.youtube_ifr').eq(0).html('<iframe width="560" height="315" src="' + embedUrl + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+        $('#audioPlayer, #videoPlayer').stop().hide();
+        $('#title_l').hide()
+        isYouTubePlay = true;
+        $('#btn_pin').show()
+    } else {
+        alert('Please enter a valid YouTube URL.');
+    }
+}
+
+function getYouTubeVideoId(url) {
+    var videoId = null;
+    var regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    var matches = url.match(regex);
+    if (matches) {
+        videoId = matches[1];
+    }
+    return videoId;
+}
+
+
 
 function minusOrPlush(isMinus){
     var timer = $('#timer').val()
@@ -156,6 +212,10 @@ function createFile(data){
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(downloadUrl);
+}
+
+function onPickFile(){
+    $("#file_up").click()
 }
 
 function onSaveSub(){
@@ -189,4 +249,17 @@ function onSaveSub(){
                 }else{
                     alert('Please input timer and lyric')
                 }
+}
+
+
+function getCurrentTiming(currentTime){
+    var hours = Math.floor(currentTime / 3600);
+    var minutes = Math.floor((currentTime % 3600) / 60);
+    var seconds = Math.floor(currentTime % 60);
+
+    // Format the time as 00:00:00
+    var tiime = (hours < 10 ? '0' + hours : hours) + ':' +
+        (minutes < 10 ? '0' + minutes : minutes) + ':' +
+        (seconds < 10 ? '0' + seconds : seconds);
+    return tiime;
 }
