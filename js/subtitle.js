@@ -4,6 +4,67 @@
 let playCurrentTime;
 let youTubePlay;
 let isYouTubePlay = false;
+let audioController = document.getElementById('audioPlayer')
+let videoController = document.getElementById('videoPlayer')
+const players = {
+    audio: {
+        controller: audioController,
+        play: function (src) {
+            src ? this.controller.setAttribute('src', src).play() : this.controller.play()
+        },
+        pause: function () {
+            this.controller.pause();
+        },
+        hide: function () {
+            $(this).hide()
+            this.pause()
+            this.label.hide()
+        }
+    },
+    video: {
+        controller: videoController,
+        play: function (src) {
+            src ? this.controller.setAttribute('src', src).play() : this.controller.play()
+        },
+        pause: function () {
+            this.controller.pause();
+        },
+        hide: function () {
+            $(this).hide()
+            this.pause()
+            this.label.hide()
+        }
+    },
+    youtube: {
+        controller: youTubePlay,
+        getTime: function () {
+          var curr = this.controller.getCurrentTime()
+          return getCurrentTiming(curr)
+        },
+        hide: function () {
+            $('#title_l_u').val('').hide()
+            $('#you_block').empty().append('<div id="youtube_ifr"></div>');
+        },
+        reset: function(){
+            $('#title_l_u').val('').hide()
+            $('#you_block').empty().append('<div id="youtube_ifr"></div>');
+            $('#youtubeUrl').val('')
+            $('#btn_play_you').attr('disabled', 'disabled').removeClass('blue');
+        }
+    },
+    label: {
+        hide: function(){
+            $('#title_l').text('').hide()
+            $('#btn_pin').hide();
+        }
+    },
+    reset: function(){
+        this.audio.hide()
+        this.video.hide()
+        this.youtube.reset()
+        this.label.hide()
+    }
+}
 
 
 //-------------------------------------------------------------
@@ -48,14 +109,7 @@ $('#btn_pin').click(function () {
 
 
 $('#btn_clear').click(function () {
-    $('#btn_play').attr('disabled', 'disabled').removeClass('blue');
-    $('#audioPlayer, #videoPlayer').stop().hide();
-    $('#title_l').text('');
-    $('#btn_pin').hide();
-    $('#title_l_u').hide()
-    $('#you_block').empty().append('<div id="youtube_ifr"></div>');
-    $('#youtubeUrl').val('')
-    $('#btn_play_you').attr('disabled', 'disabled').removeClass('blue');
+    players.reset()
 })
 
 $('#btn_minus').click(function(){
@@ -112,24 +166,24 @@ function onPlay(){
     if ($('#file_up')[0].files.length > 0) {
         var file = $('#file_up')[0].files[0];
         var mediaSrc = file ? URL.createObjectURL(file) : '';
-        $('#you_block').empty().append('<div id="youtube_ifr"></div>');
-        $('#title_l_u').hide()
+        
+        players.youtube.hide();
 
         if (file && file.type.startsWith('audio')) {
-            $('#audioPlayer').show().attr('src', mediaSrc).get(0).play();
-            $('#videoPlayer').hide();
+            players.audio.play(mediaSrc);
+            players.video.hide();
             $('#md_type').val('lrc');
         } else if (file && file.type.startsWith('video')) {
-            $('#videoPlayer').show().attr('src', mediaSrc).get(0).play();
-            $('#audioPlayer').hide();
+            players.video.play(mediaSrc);
+            players.audio.hide();
             $('#md_type').val('srt');
         }
-        if(file){
-            var onlyName = file.name.split('.').slice(0, -1).join('.');
-            $('#title_l').text(onlyName).show();
-            $('#btn_pin').show()
-            $('.ui.dropdown').dropdown();
-        }
+        
+        var onlyName = file.name.split('.').slice(0, -1).join('.');
+        $('#title_l').text(onlyName).show();
+        $('#btn_pin').show()
+        $('.ui.dropdown').dropdown();
+        
         isYouTubePlay = false;
     }
 }
@@ -137,7 +191,7 @@ function onPlay(){
 function onPin(){
     var currentTiming = playCurrentTime;
     if(isYouTubePlay){
-        currentTiming = getCurrentTiming(youTubePlay.getCurrentTime())
+        currentTiming = players.youtube.getTime()
     }
     if (currentTiming) {
         var value = $('#timer').val() + currentTiming + '\n'
@@ -155,7 +209,6 @@ function youtubePlay(){
         youTubePlay = new YT.Player('youtube_ifr', {
             height: '350px',
             width: '100%',
-            maxWidth: '640px',
             videoId: videoId, // Replace YOUR_VIDEO_ID with the actual video ID
             events: {
                 'onReady': ()=>{
@@ -165,8 +218,9 @@ function youtubePlay(){
             }
         });
         //$('.youtube_ifr').eq(0).html('<iframe width="560" height="315" src="' + embedUrl + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
-        $('#audioPlayer, #videoPlayer').stop().hide();
-        $('#title_l').hide()
+        
+        players.audio.hide();
+        players.video.hide();
         isYouTubePlay = true;
         $('#btn_pin').show()
     } else {
