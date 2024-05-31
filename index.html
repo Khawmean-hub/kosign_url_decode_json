@@ -505,10 +505,8 @@
                             
                             <div class="field">
                                 <label>Please upload music or video file</label>
-                                <div class="ui left action input" id="box_file">
-                                    <div class="ui icon button" onclick="onPickFile()">
-                                        <i class="attach icon"></i>
-                                    </div>
+                                <div class="ui labeled action input" id="box_file">
+                                    <label class="ui label button icon" for="txt_input"><i class="attach icon"></i></label>
                                     <input onclick="onPickFile()" type="text" id="txt_input" placeholder="Music or video file" readonly>
                                     <button class="ui button icon play" onclick="onPlay()" id="btn_play" disabled><i class="play icon"></i></button>
                                 </div>
@@ -516,10 +514,8 @@
                             </div>
                             <div class="field">
                                 <label>Youtube link</label>
-                                    <div class="ui left action input">
-                                        <div class="ui icon button" onclick="openYouTube()">
-                                            <i class="youtube icon"></i>
-                                        </div>
+                                    <div class="ui labeled action input">
+                                        <div class="ui label button icon" onclick="openYouTube()"><i class="youtube icon"></i></div>
                                         <input type="text" id="youtubeUrl" placeholder="You can past youtube video link here">
                                         <button class="ui button icon play" onclick="youtubePlay()" id="btn_play_you" disabled><i class="play icon"></i></button>
                                     </div>
@@ -555,20 +551,23 @@
                             </div>
                         </div>
 
-                        <div class="fields">
-                            <div class="four wide field">
-                                <select class="ui dropdown" id="md_type">
-                                    <option value="lrc">Music Lyric</option>
-                                    <option value="srt">Video Subtitle</option>
-                                </select>
-                            </div>
+                        
+                        <div class="two fields" style="padding-top: 10px;">
                             <div class="field">
-                                <button class="ui button green" id="btn_save">Save</button>
+                                <div class="ui right action input">
+                                
+                                    <select class="ui dropdown" id="md_type">
+                                        <option value="lrc">Music Lyric</option>
+                                        <option value="srt">Video Subtitle</option>
+                                    </select>
+                                    <button class="ui button green" id="btn_save">Save</button>
+                                </div>
                             </div>
-                            <div class="fifteen wide field" style="text-align: right;">
+                            <div class="field" style="text-align: right;">
                                 <button type="reset" class="ui button mini" id="btn_clear">Clear</button>
                             </div>
                         </div>
+                        
                     </form>
 
                     <div class="ui message">
@@ -589,9 +588,10 @@
                             Noted
                         </div>
                         <ul class="list">
-                            <li>Save file name will follow the file upload's name.</li>
                             <li>The save file and the music or video must have the same name and in the same path.</li>
                             <li>You can click Esc key to pin.</li>
+                            <li>Some player might not support</li>
+                            <li>Support player: -Samsung Music, -VC Player</li>
                         </ul>
                     </div>
                 </div>
