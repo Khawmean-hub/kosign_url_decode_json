@@ -153,8 +153,9 @@ function youtubePlay(){
     if (videoId) {
         //var embedUrl = 'https://www.youtube.com/embed/' + videoId;
         youTubePlay = new YT.Player('youtube_ifr', {
-            height: '390',
-            width: '640',
+            height: '350px',
+            width: '100%',
+            maxWidth: '640px',
             videoId: videoId, // Replace YOUR_VIDEO_ID with the actual video ID
             events: {
                 'onReady': ()=>{

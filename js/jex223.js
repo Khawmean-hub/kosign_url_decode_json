@@ -294,8 +294,8 @@ function getProjectFromLocal(){
 
 function confirmSaveDefault(){
     if(isNull(getProjectFromLocal())){
-        const ask = confirm('Do you want to save default project?')
-        if (!ask) return;
+        // const ask = confirm('Do you want to save default project?')
+        // if (!ask) return;
         localStorage.setItem('projects_list', JSON.stringify(defaultProject))
     }
 }
