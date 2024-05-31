@@ -219,36 +219,37 @@ function onPickFile(){
 }
 
 function onSaveSub(){
-    var title = $('#title_l').text();
-                var timerList = $('#timer').val().split('\n');
-                var lyricList = $('#lyric').val().split('\n');
-                var type = $('#md_type').dropdown('get value');
-                if(!title){alert('Please upload file and click play.')}
-                else if($('#timer').val() &&  $('#lyric').val()){
-                    if(type=="lrc"){
-                        var newList = timerList.map((e, i)=>{
-                            var ly = '';
-                            if(lyricList[i] != undefined){
-                                ly = lyricList[i]
-                            }
-                            if(e){
-                                e = `[${e.substring(3)}.00]  ` + ly
-                            }
-                            return e
-                        })
-    
-                        var data = {
-                            title: title,
-                            text: newList.join('\n'),
-                            type: type
-                        }
-                        createFile(data)
-                    }else{
-                        alert('In development.')
-                    }
-                }else{
-                    alert('Please input timer and lyric')
+
+    var title = isYouTubePlay ? $('#title_l_u').text() : $('#title_l').text();
+    var timerList = $('#timer').val().split('\n');
+    var lyricList = $('#lyric').val().split('\n');
+    var type = $('#md_type').dropdown('get value');
+    if(!title){alert('Please upload file or paste youtube link and click play.')}
+    else if($('#timer').val() &&  $('#lyric').val()){
+        if(type=="lrc"){
+            var newList = timerList.map((e, i)=>{
+                var ly = '';
+                if(lyricList[i] != undefined){
+                    ly = lyricList[i]
                 }
+                if(e){
+                    e = `[${e.substring(3)}.00]  ` + ly
+                }
+                return e
+            })
+
+            var data = {
+                title: title,
+                text: newList.join('\n'),
+                type: type
+            }
+            createFile(data)
+        }else{
+            alert('In development.')
+        }
+    }else{
+        alert('Please input timer and lyric')
+    }
 }
 
 function openYouTube(){
