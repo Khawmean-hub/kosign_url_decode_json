@@ -251,6 +251,10 @@ function onSaveSub(){
                 }
 }
 
+function openYouTube(){
+    window.open('https://www.youtube.com', target="_blank")
+}
+
 
 function getCurrentTiming(currentTime){
     var hours = Math.floor(currentTime / 3600);
