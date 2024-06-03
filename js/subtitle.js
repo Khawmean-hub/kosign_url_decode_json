@@ -10,36 +10,45 @@ const players = {
     audio: {
         controller: audioController,
         play: function (src) {
-            src ? this.controller.setAttribute('src', src).play() : this.controller.play()
+            if(src){
+                this.controller.setAttribute('src', src)
+            }
+            players.video.hide()
+            $(this.controller).show();
+            this.controller.play()
         },
         pause: function () {
             this.controller.pause();
         },
         hide: function () {
-            $(this).hide()
+            $(this.controller).hide()
             this.pause()
-            this.label.hide()
+            players.label.hide()
         }
     },
     video: {
         controller: videoController,
         play: function (src) {
-            src ? this.controller.setAttribute('src', src).play() : this.controller.play()
+            if(src){
+                this.controller.setAttribute('src', src)
+            }
+            players.audio.hide();
+            $(this.controller).show();
+            this.controller.play()
         },
         pause: function () {
             this.controller.pause();
         },
         hide: function () {
-            $(this).hide()
+            $(this.controller).hide()
             this.pause()
-            this.label.hide()
+            players.label.hide()
         }
     },
     youtube: {
-        controller: youTubePlay,
         getTime: function () {
-          var curr = this.controller.getCurrentTime()
-          return getCurrentTiming(curr)
+            var curr = youTubePlay.getCurrentTime()
+            return getCurrentTiming(curr)
         },
         hide: function () {
             $('#title_l_u').val('').hide()
@@ -205,6 +214,7 @@ function youtubePlay(){
     var url = $('#youtubeUrl').val();
     var videoId = getYouTubeVideoId(url);
     if (videoId) {
+        players.youtube.hide()
         //var embedUrl = 'https://www.youtube.com/embed/' + videoId;
         youTubePlay = new YT.Player('youtube_ifr', {
             height: '350px',
