@@ -500,7 +500,17 @@
             <div class="ui bottom attached tab" data-tab="subtitle_maker">
                 <div class="ui container" style="margin-top: 20px">
                     <form class="ui form" onsubmit="return false;">
-                        <h2 class="ui header">Subtitle Maker</h2>
+                        <div class="ui input massive" style="margin-bottom: 15px;">
+                            <div class="ui compact dropdown" id="md_type">
+                                <input type="hidden" name="md_type" value="lrc">
+                                <div class="text" style="font-weight: bold;">Music Lyric</div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                  <div class="item" data-value="lrc">Music Lyric</div>
+                                  <div class="item" data-value="srt">Video Subtitle</div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="two fields">
                             
                             <div class="field">
@@ -539,33 +549,23 @@
                         </div>
 
                         <div class="fields">
-                            <div class="three wide field">
+                            <textarea id="grid_line" rows="10"></textarea>
+                            <div class="field" style="width: 150px;" id="duration_field">
                                 <label>Duration <i id="btn_minus" class="minus icon grey"
                                         style="margin-left: 19px; margin-right: 10px;"></i> <i class="plus icon grey"
                                         id="btn_plus"></i></label>
-                                <textarea id="timer" rows="10"></textarea>
+                                <textarea id="timer" rows="10" style="resize: none;"></textarea>
                             </div>
-                            <div class="thirteen wide field">
+                            <div class="fourteen wide field">
                                 <label>Lyric</label>
                                 <textarea id="lyric" rows="10"></textarea>
                             </div>
                         </div>
 
                         
-                        <div class="two fields" style="padding-top: 10px;">
-                            <div class="field">
-                                <div class="ui right action input">
-                                
-                                    <select class="ui dropdown" id="md_type">
-                                        <option value="lrc">Music Lyric</option>
-                                        <option value="srt">Video Subtitle</option>
-                                    </select>
-                                    <button class="ui button green" id="btn_save">Save</button>
-                                </div>
-                            </div>
-                            <div class="field" style="text-align: right;">
-                                <button type="reset" class="ui button mini" id="btn_clear">Clear</button>
-                            </div>
+                        <div class="field" style="padding-top: 10px;">
+                            <button class="ui button green" id="btn_save">Save</button>
+                            <button type="reset" class="ui button mini right floated" id="btn_clear">Clear</button>
                         </div>
                         
                     </form>

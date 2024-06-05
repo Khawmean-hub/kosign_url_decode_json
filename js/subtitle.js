@@ -89,12 +89,14 @@ $('#audioPlayer, #videoPlayer').on('timeupdate', function () {
 $('#lyric').on('input', function () {
     this.style.height = 'auto';
     this.style.height = (this.scrollHeight + 5) + 'px';
+    resizeTex()
 });
 $('#timer').on('input', function () {
     this.style.height = 'auto';
     this.style.height = (this.scrollHeight + 5) + 'px';
     // Allow only numbers, colons, and new line characters
-    this.value = this.value.replace(/[^\d:\n]/g, '');
+    this.value = this.value.replace(/[^\d:\n~,]/g, '');
+    resizeTex()
 });
 
 $('#file_up').on('change', function (e) {
@@ -141,21 +143,53 @@ $(document).on('input', '#youtubeUrl', function(){
     }
 })
 
+$('#md_type input').on('change', function(){
+    if($(this).val()=='lrc'){
+        // $textarea1.parent().removeClass().addClass('three wide field')
+        $textarea1.parent().css('width', '150px')
+    }else{
+        // $textarea1.parent().removeClass().addClass('four wide field')
+        $textarea1.parent().css('width', '270px')
+    }
+})
+
 $(document).keydown(function(event) {
     if (event.key === "Escape") { // Check if the key is the Escape key
         onPin()
     }
-  });
+});
+
+function resizeTex(){
+    if($textarea1.height() > $textarea2.height()){
+        $textarea2.css('height', ($textarea1.height()+24)+'px');
+    }else{
+        $textarea1.css('height', ($textarea2.height()+24)+'px');
+    }
+    $textarea3.css('height', ($textarea1.height()+24)+'px')
+}
 
 var $textarea1 = $('#timer');
 var $textarea2 = $('#lyric');
+var $textarea3 = $('#grid_line')
 
 $textarea1.on('scroll', function () {
     $textarea2.scrollTop($textarea1.scrollTop());
+    $textarea3.scrollTop($textarea1.scrollTop())
 });
 
 $textarea2.on('scroll', function () {
     $textarea1.scrollTop($textarea2.scrollTop());
+    $textarea3.scrollTop($textarea2.scrollTop())
+});
+
+$textarea1.bind('mouseup mousemove',function(){
+    $textarea2.css('height', ($textarea1.height()+24)+'px');
+    $textarea3.css('height', ($textarea1.height()+24)+'px');
+});
+
+$textarea2.bind('mouseup mousemove',function(){
+    $textarea1.css('height', ($textarea2.height()+24)+'px');
+    $textarea3.css('height', ($textarea2.height()+24)+'px');
 });
 
 
@@ -166,6 +200,9 @@ $textarea2.on('scroll', function () {
  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 
+for (let i = 0; i < 1000; i++) {
+    $('#grid_line').append('_________________________________')
+}
 
 
 //-------------------------------------------------------------
@@ -203,10 +240,16 @@ function onPin(){
         currentTiming = players.youtube.getTime()
     }
     if (currentTiming) {
-        var value = $('#timer').val() + currentTiming + '\n'
+        var value;
+        if($('#md_type').dropdown('get value')=='lrc'){
+            value = $('#timer').val() + currentTiming + '\n'
+        }else{
+
+        }
         $('#timer').val(value);
         var timer = document.getElementById('timer')
         timer.style.height = (timer.scrollHeight + 3) + 'px';
+        resizeTex()
     }
 }
 
@@ -256,9 +299,9 @@ function minusOrPlush(isMinus){
         var last = timer.split('\n').map(e=>{
             if(e){
                 if(isMinus){
-                    e = moment(e, 'hh:mm:ss').subtract(1,'seconds').format('HH:mm:ss')
+                    e = moment(e, 'hh:mm:ss,SSS').subtract(1,'seconds').format('HH:mm:ss,SSS')
                 }else{
-                    e = moment(e, 'hh:mm:ss').add(1,'seconds').format('HH:mm:ss')
+                    e = moment(e, 'hh:mm:ss,SSS').add(1,'seconds').format('HH:mm:ss,SSS')
                 }
             }
             return e
@@ -298,7 +341,7 @@ function onSaveSub(){
                     ly = lyricList[i]
                 }
                 if(e){
-                    e = `[${e.substring(3)}.00]  ` + ly
+                    e = `[${e.substring(3)}]  ` + ly
                 }
                 return e
             })
@@ -322,14 +365,27 @@ function openYouTube(){
 }
 
 
-function getCurrentTiming(currentTime){
-    var hours = Math.floor(currentTime / 3600);
-    var minutes = Math.floor((currentTime % 3600) / 60);
-    var seconds = Math.floor(currentTime % 60);
+function getCurrentTiming(inputValue) {
+    var hours = Math.floor(inputValue / 3600);
+    var minutes = Math.floor((inputValue % 3600) / 60);
+    var seconds = Math.floor(inputValue % 60);
+    var milliseconds = Math.round((inputValue - Math.floor(inputValue)) * 1000);
 
-    // Format the time as 00:00:00
-    var tiime = (hours < 10 ? '0' + hours : hours) + ':' +
-        (minutes < 10 ? '0' + minutes : minutes) + ':' +
-        (seconds < 10 ? '0' + seconds : seconds);
-    return tiime;
+    // Format the time using Moment.js
+    return moment().hours(hours).minutes(minutes).seconds(seconds).milliseconds(milliseconds).format('HH:mm:ss,SSS');
+}
+
+
+// Example usage with jQuery:
+$(document).ready(function() {
+    let formattedTime = formatTime(16000); // Replace with your milliseconds
+    console.log(formattedTime); // Outputs: 00:00:16,000
+});
+
+function onTexAreaScroll (){
+    var areaTop = $textarea1.scrollTop()
+    if($textarea1.scrollTop() > $textarea2.scrollTop()){
+        areaTop = $textarea2.scrollTop()
+    }
+    $textarea3.scrollTop(areaTop)
 }

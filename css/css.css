@@ -158,7 +158,30 @@ textarea {
 }
 
 
+/* Subtitle maker */
+#grid_line{
+    position: absolute;
+    background: none;
+    margin-top: 24px;
+    border: none;
+    padding-left: 23px;
+    z-index: -10;
+    color: #000000;
+    overflow: hidden;
+    resize: none;
+}
 
+#timer, #lyric {
+    background-color: #fffffff5;
+}
+@media screen and (max-width: 768px) {
+    #grid_line {
+        display: none;
+    }
+    #duration_field {
+        width: 100% !important;
+    }
+}
 
 
 
