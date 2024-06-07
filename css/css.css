@@ -171,6 +171,11 @@ textarea {
     resize: none;
 }
 
+
+#btn_plus, #btn_minus{
+    cursor: pointer;
+}
+
 #timer, #lyric {
     background-color: #fffffff5;
 }

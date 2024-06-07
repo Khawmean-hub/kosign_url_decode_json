@@ -103,7 +103,7 @@ function formatJsonRaw(obj) {
 function loadData() {
     try {
         var oldData = localStorage.getItem('kosign_save_data')
-        if(!isNull(oldData)){
+        if(!isNull(oldData) && JSON.parse(oldData).length > 0){
             oldData = JSON.parse(oldData)
             oldData.sort(function(a,b){
                 //return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
@@ -135,7 +135,7 @@ function loadData() {
                                         <a class="ui pink empty circular label" data-color="#ffbff5"></a>
                                         <a class="ui brown empty circular label" data-color="#ffe0cc"></a>
                                         <a class="ui grey empty circular label" data-color="#f5f5f5"></a>
-<!--                                        <a class="ui black empty circular label" data-color="#ffb3b3"></a>-->
+                                        <!-- <a class="ui black empty circular label" data-color="#ffb3b3"></a>-->
                                         </div>
                                     </div>
                                   </div>
