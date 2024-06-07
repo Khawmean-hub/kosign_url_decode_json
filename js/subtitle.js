@@ -124,10 +124,10 @@ $('#btn_clear').click(function () {
 })
 
 $('#btn_minus').click(function(){
-    minusOrPlush(true)
+    minusOrPlush()
 })
 $('#btn_plus').click(function(){
-    minusOrPlush()
+    minusOrPlush(true)
 })
 
 $('#btn_save').click(function () {
@@ -241,10 +241,15 @@ function onPin(){
     }
     if (currentTiming) {
         var value;
+        var timerval = $('#timer').val();
         if($('#md_type').dropdown('get value')=='lrc'){
-            value = $('#timer').val() + currentTiming + '\n'
+            value = timerval + currentTiming.substr(3) + '\n'
         }else{
-
+            if(timerval[timerval.length-1]=='~'){
+                value = timerval + currentTiming + '\n'
+            }else{
+                value = timerval + currentTiming + '~'
+            }
         }
         $('#timer').val(value);
         var timer = document.getElementById('timer')
@@ -293,20 +298,25 @@ function getYouTubeVideoId(url) {
 
 
 
-function minusOrPlush(isMinus){
+function minusOrPlush(isAdd){
     var timer = $('#timer').val()
+    var type = $('#md_type').dropdown('get value');
     if(timer){
-        var last = timer.split('\n').map(e=>{
-            if(e){
-                if(isMinus){
-                    e = moment(e, 'hh:mm:ss,SSS').subtract(1,'seconds').format('HH:mm:ss,SSS')
-                }else{
-                    e = moment(e, 'hh:mm:ss,SSS').add(1,'seconds').format('HH:mm:ss,SSS')
-                }
+        let regex = /\b\d{2}:\d{2}:\d{2},\d{3}\b/g;
+        if(type=='lrc'){
+            regex = /\b\d{2}:\d{2},\d{3}\b/g;
+        }
+        const modifiedText = timer.replace(regex, function(match) {
+            const momentTime = type=='lrc' ? moment(match, "mm:ss,SSS") : moment(match, "HH:mm:ss,SSS");
+            if(isAdd){
+                momentTime.add(1, 'seconds');
+            }else{
+                momentTime.subtract(1,'seconds');
             }
-            return e
-        })
-        $('#timer').val(last.join('\n'))
+            return type=='lrc' ? momentTime.format("mm:ss,SSS") : momentTime.format("HH:mm:ss,SSS");
+        });
+
+        $('#timer').val(modifiedText);
     }
 }
 
@@ -332,29 +342,30 @@ function onSaveSub(){
     var timerList = $('#timer').val().split('\n');
     var lyricList = $('#lyric').val().split('\n');
     var type = $('#md_type').dropdown('get value');
-    if(!title){alert('Please upload file or paste youtube link and click play.')}
-    else if($('#timer').val() &&  $('#lyric').val()){
-        if(type=="lrc"){
-            var newList = timerList.map((e, i)=>{
-                var ly = '';
-                if(lyricList[i] != undefined){
-                    ly = lyricList[i]
-                }
-                if(e){
-                    e = `[${e.substring(3)}]  ` + ly
-                }
-                return e
-            })
 
-            var data = {
-                title: title,
-                text: newList.join('\n'),
-                type: type
+    title = title || 'Please change title';
+
+    if($('#timer').val() &&  $('#lyric').val()){
+        
+        var newList = timerList.map((e, i)=>{
+            var ly = lyricList[i] ? lyricList[i] : ''
+            if(e){
+                if(type=="lrc"){
+                    e = `[${e.replaceAll(',', '.')}]  ` + ly
+                }else{
+                    e = `${i+1}\n${e.replaceAll('~', ' --> ')}\n` + ly +'\n';
+                }
             }
-            createFile(data)
-        }else{
-            alert('In development.')
+            return e
+        })
+
+        //make data
+        var data = {
+            title: title,
+            text: newList.join('\n'),
+            type: type
         }
+        createFile(data)
     }else{
         alert('Please input timer and lyric')
     }
