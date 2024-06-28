@@ -1,0 +1,77 @@
+/* ========================== Light ==========================*/
+.theme-light {
+    background: var(--light-light-blue);
+}
+
+.theme-light .bg_color_light {
+    background-color: var(--white);
+}
+
+.theme-light .text_fixed_color{
+    color: var(--gray) !important;
+}
+
+.theme-light .txt_color {
+    color: var(--black);
+}
+
+
+
+
+
+
+
+
+/* ========================== Dark ==========================*/
+.theme-dark {
+    background: var(--light-black);
+}
+
+.theme-dark .bg_color_light {
+    background-color: var(--dark-gray);
+}
+
+.theme-dark .txt_color {
+    color: var(--white);
+}
+
+.theme-dark .text_fixed_color{
+    color: var(--light-gray) !important;
+}
+
+.theme-dark input, .theme-dark textarea, .theme-dark pre {
+    background: var(--light-light-black) !important;
+    color: var(--white) !important;
+    outline: none !important;
+}
+
+.theme-dark .bg_color {
+    background-color: var(--black) !important;
+}
+
+.theme-dark .text_color {
+    color: var(--light-gray);
+}
+
+.theme-dark .btn_color {
+    background-color: var(--black);
+    color: var(--white) !important;
+}
+
+.theme-dark .btn_color i {
+    color: var(--gray);
+}
+
+.theme-dark .btn_color:hover {
+    background-color: var(--light-gray);
+}
+
+.theme-dark .btn_color_light {
+    background-color: var(--light-black);
+    color: var(--gray);
+}
+
+.theme-dark .btn_color_light:hover {
+    background-color: var(--light-gray);
+}
+

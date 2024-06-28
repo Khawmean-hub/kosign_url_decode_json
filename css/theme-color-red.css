@@ -1,0 +1,59 @@
+/* ======================== only red ===================*/
+.theme-light.theme-red i {
+    color: var(--red);
+}
+.theme-light.theme-red .bg_color i {
+    color: var(--white);
+}
+.theme-light.theme-red .btn_color_light:hover i {
+    color: var(--white) !important;
+}
+
+
+
+
+/* ======================== red + Light ========================*/
+
+.theme-light.theme-red .bg_color {
+    background-color: var(--red) !important;
+}
+
+.theme-light.theme-red .text_color{
+    color: var(--red);
+}
+
+.theme-light.theme-red .btn_color {
+    background-color: var(--red);
+    color: var(--white);
+}
+.theme-light.theme-red .btn_color i {
+    color: var(--white);
+}
+
+.theme-light.theme-red .i_color {
+    color: var(--red) !important;
+}
+
+.theme-light.theme-red .btn_color:hover {
+    background-color: var(--dark-red);
+
+}
+
+.theme-light.theme-red .btn_color_light {
+    background-color: var(--light-light-red);
+    color: var(--light-red);
+}
+
+.theme-light.theme-red .btn_color_light:hover {
+    background-color: var(--red);
+    color: var(--white);
+}
+
+/* Change the focus color for Semantic UI input fields */
+.theme-light.theme-red input:focus,
+.theme-light.theme-red textarea:focus,
+.theme-light.theme-red .ui.selection.active.dropdown,
+.theme-light.theme-red .ui.selection.active.dropdown .menu {
+    border-color: var(--light-red) !important; /* Change to your desired border color */
+    box-shadow: none !important
+}

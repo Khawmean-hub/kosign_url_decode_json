@@ -1,0 +1,60 @@
+/* ======================== only green ===================*/
+.theme-light.theme-green i {
+    color: var(--green);
+}
+.theme-light.theme-green .bg_color i {
+    color: var(--white);
+}
+.theme-light.theme-green .btn_color_light:hover i {
+    color: var(--white) !important;
+}
+
+
+
+
+/* ======================== green + Light ========================*/
+
+.theme-light.theme-green .bg_color {
+    background-color: var(--green) !important;
+}
+
+.theme-light.theme-green .text_color{
+    color: var(--green);
+}
+
+.theme-light.theme-green .btn_color {
+    background-color: var(--green);
+    color: var(--white);
+}
+.theme-light.theme-green .btn_color i {
+    color: var(--white);
+}
+
+.theme-light.theme-green .i_color {
+    color: var(--green) !important;
+}
+
+.theme-light.theme-green .btn_color:hover {
+    background-color: var(--dark-green);
+
+}
+
+.theme-light.theme-green .btn_color_light {
+    background-color: var(--light-light-green);
+    color: var(--light-green);
+}
+
+.theme-light.theme-green .btn_color_light:hover {
+    background-color: var(--green);
+    color: var(--white);
+}
+
+/* Change the focus color for Semantic UI input fields */
+.theme-light.theme-green input:focus,
+.theme-light.theme-green textarea:focus,
+.theme-light.theme-green .ui.selection.active.dropdown,
+.theme-light.theme-green .ui.selection.active.dropdown .menu {
+    border-color: var(--light-green) !important;
+    box-shadow: none !important;
+    outline: none !important;
+}

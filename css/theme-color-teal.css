@@ -1,0 +1,59 @@
+/* ======================== only teal ===================*/
+.theme-light.theme-teal i {
+    color: var(--teal);
+}
+.theme-light.theme-teal .bg_color i {
+    color: var(--white);
+}
+.theme-light.theme-teal .btn_color_light:hover i {
+    color: var(--white) !important;
+}
+
+
+
+
+/* ======================== teal + Light ========================*/
+
+.theme-light.theme-teal .bg_color {
+    background-color: var(--teal) !important;
+}
+
+.theme-light.theme-teal .text_color{
+    color: var(--teal);
+}
+
+.theme-light.theme-teal .btn_color {
+    background-color: var(--teal);
+    color: var(--white);
+}
+.theme-light.theme-teal .btn_color i {
+    color: var(--white);
+}
+
+.theme-light.theme-teal .i_color {
+    color: var(--teal) !important;
+}
+
+.theme-light.theme-teal .btn_color:hover {
+    background-color: var(--dark-teal);
+
+}
+
+.theme-light.theme-teal .btn_color_light {
+    background-color: var(--light-light-teal);
+    color: var(--light-teal);
+}
+
+.theme-light.theme-teal .btn_color_light:hover {
+    background-color: var(--teal);
+    color: var(--white);
+}
+
+/* Change the focus color for Semantic UI input fields */
+.theme-light.theme-teal input:focus,
+.theme-light.theme-teal textarea:focus,
+.theme-light.theme-teal .ui.selection.active.dropdown,
+.theme-light.theme-teal .ui.selection.active.dropdown .menu {
+    border-color: var(--light-teal) !important; /* Change to your desired border color */
+    box-shadow: none !important
+}

@@ -19,33 +19,30 @@
     <meta property="og:type" content="website">
     <meta content="summary_large_image" name="twitter:card">
     <meta content="Webflow" name="generator">
-
-    <meta name="google-adsense-account" content="ca-pub-1060662052369608">
     <title>URL Decode;</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1060662052369608"
-        crossorigin="anonymous"></script>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="css/css.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
-        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <link rel="icon" type="image/x-icon" href="image/favicon.ico">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
-    <script src="js/popUp.js"></script>
-    <script src="js/js.js"></script>
-    <script src="js/jex223.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nokora:wght@100;300;400;700;900&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="library/semantic/semantic.min.css">
+    <link rel="stylesheet" href="library/jquery-ui.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="library/toastr.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/theme-color-blue.css">
+    <link rel="stylesheet" href="css/theme-color-teal.css">
+    <link rel="stylesheet" href="css/theme-color-green.css">
+    <link rel="stylesheet" href="css/theme-color-red.css">
 
+    <link rel="stylesheet" href="components/decode/decode.css">
 
+    <script src="library/xlsx.js"></script>
+    <script src="library/jquery.js"></script>
+    <script src="library/jquery-ui.js"></script>
 
+    <script src="library/moment.js"></script>
+    <script src="library/semantic/semantic.min.js"></script>
+    <script src="library/tidy.js"></script>
+    <script src="library/toastr.js"></script>
+    <script src="library/codemirror.js"></script>
 
 </head>
 
@@ -54,87 +51,120 @@
 
     </div>
     <div>
-        <div class="ui secondary menu inverted mini" style="background-color: #2662e3; overflow-x: auto; padding: 3px 20px; margin: 0">
-            <div class="active item" data-tab="first">URL Decode</div>
-            <div class="item" data-tab="jsondiff">JSON Diff</div>
-            <div class="item" data-tab="transformtools">Transform</div>
-            <div class="item" data-tab="dbdiagram">DB Diagram</div>
-            <div class="item" data-tab="jshtml">HTML 2 Js</div>
-            <!-- <div class="item" data-tab="sortEx">Sort File Name</div> -->
-            <div class="item" data-tab="second">Convert Jex 2.0 to Jex 3.0</div>
-            <div class="item" data-tab="calendar_excel">Calendar read excel to SQL</div>
-            <div class="item" data-tab="subtitle_maker">Subtitle maker</div>
+        <div class="ui secondary menu inverted fixed small bg_color my_navbar">
+            <div style="display: flex; overflow-x: auto">
+                <div class="active item" data-tab="first">Decode</div>
+                <div class="item" data-tab="jshtml">HTML 2 Js</div>
+                <!-- <div class="item" data-tab="sortEx">Sort File Name</div> -->
+                <div class="item" data-tab="second">Jex Convert</div>
+                <div class="item" data-tab="calendar_excel">Calendar excel</div>
+                <div class="item" data-tab="subtitle_maker">Subtitle maker</div>
+            </div>
+            <div class="ui dropdown item">
+                Other
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a href="https://json-diff.com/" target="_blank" class="item">JSON Diff</a>
+                    <a href="https://transform.tools/json-to-typescript" target="_blank" class="item">Transform</a>
+                    <a href="https://dbdiagram.io/d?utm_referrer=https%3A%2F%2Fwww.google.com%2F" target="_blank" class="item">DB Diagram</a>
+                    <a href="https://khawmean-hub.github.io/tinynoted/" target="_blank" class="item">TinyNoted</a>
+                </div>
+            </div>
+            <div class="right menu">
+                <div class="ui icon dropdown button circular cus_btn">
+                    <i class="cog icon"></i>
+                    <div class="menu">
+                        <div class="header">Setting</div>
+                        <div class="ui dropdown item">
+                            <i class="dropdown icon i_color"></i>
+                            <span class="text">Color</span>
+                            <div class="menu">
+                                <div class="item btn_theme_color" theme="theme-blue">
+                                    <a class="ui blue empty circular label large"></a> Blue
+                                </div>
+                                <div class="item btn_theme_color" theme="theme-teal">
+                                    <a class="ui teal empty circular label large"></a> Teal
+                                </div>
+                                <div class="item btn_theme_color" theme="theme-green">
+                                    <a class="ui green empty circular label large" ></a> Green
+                                </div>
+                                <div class="item btn_theme_color" theme="theme-red">
+                                    <a class="ui red empty circular label large" ></a> Red
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="ui bottom attached active tab ">
             <div class="ui bottom attached active tab" data-tab="first">
-                <div class="layout">
-
+                <div class="layout" id="layout">
+                    <div class="floated_bottom">
+                        <button class="ui circular icon button huge btn_color btn_show_right"><i class="history icon"></i></button>
+                    </div>
                     <!-- left -->
-                    <div style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 20px"
-                        class="left_part">
-                        <div class="ui form">
-                            <div class="field">
-                                <label style="margin-bottom: 20px;">
-                                    <div style="display: flex; justify-content: space-between;">
-                                        URL
-                                        <div class="ui label btn_zoom">
-                                            <i class="zoom icon"></i> Zoom In
+                    <div id="left_part">
+                        <div class="left_part bg_color_light" >
+                            <div class="ui form small">
+                                <h3 class="ui header txt_color">URI Decode</h3>
+                                <div class="field">
+                                    <label class="text_fixed_color" for="url_text">Paste here</label>
+                                    <div class="ui input actions">
+                                        <div id="btn_paste_url" data-tooltip="Paste" data-inverted="" data-position="bottom left" class="ui button icon btn_color_light"><i class="paste icon"></i></div>
+                                        <input type="text" id="url_text" placeholder="Paste url encode here">
+                                    </div>
+                                </div>
+                                <div class="field">
+
+                                    <label class="text_fixed_color">Result</label>
+                                    
+                                    <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted=""
+                                            data-position="top left" class="ui icon button tiny btn_color_light btn_keys_json">Key to JSON
+                                    </button>
+                                    <button data-tooltip="Ex: getData => GET_DATA" data-inverted="" data-position="top left"
+                                            class="ui icon button btn_color_light tiny btn_snake_case">Snake Case
+                                    </button>
+                                    <button data-tooltip="Ex: GET_DATA => getData" data-inverted="" data-position="top left"
+                                            class="ui icon button btn_color_light tiny btn_camel_case">Camel Case
+                                    </button>
+
+
+
+                                    <div class="ui icon buttons tiny right floated">
+                                        <button data-tooltip="Format" data-inverted="" class="ui icon button btn_color_light tiny btn_format"><i class="magic icon"></i></button>
+                                        <button data-tooltip="View as Table" data-inverted="" class="ui button icon btn_color_light tiny btn_2table">
+                                            <i class="table icon"></i>
+                                        </button>
+                                        <button data-tooltip="Save in local" data-inverted="" data-position="top right" class="ui button btn_save btn_color_light"><i class="save icon"></i></button>
+                                        <button data-tooltip="Copy" data-inverted="" data-position="top right"  class="ui button btn_copy btn_color_light"><i class="copy icon"></i></button>
+                                    </div>
+
+
+
+
+                                    <div class="ui form" style="margin-top: 10px;">
+                                        <div class="field">
+                                            <!--                                <label>Result</label>-->
+                                            <!-- <textarea rows="26" id="url_result"></textarea> -->
+                                            <pre id="url_result" contenteditable="true" spellcheck="false" style="margin: 0"></pre>
                                         </div>
                                     </div>
-                                </label>
-                                <textarea rows="2" id="url_text"></textarea>
-                            </div>
-                        </div>
-
-
-                        <div class="ui form mini formUrl">
-
-                            <!--                            <div class="ui toggle checkbox" style="margin-top: 4px;">-->
-                            <!--                                <input type="checkbox" id="live_mode">-->
-                            <!--                                <label>Live mode</label>-->
-                            <!--                            </div>-->
-                            <!--                            <button class="ui button blue tiny circular right floated btn_decode">DECODE</button>-->
-
-                            <button data-tooltip="Save in local" data-inverted="" data-position="top left"
-                                class="ui button blue tiny  btn_save">Save
-                            </button>
-                            <button class="ui icon button tiny btn_format">Format</button>
-                            <button class="ui icon button tiny btn_copy">Copy</button>
-                            <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted=""
-                                data-position="top left" class="ui icon button tiny btn_keys_json">Key to JSON
-                            </button>
-                            <button data-tooltip="Ex: getData => GET_DATA" data-inverted="" data-position="top left"
-                                class="ui icon button tiny btn_snake_case">Snake Case
-                            </button>
-                            <button data-tooltip="Ex: GET_DATA => getData" data-inverted="" data-position="top left"
-                                class="ui icon button tiny btn_camel_case">Camel Case
-                            </button>
-                            <button class="ui button icon tiny btn_2table">
-                                Show Table
-                            </button>
-                            <div class="ui form" style="margin-top: 10px;">
-                                <div class="field">
-                                    <!--                                <label>Result</label>-->
-                                    <!-- <textarea rows="26" id="url_result"></textarea> -->
-                                    <pre id="url_result" contenteditable="true" style="margin: 0">
-
-                                </pre>
+                                    <div id="table-container" style="display: none; overflow-x: auto"></div>
                                 </div>
                             </div>
                         </div>
-                        <div id="table-container" style="display: none; overflow-x: auto"></div>
                     </div>
-                    <div></div>
                     <!-- Right -->
-                    <div class="right_part"
-                        style="background-color: white; border-radius: 10px; padding: 20px;margin-bottom: 20px">
+                    <div id="right_part" class="right_part bg_color_light">
                         <div style="display: flex; justify-content: space-between;">
                             <div>
-                                <h4>Recent</h4>
+                                <h4 class="text_fixed_color">Recent</h4>
                             </div>
                             <div>
-                                <button class="ui button mini btn_clear_data">Clear Data</button>
+                                <button class="ui button mini btn_clear_data btn_color_light">Clear Data</button>
                                 <!--                                <div class="ui label btn_zoom2">-->
                                 <!--                                    <i class="zoom icon"></i> Zoom In-->
                                 <!--                                </div>-->
@@ -152,22 +182,26 @@
                             </div>
 
                         </div>
-                        <div class="formUrl">
-
+                        <div class="mt_30">
                             <div style="display: grid; grid-template-columns: auto 30px;">
                                 <div>
-                                    <button class="ui icon button tiny btn_format2">Format</button>
-                                    <button class="ui icon button tiny btn_copy2">Copy</button>
-                                    <button class="ui button icon tiny btn_2table2">
-                                        Show Table
-                                    </button>
+                                    <div class="text_fixed_color">Result</div>
                                 </div>
 
                                 <div>
-                                    <button data-tooltip="double click to pop new window" data-inverted=""
-                                        data-position="top right" class="ui button icon tiny" id="btn_make_drag_box"><i
+                                    <div class="ui icon buttons tiny right floated">
+                                        <button data-tooltip="Format" data-inverted="" class="ui icon button tiny btn_color_light btn_format2"><i class="magic icon"></i></button>
+                                        
+                                        <button data-tooltip="View as Table" data-inverted="" class="ui button icon tiny btn_color_light btn_2table2">
+                                            <i class="table icon"></i>
+                                        </button>
+                                        <button data-tooltip="Copy" data-inverted="" class="ui icon button tiny btn_color_light btn_copy2"><i class="copy icon"></i></button>
+                                        <button data-tooltip="one click: show local; double click: open new window" data-inverted=""
+                                        data-position="top right" class="ui button icon tiny btn_color_light" id="btn_make_drag_box"><i
                                             class="external square alternate icon"></i></button>
+                                    </div>
                                 </div>
+                                
                             </div>
 
                             <div class="save1" style="margin-top: 10px">
@@ -183,7 +217,7 @@
             <!-- ================================================================= -->
             <div class="ui bottom attached tab" data-tab="second">
 
-                <div class="ui form" style="margin: 20px;">
+                <div class="ui form" style="margin: 60px;">
                     <div class="ui form">
                         <div class="fields columns two">
                             <!-- <div class="field">
@@ -324,7 +358,7 @@
 
             <!-- Calendar tab  -->
             <!-- ================================================================= -->
-            <div class="ui bottom attached tab" data-tab="calendar_excel">
+            <div class="ui bottom attached tab pt_42" data-tab="calendar_excel">
                 <div class="my_container">
                     <div class="ui form">
                         <div class="field">
@@ -373,51 +407,10 @@
                 </div>
             </div>
 
-
-            <!-- Third Tab -->
-            <!-- ====================================================== -->
-            <div class="ui bottom attached tab" data-tab="jsondiff">
-                <iframe src="https://json-diff.com/" style="border: 0; width: 100%; height: 100vh"></iframe>
-            </div>
-
-            <!-- Forth Tab -->
-            <!-- ====================================================== -->
-            <div class="ui bottom attached tab" data-tab="transformtools">
-                <iframe src="https://transform.tools/json-to-typescript"
-                    style="border: 0; width: 100%; height: 100vh"></iframe>
-            </div>
-
-            <!-- Forth Tab -->
-            <!-- ====================================================== -->
-            <div class="ui bottom attached tab" data-tab="dbdiagram">
-                <iframe src="https://dbdiagram.io/d?utm_referrer=https%3A%2F%2Fwww.google.com%2F"
-                    style="border: 0; width: 100%; height: 100vh"></iframe>
-            </div>
-
-
-            <!-- Sort Exention -->
-            <!-- ====================================================== -->
-            <!-- <div class="ui bottom attached tab" data-tab="sortEx">
-            <div class="ui container" style="margin-top: 20px">
-                <form class="ui form small">
-                    <div class="field">
-                        <label>past String here</label>
-                        <textarea rows="3" id="raw_string"></textarea>
-                    </div>
-                    <div class="field">
-                        <label>Result
-                        </label>
-                        <textarea rows="25" id="show_ex_result"></textarea>
-                    </div>
-                </form>
-                <button class="ui button" id="my_sharing">Click here to share</button>
-            </div>
-        </div> -->
-
             <!-- HTML 2 JS -->
             <!-- ====================================================== -->
             <div class="ui bottom attached tab" data-tab="jshtml">
-                <div class="ui container" style="margin-top: 20px">
+                <div class="ui container pt_60">
                     <form class="ui form small">
                         <div class="field">
                             <label>Variable Name</label>
@@ -498,7 +491,7 @@
             <!-- Subtitle Maker -->
             <!-- ====================================================== -->
             <div class="ui bottom attached tab" data-tab="subtitle_maker">
-                <div class="ui container" style="margin-top: 20px">
+                <div class="ui container pt_60">
                     <form class="ui form" onsubmit="return false;">
                         <div class="ui input massive" style="margin-bottom: 15px;">
                             <div class="ui compact dropdown" id="md_type">
@@ -512,13 +505,13 @@
                             </div>
                         </div>
                         <div class="two fields">
-                            
+
                             <div class="field">
                                 <label>Please upload music or video file</label>
                                 <div class="ui labeled action input" id="box_file">
                                     <label class="ui label button icon" for="txt_input"><i class="attach icon"></i></label>
                                     <input onclick="onPickFile()" type="text" id="txt_input" placeholder="Music or video file" readonly>
-                                    <button class="ui button icon play" onclick="onPlay()" id="btn_play" disabled><i class="play icon"></i></button>
+                                    <button class="ui button icon play btn_color" onclick="onPlay()" id="btn_play" disabled><i class="play icon"></i></button>
                                 </div>
                                 <input type="file" id="file_up" style="display: none;" accept="audio/*,video/*">
                             </div>
@@ -527,11 +520,11 @@
                                     <div class="ui labeled action input">
                                         <div class="ui label button icon" onclick="openYouTube()"><i class="youtube icon"></i></div>
                                         <input type="text" id="youtubeUrl" placeholder="You can past youtube video link here">
-                                        <button class="ui button icon play" onclick="youtubePlay()" id="btn_play_you" disabled><i class="play icon"></i></button>
+                                        <button class="ui button icon play btn_color" onclick="youtubePlay()" id="btn_play_you" disabled><i class="play icon"></i></button>
                                     </div>
                             </div>
                         </div>
-                        
+
                         <div class="field">
                             <label id="title_l"></label>
                             <label id="title_l_u"></label>
@@ -562,12 +555,12 @@
                             </div>
                         </div>
 
-                        
+
                         <div class="field" style="padding-top: 10px;">
-                            <button class="ui button green" id="btn_save">Save</button>
+                            <button class="ui button btn_color" id="btn_save">Save</button>
                             <button type="reset" class="ui button mini right floated" id="btn_clear">Clear</button>
                         </div>
-                        
+
                     </form>
 
                     <div class="ui message">
@@ -602,19 +595,23 @@
 
     <div id="pop-main"></div>
     <div id="message-block"></div>
-    <div style="padding: 20px;">
-        <!-- <h3>Compare</h3> -->
-
-
-    </div>
 
     <input type="hidden" name="" id="tem_input">
-    <script src='https://lovasoa.github.io/tidy-html5/tidy.js'></script>
-    <script src="js/jex223event.js"></script>
-    <script src="js/calendar.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/sortEx.js"></script>
-    <script src="js/subtitle.js"></script>
+
+<!-- ========================================== Script ========================================== -->
+    <script src="util/static.js"></script>
+    <script src="util/popUp.js"></script>
+    <script src="data/dataStorage.js"></script>
+    <script src="util/util.js"></script>
+
+    <script src="components/nav_bar/nav_bar.js"></script>
+    <script src="components/decode/decode.js"></script>
+    <script src="components/jex_convert/jex223.js"></script>
+    <script src="components/jex_convert/jex223event.js"></script>
+    <script src="components/calendar/calendar.js"></script>
+    <script src="components/subtitle_maker/subtitle.js"></script>
+
+    <script src="main.js"></script>
 </body>
 
 </html>

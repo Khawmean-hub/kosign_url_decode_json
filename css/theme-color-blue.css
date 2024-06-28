@@ -1,0 +1,60 @@
+/* ======================== only blue ===================*/
+.theme-light.theme-blue i {
+    color: var(--blue);
+}
+.theme-light.theme-blue .bg_color i {
+    color: var(--white);
+}
+.theme-light.theme-blue .btn_color_light:hover i {
+    color: var(--white) !important;
+}
+
+
+
+
+/* ======================== Blue + Light ========================*/
+
+.theme-light.theme-blue .bg_color {
+    background-color: var(--blue) !important;
+}
+
+.theme-light.theme-blue .text_color{
+    color: var(--blue);
+}
+
+.theme-light.theme-blue .btn_color {
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+.theme-light.theme-blue .i_color {
+    color: var(--blue) !important;
+}
+
+.theme-light.theme-blue .btn_color i {
+    color: var(--white);
+}
+
+.theme-light.theme-blue .btn_color:hover {
+    background-color: var(--dark-blue);
+
+}
+
+.theme-light.theme-blue .btn_color_light {
+    background-color: var(--light-light-blue);
+    color: var(--light-blue);
+}
+
+.theme-light.theme-blue .btn_color_light:hover {
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+/* Change the focus color for Semantic UI input fields */
+.theme-light.theme-blue input:focus,
+.theme-light.theme-blue textarea:focus,
+.theme-light.theme-blue .ui.selection.active.dropdown,
+.theme-light.theme-blue .ui.selection.active.dropdown .menu {
+    border-color: var(--light-blue) !important; /* Change to your desired border color */
+    box-shadow: none !important
+}
