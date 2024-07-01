@@ -20,40 +20,42 @@
     <meta content="summary_large_image" name="twitter:card">
     <meta content="Webflow" name="generator">
 
-    <meta name="google-adsense-account" content="ca-pub-1060662052369608">
     <title>URL Decode;</title>
 
     <link rel="icon" type="image/x-icon" href="image/favicon.ico">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <link rel="stylesheet" href="library/semantic/semantic.min.css">
+    <link rel="stylesheet" href="library/jquery-ui.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
-            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-            <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="library/toastr.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/theme-color-blue.css">
+    <link rel="stylesheet" href="css/theme-color-teal.css">
+    <link rel="stylesheet" href="css/theme-color-green.css">
+    <link rel="stylesheet" href="css/theme-color-red.css">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
-    <script src="util/popUp.js"></script>
-    <script src="components/decode/decode.js"></script>
-    <script src="components/jex_convert/jex223.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nokora:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="components/decode/decode.css">
 
+    <script src="library/xlsx.js"></script>
+    <script src="library/jquery.js"></script>
+    <script src="library/jquery-ui.js"></script>
 
-
+    <script src="library/moment.js"></script>
+    <script src="library/semantic/semantic.min.js"></script>
+    <script src="library/tidy.js"></script>
+    <script src="library/toastr.js"></script>
+    <script src="library/codemirror.js"></script>
 
 </head>
-<body>
+<body class="theme-light theme-blue p_30">
     <div class="formUrl" style="margin: 0;">
 
         <div style="display: grid; grid-template-columns: auto 30px;">
             <div>
-                <button class="ui icon button tiny btn_format2">Format</button>
-                <button class="ui icon button tiny btn_copy2">Copy</button>
-                <button class="ui button icon tiny btn_2table2">
-                    Show Table
+                <button data-tooltip="Format" data-inverted="" class="ui icon button btn_color_light tiny btn_format2"><i class="magic icon"></i></button>
+                <button data-tooltip="Copy" data-inverted="" data-position="top right"  class="ui button icon btn_copy2 btn_color_light"><i class="copy icon"></i></button>
+                <button data-tooltip="View as Table" data-inverted="" class="ui button icon btn_color_light tiny btn_2table2">
+                    <i class="table icon"></i>
                 </button>
             </div>
 
@@ -62,11 +64,11 @@
             </div>
         </div>
 
-        <div class="save1" style="margin-top: 10px">
-            <pre contenteditable="true" style="margin: 0" spellcheck="false"></pre>
+        <div class="save1" style="margin-top: 10px;">
+            <pre contenteditable="true" style="margin: 0; height: 100%" spellcheck="false"></pre>
         </div>
     </div>
-    <div id="table-container2" style="display: none; overflow-x: auto"></div>
+    <div id="table-container2" style="display: none; overflow-x: auto;"></div>
     <div id="pop-main"></div>
     <div id="message-block"></div>
     <div style="padding: 20px;">
@@ -76,10 +78,21 @@
     </div>
     
     <input type="hidden" name="" id="tem_input">
-    <script src='library/tidy.js'></script>
-    <script src="components/jex_convert/jex223event.js"></script>
-    <script src="components/calendar/calendar.js"></script>
-    <script src="main.js"></script>
+<!-- ========================================== Script ========================================== -->
+<script src="util/static.js"></script>
+<script src="util/popUp.js"></script>
+<script src="data/dataStorage.js"></script>
+<script src="util/util.js"></script>
+
+<!-- components -->
+<script src="components/nav_bar/nav_bar.js"></script>
+<script src="components/decode/decode.js"></script>
+<script src="components/jex_convert/jex223.js"></script>
+<script src="components/jex_convert/jex223event.js"></script>
+<script src="components/calendar/calendar.js"></script>
+<script src="components/subtitle_maker/subtitle.js"></script>
+
+<!-- <script src="main.js"></script> -->
     <script>
         try{
             const json = decodeURIComponent(window.location.search).split("_JSON_=")[1]

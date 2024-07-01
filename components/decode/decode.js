@@ -59,8 +59,8 @@ $('.btn_copy2').click(function () {
  */
 function onSave() {
     let $result = $decodeResult;
-    $saveBoxResult.html(syntaxHighlight($result.text()))
     try {
+        $saveBoxResult.html(syntaxHighlight($result.text()))
         const newObj = {
             name: Object.keys(JSON.parse($result.text()))[0],
             date: moment().format('YYYY-MM-DD | hh:mm:ss a'),
@@ -83,10 +83,10 @@ function onSave() {
             ls.push(newObj);
             localStorage.setItem('kosign_save_data', JSON.stringify(ls))
         }
+        loadData();
     } catch (error) {
-
+        toastr.error(MSG.NO_DATA)
     }
-    loadData();
 }
 
 

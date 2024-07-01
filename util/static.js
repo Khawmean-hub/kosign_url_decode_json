@@ -19,5 +19,6 @@ const MSG = {
     ERROR_NO_JSON_DATA: 'No JSON data to decode.',
     ERROR_JSON_ENCODE: 'Error encoding JSON.',
     NOT_VALID_INPUT: 'Not a json or encode uri.',
-    NO_TEXT_TO_SHOW: 'No text to show.'
+    NO_TEXT_TO_SHOW: 'No text to show.',
+    NO_DATA: 'No data.'
 }
