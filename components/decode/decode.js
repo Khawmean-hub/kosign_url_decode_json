@@ -741,9 +741,7 @@ function onAppendJsonToTable($to, $from){
 }
 
 
-$('#code_pre, #exclude_txt').on('input',function(){
-    onReplaceJex()
-})
+
 
 $('#btn_save_ex').click(function () {
     if(isNull(activeProjectId)){

@@ -19,7 +19,8 @@ const jexRegex = {
     recToJSONObjec2     : /D+[a-z0-9_]+REC\(\)/,
 }
 
-
+let leftEditor;
+let rightEditor;
 let activeProjectId = null;
 const defaultProject= [
     {
@@ -450,7 +451,7 @@ function loadOtherReplace(){
                         <td>${v2.to}</td>
                         <td style="width: 71.3px">
                         ${isNull(getCurrentProject().replaceData.find(e=> e.from === v2.from)) ?
-                        `<button data-value="${v2.from+','+v2.to}" class="ui primary button mini btn_add_key ${isNull(getCurrentProject().replaceData.find(e=> e.from === v2.from)) ? '' : 'disabled' }">
+                        `<button data-value="${v2.from+','+v2.to}" class="ui btn_color button mini btn_add_key ${isNull(getCurrentProject().replaceData.find(e=> e.from === v2.from)) ? '' : 'disabled' }">
                          Add
                         </button>` : `<a class="ui label" style="background: #e3e3e3">Added</a>`}
                         </td>
@@ -481,5 +482,16 @@ function onSaveReplace(value){
 function onReplaceJex(){
     var include = "";
     var exclude = $('#exclude_txt').val();
-    $('#code_pre2').val(conVertJexInput($('#code_pre').val(), include, exclude, true))
+    rightEditor.setValue(conVertJexInput(leftEditor.getValue(), include, exclude, true))
+}
+
+function setJexEditor(){
+    if(!leftEditor){
+        leftEditor = applyEditorJs('code_pre');
+        rightEditor = applyEditorJs('code_pre2');
+    
+        leftEditor.on('change', function() {
+            onReplaceJex()
+        });
+    }
 }

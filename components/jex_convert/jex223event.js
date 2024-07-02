@@ -1,5 +1,11 @@
+$(document).on('click', '.my_navbar .item:eq(2)', setJexEditor)
+
 $('#new_project_button').click(function () {
     $('#new_project_modal').modal('show');
+})
+
+$('#exclude_txt').on('input',function(){
+    onReplaceJex()
 })
 
 $('.coupled.modal')
@@ -83,4 +89,8 @@ $('#btn_save_import_data').click(function () {
 
 $(document).on('change', '.m_check',function() {
     onReplaceJex()
+})
+
+$(document).ready(function(){
+    
 })
