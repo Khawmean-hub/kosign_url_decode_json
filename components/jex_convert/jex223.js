@@ -482,7 +482,11 @@ function onSaveReplace(value){
 function onReplaceJex(){
     var include = "";
     var exclude = $('#exclude_txt').val();
-    rightEditor.setValue(conVertJexInput(leftEditor.getValue(), include, exclude, true))
+    try{
+        rightEditor.setValue(conVertJexInput(leftEditor.getValue(), include, exclude, true))
+    }catch(e){
+        console.error(e);
+    }
 }
 
 function setJexEditor(){

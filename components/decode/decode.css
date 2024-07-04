@@ -14,7 +14,7 @@
 .left_part {
     border-radius: 10px;
     padding: 20px;
-    margin: 20px 20px 0 20px;
+    margin: 15px 20px 0 20px;
     width: calc(100% - 35px);
 }
 #left_part .ui-resizable-e:after {
@@ -50,7 +50,7 @@
     border-radius: 10px;
     display: none;
     padding: 20px;
-    margin: 20px 20px 0 0;
+    margin: 15px 20px 0 0;
     min-width: 295px;
     background: var(--white);
 }
@@ -135,7 +135,7 @@
 
 
 #layout .CodeMirror, #table-container2, #table-container{
-    height: calc(100vh - 300px)
+    height: calc(100vh - 280px)
 }
 
 .box {
