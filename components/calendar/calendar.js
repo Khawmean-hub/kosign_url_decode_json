@@ -61,7 +61,7 @@ function jsonToSql(arr) {
             const firstKey = Object.keys(arr[0])[0];
             const secondKey = '__EMPTY';
             if (isValIsDate(v[firstKey])) {
-                if(!isNull(v[secondKey])  && isValidValue(v[secondKey])){
+                if(v[secondKey]  && isValidValue(v[secondKey])){
                     const firstLeter = v[secondKey][0];
                     const loopDate = year + v[firstKey].replace('월', '').replace('일', '').replace(' ', '');
                     date = loopDate;
@@ -71,7 +71,7 @@ function jsonToSql(arr) {
             }
 
         }else {
-            if(!isNull(v['__EMPTY'])  && isValidValue(v['__EMPTY'])){
+            if(v['__EMPTY']  && isValidValue(v['__EMPTY'])){
                 const firstLeter = v['__EMPTY'][0];
                 const sql = `insert into ${tableName}(year, dt, srno, cntn) values('${year}','${date}','${firstLeter}','${v['__EMPTY']}');`;
                 mainLs.push(sql);
@@ -98,7 +98,7 @@ function jsonToSql(arr) {
 }
 
 function readExcel(){
-    if(!isNull(myWorkbook)){
+    if(myWorkbook){
         let first_sheet_name = $("#sheet_select").val();
         let worksheet = myWorkbook.Sheets[first_sheet_name];
         excelData = XLSX.utils.sheet_to_json(worksheet, {

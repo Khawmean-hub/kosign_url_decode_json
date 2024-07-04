@@ -20,5 +20,17 @@ const MSG = {
     ERROR_JSON_ENCODE: 'Error encoding JSON.',
     NOT_VALID_INPUT: 'Not a json or encode uri.',
     NO_TEXT_TO_SHOW: 'No text to show.',
-    NO_DATA: 'No data.'
+    NO_TEXT_TO_CONVERT: 'No text to convert.',
+    NOT_A_TEXT: 'Error! Only text can convert to json',
+    NOT_JSON: 'Error! Only JSON can be saved.',
+    NO_TEXT_TO_FORMAT: 'No text to format.',
+    NOT_AN_EDITOR: 'Not an editor.',
+    NO_DATA: 'No data.',
+    CONFIRM_CLEAR_JSON_DATA: 'Do you really want to clear all data?',
+    CLEAR_JSON_DATA_SUCCESS: 'Clear data success.',
+    CONFIRM_DELETE_JSON: 'Do you really want to remove this data?',
+    DELETE_SUCCESS: 'Json item deleted.',
+    NO_NAME: 'Please input name.',
+    SAVE: 'JSON has been saved.',
+    NO_JSON_DATA_TO_CLEAR: "You don't have any data."
 }

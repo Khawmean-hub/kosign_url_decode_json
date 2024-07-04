@@ -47,7 +47,7 @@ let projects = [];
 function findUpercase(str) {
     if(str.split('').every(e => e.match(jexRegex.letterUperCaseReg))) return [];
     var res = str.match(jexRegex.letterUperCaseReg);
-    if(isNull(res))
+    if(!res)
         return [];
     else
         return res;
@@ -55,7 +55,7 @@ function findUpercase(str) {
 function findGetvalueStReg(str, include, exclude) {
     var newString = getExclude(str, exclude, jexRegex.getvalueStReg)
     var res  = newString.match(jexRegex.getvalueStReg)
-    if(isNull(res))
+    if(!res)
         return [];
     else
         return res;
@@ -64,7 +64,7 @@ function findGetvalueStReg(str, include, exclude) {
 function findSetvalueStReg(str, include, exclude) {
     var newString = getExclude(str, exclude, jexRegex.setvalueStReg)
     var res  = newString.match(jexRegex.setvalueStReg)
-    if(isNull(res))
+    if(!res)
         return [];
     else
         return res;
@@ -78,7 +78,7 @@ function convertToSqlNaming(str) {
     res.forEach(e => {
         str = str.replaceAll(e, '_' + e);
     });
-    if(isNull(res))
+    if(!res)
         return str;
     else
         return str.toUpperCase();
@@ -124,16 +124,16 @@ const stringToRegex = str => {
 
 
 function getExclude(str, exclude, filter){
-    if(!isNull(exclude)){
+    if(exclude){
         var exls = exclude.split(',')
         exls = exls.map(e=> e.trim());
         exls.forEach((ex)=>{
-            if(!isNull(ex)){
+            if(ex){
                 var nF = filter+'';
                 nF = nF.replace('/','/' + ex);
                 var newFilter = stringToRegex(nF);
                 var ls = str.match(newFilter);
-                if(!isNull(ls)){
+                if(ls){
                     ls.forEach(e => {
                         str = str.replaceAll(e, '')
                     })
@@ -151,10 +151,10 @@ function changeInputAndResult(str) {
     var regLs = [jexRegex.inputJex, jexRegex.resultJex]
     regLs.forEach(reg=>{
         var ls = str.match(reg);
-        if(!isNull(ls)){
+        if(ls){
             ls.forEach(v=>{
                 var ls2 = v.match(jexRegex.resultJex2);
-                if(!isNull(ls2)){
+                if(ls2){
                     ls2.forEach(v2=>{
                         str = str.replaceAll(v2, '')
                     })
@@ -170,7 +170,7 @@ function changeInputAndResult(str) {
 // change IDOIn
 function changeIdoIn(str) {
     var ls = str.match(jexRegex.idoJexIn)
-    if(!isNull(ls)){
+    if(ls){
         ls.forEach(v=>{
             var namels = v.match(jexRegex.idoInName)
             var name = namels[0].replace('(D', '').replace('In.class)', '')
@@ -186,14 +186,14 @@ function changeIdoIn(str) {
 function convertToJsonObject(str) {
 
     let ls = str.match(jexRegex.recToJSONObjec);
-    if(!isNull(ls)){
+    if(ls){
         ls.forEach(va=>{
             str = str.replaceAll(va, 'JSONObject')
         })
     }
 
     let ls1 = str.match(jexRegex.recToJSONObjec2);
-    if(!isNull(ls1)){
+    if(ls1){
         ls1.forEach(va=>{
             str = str.replaceAll(va, 'JSONObject()')
         })
@@ -205,7 +205,7 @@ function toJexData(str){
     var regex = [jexRegex.jexDataIn, jexRegex.jexDataOut];
     regex.forEach(v=>{
        var ls =  str.match(v);
-       if(!isNull(ls)){
+       if(ls){
             ls.forEach(va=>{
                 str = str.replaceAll(va, 'JexData')
             })
@@ -271,7 +271,7 @@ function buildProjectDrop(){
     const projectsDropList = projects.flatMap(e=>{ return {value: e.id, name: e.name, selected: projects.length === 1}});
     $("#project_drop .menu").empty().append(projectsDropList.map(e=> `<div class="item" data-value="${e.value}">${e.name}</div>`));
     $("#project_drop").dropdown();
-    if(isNull(projects) || projects.length === 0){
+    if(!projects || projects.length === 0){
         $('#project_drop .default.text').html('Please add new project.')
     }else{
         $('#project_drop .default.text').html('Select Project')
@@ -284,13 +284,13 @@ function buildProjectDrop(){
 
 function getProjectFromLocal(){
     let ls = localStorage.getItem('projects_list');
-    if(!isNull(ls)){
+    if(ls){
         return  JSON.parse(ls);
     }
 }
 
 function confirmSaveDefault(){
-    if(isNull(getProjectFromLocal())){
+    if(!getProjectFromLocal()){
         // const ask = confirm('Do you want to save default project?')
         // if (!ask) return;
         localStorage.setItem('projects_list', JSON.stringify(defaultProject))
@@ -318,7 +318,7 @@ function buildCheck(){
 function onCheckExcludeSave() {
     try{
         var exclude = localStorage.getItem('my_exclude');
-        if (isNull(exclude)){
+        if (!exclude){
             exclude = defalutExclude;
             localStorage.setItem('my_exclude', exclude)
         }
@@ -342,7 +342,7 @@ function saveNewProject(){
     const name = $('#new_project_name').val();
     $('#new_project_name').val('')
     const id =generateProjectId(name);
-    if(isNull(name)){
+    if(!name){
         alert('Please fill all field.')
         return;
     }
@@ -404,7 +404,7 @@ function buildReplaceTable(){
 function onSaveNewReplace(){
     const from = $('#from_txt').val();
     const to = $('#to_txt').val();
-    if(isNull(from) || isNull(to)){
+    if(!from || !to){
         alert('Please fill all field.')
         return;
     }
@@ -414,7 +414,7 @@ function onSaveNewReplace(){
     }
     //is duplicate replace
     const isDuplicate = getCurrentProject().replaceData.find(e=> e.from === from);
-    if(!isNull(isDuplicate)){
+    if(isDuplicate){
         alert('This key is already exist.');
         return;
     }
@@ -450,8 +450,8 @@ function loadOtherReplace(){
                         <td>${v2.from}</td>
                         <td>${v2.to}</td>
                         <td style="width: 71.3px">
-                        ${isNull(getCurrentProject().replaceData.find(e=> e.from === v2.from)) ?
-                        `<button data-value="${v2.from+','+v2.to}" class="ui btn_color button mini btn_add_key ${isNull(getCurrentProject().replaceData.find(e=> e.from === v2.from)) ? '' : 'disabled' }">
+                        ${!getCurrentProject().replaceData.find(e=> e.from === v2.from) ?
+                        `<button data-value="${v2.from+','+v2.to}" class="ui btn_color button mini btn_add_key ${!getCurrentProject().replaceData.find(e=> e.from === v2.from) ? '' : 'disabled' }">
                          Add
                         </button>` : `<a class="ui label" style="background: #e3e3e3">Added</a>`}
                         </td>
@@ -487,8 +487,8 @@ function onReplaceJex(){
 
 function setJexEditor(){
     if(!leftEditor){
-        leftEditor = applyEditorJs('code_pre');
-        rightEditor = applyEditorJs('code_pre2');
+        leftEditor = applyEditorJava('code_pre');
+        rightEditor = applyEditorJava('code_pre2');
     
         leftEditor.on('change', function() {
             onReplaceJex()

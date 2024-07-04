@@ -33,73 +33,124 @@
     <link rel="stylesheet" href="css/theme-color-teal.css">
     <link rel="stylesheet" href="css/theme-color-green.css">
     <link rel="stylesheet" href="css/theme-color-red.css">
+    <link rel="stylesheet" href="library/codemirror/codemirror.css">
+    <link rel="stylesheet" href="library/codemirror/material-theme.css">
+    <link rel="stylesheet" href="library/codemirror/neat-theme.css">
 
     <link rel="stylesheet" href="components/decode/decode.css">
 
-    <script src="library/xlsx.js"></script>
     <script src="library/jquery.js"></script>
-    <script src="library/jquery-ui.js"></script>
-
     <script src="library/moment.js"></script>
     <script src="library/semantic/semantic.min.js"></script>
-    <script src="library/tidy.js"></script>
     <script src="library/toastr.js"></script>
-    <script src="library/codemirror.js"></script>
+    <script src="library/codemirror/codemirror.js"></script>
+    <script src="library/codemirror/xml.js"></script>
+    <script src="library/codemirror/codemirrorjs.js"></script>
+    <script src="library/codemirror/codemirror-mod.js"></script>
+    <script src="library/codemirror/htmlmix.js"></script>
 
+    <style>
+        .CodeMirror, #table-container2{
+            height: calc(100vh - 80px)
+        }
+        .CodeMirror.cm-s-material {
+            border-radius: 5px;
+            padding-top: 10px;
+            border: 1px solid rgba(34,36,38,.15);
+        }
+        .theme-light.theme-blue  .CodeMirror-focused {
+            border: 1px solid var(--light-blue) !important;
+        }
+        .theme-light.theme-teal  .CodeMirror-focused {
+            border: 1px solid var(--light-teal) !important;
+        }
+        .theme-light.theme-green  .CodeMirror-focused {
+            border: 1px solid var(--light-green) !important;
+        }
+        .theme-light.theme-red  .CodeMirror-focused {
+            border: 1px solid var(--light-red) !important;
+        }
+        .my_container2 {
+            padding: 15px 20px;
+            background: white;
+            border-radius: 5px;
+        }
+        
+        body {
+            background-color: white !important;
+        }
+    </style>
 </head>
-<body class="theme-light theme-blue p_30">
-    <div class="formUrl" style="margin: 0;">
-
-        <div style="display: grid; grid-template-columns: auto 30px;">
+<body class="">
+   
+    <div class="my_container2">
+        <div style="display: grid; grid-template-columns: auto auto;">
             <div>
-                <button data-tooltip="Format" data-inverted="" class="ui icon button btn_color_light tiny btn_format2"><i class="magic icon"></i></button>
-                <button data-tooltip="Copy" data-inverted="" data-position="top right"  class="ui button icon btn_copy2 btn_color_light"><i class="copy icon"></i></button>
-                <button data-tooltip="View as Table" data-inverted="" class="ui button icon btn_color_light tiny btn_2table2">
+                <h4 id="box_fixed_active_text" class="m_p_0" active-json-id="">Result</h4>
+                <small class="text_fixed_color" id="box_fixed_active_date">Click on menu above to show</small>
+            </div>
+
+            <div style="text-align: right;">
+                <button data-tooltip="Format" data-position="bottom right" data-inverted="" class="ui icon button btn_color_light tiny btn_format3"><i class="magic icon"></i></button>
+                <button data-tooltip="Copy" data-inverted="" data-position="bottom right"  class="ui button icon tiny btn_copy3 btn_color_light"><i class="copy icon"></i></button>
+                <button data-tooltip="View as Table" data-position="bottom right" data-inverted="" class="ui button icon btn_color_light tiny btn_2table3">
                     <i class="table icon"></i>
                 </button>
             </div>
-
-            <div>
-                <!-- <button class="ui button icon tiny" id="btn_make_drag_box"><i class="external square alternate icon"></i></button> -->
-            </div>
         </div>
 
-        <div class="save1" style="margin-top: 10px;">
-            <pre contenteditable="true" style="margin: 0; height: 100%" spellcheck="false"></pre>
+        <div style="margin-top: 10px;">
+            <textarea name="" id="popup_editor"></textarea>
         </div>
+
+        <div id="table-container3" style="display: none; overflow-x: auto;"></div>
+
     </div>
-    <div id="table-container2" style="display: none; overflow-x: auto;"></div>
-    <div id="pop-main"></div>
-    <div id="message-block"></div>
-    <div style="padding: 20px;">
-        <!-- <h3>Compare</h3> -->
-    
-    
-    </div>
-    
-    <input type="hidden" name="" id="tem_input">
+
+
+
 <!-- ========================================== Script ========================================== -->
 <script src="util/static.js"></script>
-<script src="util/popUp.js"></script>
 <script src="data/dataStorage.js"></script>
 <script src="util/util.js"></script>
+<script src="components/decode/util.js"></script>
 
 <!-- components -->
-<script src="components/nav_bar/nav_bar.js"></script>
-<script src="components/decode/decode.js"></script>
-<script src="components/jex_convert/jex223.js"></script>
-<script src="components/jex_convert/jex223event.js"></script>
-<script src="components/calendar/calendar.js"></script>
-<script src="components/subtitle_maker/subtitle.js"></script>
 
 <!-- <script src="main.js"></script> -->
     <script>
-        try{
-            const json = decodeURIComponent(window.location.search).split("_JSON_=")[1]
-            $('.save1 pre').html(formatJsonRaw(json))
-            $('#table-container2').empty().append(generateJson2Table(JSON.parse(json)));
-        }catch(e){
+        let popUpEditor = applyEditorJs('popup_editor');
+        $(document).on('click', '.btn_format3', onFormat)
+        $(document).on('click', '.btn_copy3', onCopy)
+        $(document).on('click', '.btn_2table3', onTable)
 
+        $(document).ready(function(){
+            toastrSetting()
+            try{
+                const json = JSON.parse(decodeURIComponent(window.location.search).split("_JSON_=")[1])
+                const theme = decodeURIComponent(window.location.search).split("_THEME_=")[1].split('&&')[0]
+                $('body').attr('class', theme)
+               
+                popUpEditor.setValue(json.text)
+                
+                $('#box_fixed_active_text').html(json.name)
+                $('#box_fixed_active_date').html(json.date)
+            }catch(e){
+
+            }
+        })
+
+        //============== functions ================
+        function onFormat(){
+            onFormatOn(popUpEditor)
+        }
+
+        function onCopy(){
+            copyToClipboard(popUpEditor.getValue())
+        }
+
+        function onTable(){
+            onToggleTableAndJson($(this), $('#popup_editor').parent(), $('#table-container3'), popUpEditor)
         }
     </script>
 </body>

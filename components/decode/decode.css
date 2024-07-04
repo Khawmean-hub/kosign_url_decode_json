@@ -40,10 +40,10 @@
     border-radius: 10px;
 }
 
-.save1 pre {
+/* .save1 pre {
     height: calc(100vh - 300px);
     overflow: auto;
-}
+} */
 
 
 .right_part {
@@ -105,45 +105,74 @@
 .theme-red .active_select {
     border-left: 5px solid var(--red);
 }
-.layout pre,
-.ui-widget-content pre {
-    outline: 1px solid rgba(34,36,38,.15);
-}
+
 .ui-widget-content pre {
     background-color: var(--white);
 }
-/* .theme-light.theme-blue .layout pre {
-    outline: 1px solid var(--light-blue2);
-}
-.theme-light.theme-teal .layout pre {
-    outline: 1px solid var(--light-teal2);
-}
-.theme-light.theme-green .layout pre {
-    outline: 1px solid var(--light-green2);
-}
-.theme-light.theme-red .layout pre {
-    outline: 1px solid var(--light-red2);
-} */
 
-
-.theme-light.theme-blue .layout pre:focus,
-.ui-widget-content pre:focus {
-    outline: 1px solid var(--light-blue);
+.layout .CodeMirror.cm-s-material {
+    border-radius: 5px;
+    padding-top: 10px;
+    border: 1px solid rgba(34,36,38,.15);
 }
-.theme-light.theme-teal .layout pre:focus,
-.ui-widget-content pre:focus {
-    outline: 1px solid var(--light-teal);
+.theme-light.theme-blue .layout .CodeMirror-focused {
+    border: 1px solid var(--light-blue) !important;
 }
-.theme-light.theme-green .layout pre:focus,
-.ui-widget-content pre:focus {
-    outline: 1px solid var(--light-green);
+.theme-light.theme-teal .layout .CodeMirror-focused {
+    border: 1px solid var(--light-teal) !important;
 }
-.theme-light.theme-red .layout pre:focus,
-.ui-widget-content pre:focus {
-    outline: 1px solid var(--light-red);
+.theme-light.theme-green .layout .CodeMirror-focused {
+    border: 1px solid var(--light-green) !important;
+}
+.theme-light.theme-red .layout .CodeMirror-focused {
+    border: 1px solid var(--light-red) !important;
 }
 
 .cus_btn {
     background: none !important;
     color: white !important;
+}
+
+
+#layout .CodeMirror, #table-container2, #table-container{
+    height: calc(100vh - 300px)
+}
+
+.box {
+    border-radius: 5px;
+    /*border: 1px solid rgba(212, 212, 212, 0);*/
+    background: #f5f5f5;
+    margin: 0 5px;
+    cursor: pointer;
+    position: relative;
+    height: 65px;
+}
+.btn_box_close .item i {
+    margin-right: 5px !important;
+    margin-left: 3px !important;
+}
+.btn_box small {
+    color: #797979 !important;
+}
+.btn_box {
+    padding: 10px;
+}
+.box p{
+    margin: 0;
+    min-width: 115px;
+    font-family: 'Inter','Nokora', sans-serif;
+}
+.btn_box_close{
+    position: absolute !important;
+    right: 0px;
+    top: 4px;
+}
+.btn_box_close .menu .item, .btn_box_close .menu i{
+    font-size: 11px !important;
+}
+
+.book_mark_contain {
+    position: absolute;
+    right: 18px;
+    top: 2px
 }

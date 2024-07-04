@@ -26,30 +26,35 @@ var rank = Math.floor(Math.random() * 100) + 1;
  * @param {String} str 
  */
 function copyToClipboard(str){
-    const $temp = $("<textarea>");
-    // Append the temporary text area element to the body
-    $("body").append($temp);
-    // Set the value of the temporary text area to the text to be copied
-    $temp.val(str).select();
-    // Execute the copy command
-    document.execCommand("copy");
-    $temp.remove();
-    toastr.success("Text copied to clipboard!");
+    if(str){
+        const $temp = $("<textarea>");
+        // Append the temporary text area element to the body
+        $("body").append($temp);
+        // Set the value of the temporary text area to the text to be copied
+        $temp.val(str).select();
+        // Execute the copy command
+        document.execCommand("copy");
+        $temp.remove();
+        toastr.success("Text copied to clipboard!");
+    }else {
+        toastr.error(MSG.NO_DATA)
+    }
 }
 
+function isJson(str) {
+    try {
+        JSON.parse(str);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
 
 /**
  * Check is a json or encode url
  */
 function isJsonOrEncodeUrl(str) {
-    function isJson(str) {
-        try {
-            JSON.parse(str);
-            return true;
-        } catch (e) {
-            return false;
-        }
-    }
+
 
     function isEncodeUrl(str) {
         // A basic check for URL-encoded strings (percent-encoded)
@@ -69,11 +74,30 @@ function isNotJson(str) {
 }
 
 
-function applyEditorJs(id, isReadOnly = false, line = true){
+function applyEditorJava(id, isReadOnly = false, line = true){
     return CodeMirror.fromTextArea(document.getElementById(id), {
         lineNumbers: true,
         mode: 'text/x-java',
         indentUnit: 4,
         indentWithTabs: true
       });
+}
+
+function applyEditorJs(id, isReadOnly = false, line = true){
+    return CodeMirror.fromTextArea(document.getElementById(id), {
+        lineNumbers: true,
+        mode: { name: "javascript", json: true },
+        theme: "material"
+        // indentUnit: 4,
+        // indentWithTabs: true
+      });
+}
+
+
+/**
+ * Random number
+ * @returns number
+ */
+function getRandId() {
+    return Math.floor(Math.random() * (100000000 - 100000 + 1) + 100000) // Generate ID for modal
 }

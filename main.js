@@ -7,7 +7,6 @@ $(document).ready(function(){
     ;
     onCheckExcludeSave();
     // checkLiveMode()
-    loadData();
 
     confirmSaveDefault();
     buildProjectDrop();

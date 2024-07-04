@@ -39,7 +39,7 @@
     color: var(--light-gray) !important;
 }
 
-.theme-dark input, .theme-dark textarea, .theme-dark pre {
+.theme-dark input, .theme-dark textarea {
     background: var(--light-light-black) !important;
     color: var(--white) !important;
     outline: none !important;

@@ -1,4 +1,5 @@
 $(document).on('click', '.my_navbar .item:eq(2)', setJexEditor)
+$(document).on('change', '#project_drop input', onChangeProject)
 
 $('#new_project_button').click(function () {
     $('#new_project_modal').modal('show');
@@ -19,7 +20,7 @@ $('#loard_other_replace')
 ;
 
 $('#replace_management_button').click(function () {
-    if(isNull(activeProjectId)){
+    if(!activeProjectId){
         onMessage('Please select project.', 'error')
         return;
     }
@@ -70,7 +71,7 @@ $('#btn_import_data').click(function () {
 })
 
 $('#btn_save_import_data').click(function () {
-    if(isNull($('#import_data_input').val())){
+    if(!$('#import_data_input').val()){
         alert('Please enter import data.')
         return;
     }
@@ -86,6 +87,21 @@ $('#btn_save_import_data').click(function () {
     onMessage('Import data successfully.')
     $('#import_data_input').val('');
 })
+
+$('#btn_save_ex').click(function () {
+    if(!activeProjectId){
+        onMessage('Please select project.', 'error')
+        return;
+    }
+    projects.forEach((v, i)=>{
+        if(v.id === activeProjectId){
+            v.exclude = $('#exclude_txt').val();
+        }
+    })
+    saveProjectToLocal(projects);
+    onMessage('Save exclude done.')
+})
+
 
 $(document).on('change', '.m_check',function() {
     onReplaceJex()

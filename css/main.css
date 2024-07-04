@@ -202,7 +202,10 @@
     padding-top: 60px;
 }
 
-
+.m_p_0 {
+    margin: 0px ; 
+    padding: 0px ;
+}
 
 
 
@@ -223,15 +226,7 @@
     border-radius: 4px;
     z-index: 1;
 }
-pre {
-    padding: 5px; margin: 5px;
-    white-space: pre-wrap;       /* css-3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
-    border-radius: 5px;
-}
+
 .string { color: rgb(107, 107, 107); }
 .number { color: rgb(32, 192, 17); }
 .boolean { color: blue; }
@@ -279,42 +274,14 @@ textarea {
     width: 5px !important;
     height: 5px !important;
 }
-.box {
-    border-radius: 5px;
-    /*border: 1px solid rgba(212, 212, 212, 0);*/
-    background: #f5f5f5;
-    padding: 10px;
-    margin: 0 5px;
-    cursor: pointer;
-    position: relative;
-    height: 65px;
-}
-.btn_box_close .item i {
-    margin-right: 5px !important;
-    margin-left: 3px !important;
-}
-.btn_box small {
-    color: #797979 !important;
-}
 
-.box p{
-    margin: 0;
-    min-width: 115px;
-    font-family: 'Inter','Nokora', sans-serif;
-}
 
-.btn_box_close{
-    position: absolute !important;
-    right: 0px;
-    top: 4px;
-}
+
 #save_data_rec .box:first-child{
     margin-left: 0px;
 }
 
-.btn_box_close .menu .item, .btn_box_close .menu i{
-    font-size: 11px !important;
-}
+
 #m_check{
     color: #ccc !important;
 }
@@ -389,4 +356,14 @@ body {
 
 .my_navbar .item {
     font-weight: bold !important;
+}
+.text-center {
+    text-align: center;
+}
+
+.no-data {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    text-align: center;
+    color: #b4b4b4;
 }

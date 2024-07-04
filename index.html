@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="library/semantic/semantic.min.css">
     <link rel="stylesheet" href="library/jquery-ui.css">
     <link rel="stylesheet" href="library/codemirror/codemirror.css">
+    <link rel="stylesheet" href="library/codemirror/material-theme.css">
+    <link rel="stylesheet" href="library/codemirror/neat-theme.css">
     <link rel="stylesheet" href="components/jex_convert/jex.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="library/toastr.css">
@@ -42,7 +44,6 @@
 
     <script src="library/moment.js"></script>
     <script src="library/semantic/semantic.min.js"></script>
-    <script src="library/tidy.js"></script>
     <script src="library/toastr.js"></script>
     <script src="library/codemirror/codemirror.js"></script>
     <script src="library/codemirror/xml.js"></script>
@@ -140,8 +141,8 @@
 
 
                                     <div class="ui icon buttons tiny right floated">
-                                        <button data-tooltip="Format" data-inverted="" class="ui icon button btn_color_light tiny btn_format"><i class="magic icon"></i></button>
-                                        <button data-tooltip="View as Table" data-inverted="" class="ui button icon btn_color_light tiny btn_2table">
+                                        <button data-tooltip="Format" data-inverted="" class="ui icon button btn_color_light tiny btn_format_url_result_box"><i class="magic icon"></i></button>
+                                        <button data-tooltip="View as Table" data-inverted="" class="ui button icon btn_color_light tiny btn_2table_url_result_box">
                                             <i class="table icon"></i>
                                         </button>
                                         <button data-tooltip="Save in local" data-inverted="" data-position="top right" class="ui button btn_save btn_color_light"><i class="save icon"></i></button>
@@ -155,7 +156,8 @@
                                         <div class="field">
                                             <!--                                <label>Result</label>-->
                                             <!-- <textarea rows="26" id="url_result"></textarea> -->
-                                            <pre id="url_result" contenteditable="true" spellcheck="false" style="margin: 0"></pre>
+                                            <!-- <pre id="url_result" contenteditable="true" spellcheck="false" style="margin: 0"></pre> -->
+                                             <textarea name="" id="url_result"></textarea>
                                         </div>
                                     </div>
                                     <div id="table-container" style="display: none; overflow-x: auto"></div>
@@ -188,10 +190,11 @@
                             </div>
 
                         </div>
-                        <div class="mt_30">
+                        <div class="mt_20">
                             <div style="display: grid; grid-template-columns: auto 30px;">
                                 <div>
-                                    <div class="text_fixed_color">Result</div>
+                                    <h4 id="box_fixed_active_text" class="m_p_0" active-json-id="">Result</h4>
+                                    <small class="text_fixed_color" id="box_fixed_active_date">Click on menu above to show</small>
                                 </div>
 
                                 <div>
@@ -202,7 +205,7 @@
                                             <i class="table icon"></i>
                                         </button>
                                         <button data-tooltip="Copy" data-inverted="" class="ui icon button tiny btn_color_light btn_copy2"><i class="copy icon"></i></button>
-                                        <button data-tooltip="one click: show local; double click: open new window" data-inverted=""
+                                        <button data-tooltip="Open new window" data-inverted=""
                                         data-position="top right" class="ui button icon tiny btn_color_light" id="btn_make_drag_box"><i
                                             class="external square alternate icon"></i></button>
                                     </div>
@@ -211,7 +214,8 @@
                             </div>
 
                             <div class="save1" style="margin-top: 10px">
-                                <pre contenteditable="true" style="margin: 0" spellcheck="false"></pre>
+                                <!-- <pre contenteditable="true" style="margin: 0" spellcheck="false"></pre> -->
+                                 <textarea name="" id="right_editor_box"></textarea>
                             </div>
                         </div>
                         <div id="table-container2" style="display: none; overflow-x: auto"></div>
@@ -242,7 +246,7 @@
                                         style="background: #dae6ff; border-radius: 10px; padding: 0 5px; cursor: pointer; color: #797979; margin-left: 5px">Import
                                         data</i>
                                 </label>
-                                <div class="ui selection dropdown" id="project_drop" onchange="onChangeProject()">
+                                <div class="ui selection dropdown" id="project_drop">
                                     <input type="hidden" name="gender">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Please create new project</div>
@@ -612,7 +616,9 @@
 
     <!-- components -->
     <script src="components/nav_bar/nav_bar.js"></script>
+    <script src="components/decode/util.js"></script>
     <script src="components/decode/decode.js"></script>
+    <script src="components/decode/localDataManage.js"></script>    
     <script src="components/jex_convert/jex223.js"></script>
     <script src="components/jex_convert/jex223event.js"></script>
     <script src="components/calendar/calendar.js"></script>
