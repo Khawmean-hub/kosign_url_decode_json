@@ -219,24 +219,32 @@ const builder = {
  * @param {CodeMirror} editor 
  */
 function onToggleTableAndJson($btn, $editorBox, $table, editor){
-
-    const iconTable = `<i class="table icon"></i>`
-    const iconList  = `<i class="list ul icon"></i>`
-
-    if($btn.html() === iconList){
-        $btn.attr('data-tooltip', 'View as table')
-        $btn.empty().append(iconTable)
-        $table.hide();
-        $editorBox.show();
+    if(editor.getValue()){
+        if(isJson(editor.getValue())){
+            const iconTable = `<i class="table icon"></i>`
+            const iconList  = `<i class="list ul icon"></i>`
+        
+            if($btn.html() === iconList){
+                $btn.attr('data-tooltip', 'View as table')
+                $btn.empty().append(iconTable)
+                $table.hide();
+                $editorBox.show();
+            }else{
+                //build table
+                onAppendJsonToTable($table, editor)
+        
+                $btn.attr('data-tooltip', 'View as json')
+                $btn.empty().append(iconList)
+                $table.show();
+                $editorBox.hide();
+            }
+        }else{
+            toastr.error(MSG.NOT_JSON2)
+        }
     }else{
-        //build table
-        onAppendJsonToTable($table, editor)
-
-        $btn.attr('data-tooltip', 'View as json')
-        $btn.empty().append(iconList)
-        $table.show();
-        $editorBox.hide();
+        toastr.error(MSG.NO_DATA)
     }
+    
 }
 
 /**

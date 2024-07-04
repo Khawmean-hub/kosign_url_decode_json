@@ -108,5 +108,5 @@ $(document).on('change', '.m_check',function() {
 })
 
 $(document).ready(function(){
-    
+    buildProjectDrop();
 })

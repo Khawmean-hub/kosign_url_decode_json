@@ -23,6 +23,7 @@ const MSG = {
     NO_TEXT_TO_CONVERT: 'No text to convert.',
     NOT_A_TEXT: 'Error! Only text can convert to json',
     NOT_JSON: 'Error! Only JSON can be saved.',
+    NOT_JSON2: 'Error! Only JSON can be used.',
     NO_TEXT_TO_FORMAT: 'No text to format.',
     NOT_AN_EDITOR: 'Not an editor.',
     NO_DATA: 'No data.',
