@@ -1,7 +1,7 @@
 //============================================ Events ============================================
 $(document).on('click', '.btn_theme_color', onChangeThemeColor)
 $(document).on('click', '.my_navbar .item:eq(1)', onClickHtml2Js)
-$(document).on('click', '.my_navbar .item:eq(5)', onClickTextCompare)
+$(document).on('click', '.my_navbar .item:eq(4)', onClickTextCompare)
 
 //============================================ functions ============================================
 /**
