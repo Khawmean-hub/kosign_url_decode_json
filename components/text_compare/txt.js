@@ -12,6 +12,14 @@ $(document).on('change', '#langauge_com', onChangeLanguage)
 $(document).on('click', '#btn_copy_2_right', onCopytToRight)
 $(document).on('click', '#btn_copy_2_left', onCopytToLeft)
 $(document).on('click', '#btn_swap', onSwap)
+    // Example of undo and redo
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.key === 'z') {
+        editor.editor().undo();
+    } else if (e.ctrlKey && e.key === 'y') {
+        editor.editor().redo();
+    }
+});
 
 
 //============================= Functions ============================
