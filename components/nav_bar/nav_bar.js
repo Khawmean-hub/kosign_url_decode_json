@@ -1,13 +1,13 @@
 //============================================ Events ============================================
 $(document).on('click', '.btn_theme_color', onChangeThemeColor)
 $(document).on('click', '.my_navbar .item:eq(1)', onClickHtml2Js)
-$(document).on('click', '.my_navbar .item:eq()', onClickTextCompare)
+$(document).on('click', '.my_navbar .item:eq(5)', onClickTextCompare)
 
 //============================================ functions ============================================
 /**
  * On change theme color
  */
-function onChangeThemeColor(){
+function onChangeThemeColor() {
     const themeText = $(this).attr('theme')
     const theme = 'theme-light ' + themeText;
     $('body').removeAttr('class').addClass(theme)
@@ -18,25 +18,25 @@ function onChangeThemeColor(){
 /**
  * On Load theme
  */
-function onLoadTheme(){
+function onLoadTheme() {
     const savedTheme = getThemeName();
-    if(savedTheme){
+    if (savedTheme) {
         $('body').removeAttr('class').addClass(savedTheme)
-        setTimeout(function(){
+        setTimeout(function () {
             $("iframe").contents().find('body').addClass(savedTheme)
-        }, 1000)
+        }, 500)
     }
 }
 
 
 
 
-function onClickHtml2Js(){
+function onClickHtml2Js() {
     var iframe = document.getElementById('jshtml');
     iframe.contentWindow.makeEditor();
 }
 
-function onClickTextCompare(){
+function onClickTextCompare() {
     var iframe = document.getElementById('text_compare');
     iframe.contentWindow.makeEditor();
 }
