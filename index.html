@@ -66,6 +66,7 @@
                 <div class="item" data-tab="second">Jex Convert</div>
                 <div class="item" data-tab="calendar_excel">Calendar excel</div>
                 <div class="item" data-tab="subtitle_maker">Subtitle maker</div>
+                <div class="item" data-tab="text_compare">Text Compare</div>
             </div>
             <div class="ui dropdown item">
                 Other
@@ -107,7 +108,7 @@
         </div>
 
         <div class="ui bottom attached active tab ">
-            <div class="ui bottom attached active tab" data-tab="first">
+            <div class="ui bottom attached tab active" data-tab="first">
                 <div class="layout" id="layout">
                     <div class="floated_bottom">
                         <button class="ui circular icon button huge btn_color btn_show_right"><i class="history icon"></i></button>
@@ -420,81 +421,8 @@
             <!-- HTML 2 JS -->
             <!-- ====================================================== -->
             <div class="ui bottom attached tab" data-tab="jshtml">
-                <div class="ui container pt_60">
-                    <form class="ui form small">
-                        <div class="field">
-                            <label>Variable Name</label>
-                            <div class="ui left labeled input">
-                                <div class="ui dropdown label" id="vari_type">
-                                    <div class="text" id="type_vari">var</div>
-                                    <i class="dropdown icon"></i>
-                                    <div class="menu">
-                                        <div class="item">var</div>
-                                        <div class="item">let</div>
-                                        <div class="item">const</div>
-                                    </div>
-                                </div>
-                                <input type="text" placeholder="variable name" id="vari_nm">
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>past HTML here</label>
-                            <textarea rows="3" id="raw_html"></textarea>
-                        </div>
-                        <div class="field">
-                            <label>Result
-                                <div class="ui icon top left pointing dropdown">
-                                    <i class="cog icon"></i>
-                                    <div class="menu" id="setting_box">
-                                        <div class="header">Settings</div>
-                                        <div class="item">
-                                            <div class="ui checkbox">
-                                                <input type="checkbox" id="is_show_vari">
-                                                <label>Show Variable Declaration</label>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="ui checkbox">
-                                                <input type="checkbox" id="is_double_q">
-                                                <label>Used double quotes "</label>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="ui checkbox">
-                                                <input type="checkbox" id="is_double_d">
-                                                <label>Used `</label>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="ui checkbox">
-                                                <input type="checkbox" id="is_remove_whitespace">
-                                                <label>Remove whiteSpace</label>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="ui checkbox">
-                                                <input type="checkbox" id="is_remove_line">
-                                                <label>Remove empty line</label>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="ui checkbox">
-                                                <input type="checkbox" id="is_remove_cmd">
-                                                <label>Remove comment</label>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="ui checkbox">
-                                                <input type="checkbox" id="is_format">
-                                                <label>Format HTML</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </label>
-                            <textarea rows="25" id="result_html"></textarea>
-                        </div>
-                    </form>
+                <div class="pt_40">
+                    <iframe src="components/html_to_js/html_2_js.html" id="jshtml" frameborder="0"></iframe>
                 </div>
             </div>
 
@@ -597,6 +525,14 @@
                             <li>Support player: -Samsung Music, -VC Player</li>
                         </ul>
                     </div>
+                </div>
+            </div>
+
+            <!-- Text Compare -->
+            <!-- ====================================================== -->
+            <div class="ui bottom attached tab" data-tab="text_compare">
+                <div class="pt_40">
+                    <iframe src="components/text_compare/txt.html" id="text_compare" frameborder="0"></iframe>
                 </div>
             </div>
         </div>

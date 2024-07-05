@@ -1,0 +1,81 @@
+#layout {
+    display: flex;
+}
+#layout>div{
+    overflow-x: hidden;
+}
+#left_part {
+    min-width: 295px;
+    width: 50%;
+}
+#left_part .body {
+    border-radius: 10px;
+    width: calc(100% - 15px);
+    padding: 20px;
+    background: #ffffff;
+}
+#left_part .ui-resizable-e:after {
+    position: absolute;
+    content: "||";
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 30px 0;
+    justify-content: center;
+    align-items: center;
+    color: var(--gray);
+}
+#left_part .ui-resizable-e {
+    cursor: e-resize;
+    width: 15px;
+    right: 0;
+    top: 5%;
+    height: 90%;
+    color: white;
+    border-radius: 10px;
+}
+
+
+#right_part {
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 295px;
+    background: #ffffff;
+    width: 50%;
+}
+
+body {
+    padding: 17px 17px 5px 17px;
+}
+
+.display_flex{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+#layout #left_part .CodeMirror{
+    height: calc(100vh - 200px)
+}
+#layout #right_part .CodeMirror{
+    height: calc(100vh - 90px)
+}
+#layout .CodeMirror.cm-s-material {
+    border-radius: 5px;
+    padding-top: 10px;
+    border: 1px solid rgba(34,36,38,.15);
+}
+
+.theme-light.theme-blue #layout .CodeMirror-focused {
+    border: 1px solid var(--light-blue) !important;
+}
+.theme-light.theme-teal #layout .CodeMirror-focused {
+    border: 1px solid var(--light-teal) !important;
+}
+.theme-light.theme-green #layout .CodeMirror-focused {
+    border: 1px solid var(--light-green) !important;
+}
+.theme-light.theme-red #layout .CodeMirror-focused {
+    border: 1px solid var(--light-red) !important;
+}

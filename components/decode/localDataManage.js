@@ -228,6 +228,7 @@ function onRename(parent) {
     if(newName){
         localData.rename(id, newName);
         $input.parent().removeClass('error')
+        buildJsonMenuList()
     }else{
         $input.parent().addClass('error')
         toastr.error(MSG.NO_NAME)

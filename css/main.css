@@ -367,3 +367,8 @@ body {
     text-align: center;
     color: #b4b4b4;
 }
+
+iframe {
+    width: 100%;
+    height: calc(100vh - 45px);
+}

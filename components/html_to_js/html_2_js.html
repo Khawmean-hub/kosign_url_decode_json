@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../library/semantic/semantic.min.css">
+    <link rel="stylesheet" href="../../library/jquery-ui.css">
+    <link rel="stylesheet" href="../../library/codemirror/codemirror.css">
+    <link rel="stylesheet" href="../../library/codemirror/material-theme.css">
+    <link rel="stylesheet" href="../../library/codemirror/neat-theme.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../library/toastr.css">
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme-color-blue.css">
+    <link rel="stylesheet" href="../../css/theme-color-teal.css">
+    <link rel="stylesheet" href="../../css/theme-color-green.css">
+    <link rel="stylesheet" href="../../css/theme-color-red.css">
+    <link rel="stylesheet" href="html_2_js.css">
+
+    <script src="../../library/jquery.js"></script>
+    <script src="../../library/jquery-ui.js"></script>
+    <script src="../../library/moment.js"></script>
+    <script src="../../library/semantic/semantic.min.js"></script>
+    <script src="../../library/toastr.js"></script>
+    <script src="../../library/codemirror/codemirror.js"></script>
+    <script src="../../library/codemirror/xml.js"></script>
+    <script src="../../library/codemirror/codemirrorjs.js"></script>
+    <script src="../../library/codemirror/codemirror-mod.js"></script>
+    <script src="../../library/codemirror/htmlmix.js"></script>
+    <script src="../../util/util.js"></script>
+</head>
+<body>
+    <div id="layout">
+        <div id="left_part">
+            <div class="body">
+                <h3>HTML to JavaScript</h3>
+                <form class="ui form small">
+                    <div class="field">
+                        <label class="text_fixed_color">Variable Name</label>
+                        <div class="ui left labeled input">
+                            <div class="ui dropdown label btn_color" id="vari_type">
+                                <div class="text" id="type_vari">var</div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <div class="item">var</div>
+                                    <div class="item">let</div>
+                                </div>
+                            </div>
+                            <input type="text" placeholder="variable name" id="vari_nm">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="text_fixed_color">Past HTML here</label>
+                        <textarea rows="3" id="raw_html"></textarea>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+        <div id="right_part">
+            <div class="ui form small">
+                <div class="field">
+                    <label>Result
+                        <div class="ui icon top left pointing dropdown">
+                            <i class="cog icon"></i>
+                            <div class="menu" id="setting_box">
+                                <div class="header">Settings</div>
+                                <div class="item">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" id="is_show_vari">
+                                        <label>Show Variable Declaration</label>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" id="is_double_q">
+                                        <label>Used double quotes "</label>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" id="is_double_d">
+                                        <label>Used `</label>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" id="is_remove_whitespace">
+                                        <label>Remove whiteSpace</label>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" id="is_remove_line">
+                                        <label>Remove empty line</label>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" id="is_remove_cmd">
+                                        <label>Remove comment</label>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </label>
+                    <textarea rows="25" id="result_html"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="html_to_js.js"></script>
+</body>
+</html>

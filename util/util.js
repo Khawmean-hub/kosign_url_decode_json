@@ -93,6 +93,46 @@ function applyEditorJs(id, isReadOnly = false, line = true){
       });
 }
 
+function applyEditorTextCompare(id){
+    return CodeMirror.MergeView(document.getElementById(id), {
+        value: '',
+        origLeft: '',
+        lineNumbers: true,
+        mode: "text",
+        theme: "material",
+        highlightDifferences: true,
+        connect: "align",
+        collapseIdentical: false,
+        allowEditingOriginals: true ,// Allow editing on both sides,
+        extraKeys: {
+            "Ctrl-F": "findPersistent", // Enable Ctrl-F for search
+            "Ctrl-G": "findNext",
+            "Shift-Ctrl-F": "replace",
+            "Shift-Ctrl-R": "replaceAll"
+        }
+    });
+}
+
+var myModeSpec = {
+    name: "htmlmixed",
+    tags: {
+      style: [["type", /^text\/(x-)?scss$/, "text/x-scss"],
+              [null, null, "css"]],
+      custom: [[null, null, "customMode"]]
+    }
+  }
+function applyEditorHtmlMix(id, isReadOnly = false, line = true){
+    return CodeMirror.fromTextArea(document.getElementById(id), {
+        lineNumbers: true,
+        mode: myModeSpec,
+        theme: "material",
+        matchBrackets: true,
+        autoCloseTags: true,
+        // indentUnit: 4,
+        // indentWithTabs: true
+      });
+}
+
 
 /**
  * Random number
