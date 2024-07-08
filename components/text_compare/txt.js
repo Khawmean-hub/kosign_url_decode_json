@@ -1,6 +1,5 @@
 let editor;
 
-
 //============================== Events =============================
 $(document).ready(function(){
     toastrSetting()
@@ -40,7 +39,10 @@ function makeEditor(){
 
 function onChangeLanguage(){
     if(editor){
-        const language = $(this).val()
+        let language = $(this).val()
+        if(language === 'javascript'){
+            language = { name: "javascript", json: true }
+        }
         console.log('language change', language)
         editor.left.orig.setOption("mode", language)
         editor.edit.setOption("mode", language)
@@ -81,4 +83,14 @@ function showDiffInfo(){
         $('#diff_red').html('Red : ' + red)
         $('#diff_blue').html('Green : ' + blue)
     }, 500)
+}
+
+function onSetCompare(str, str2){
+    if(editor){
+        editor.left.orig.setValue(str)
+        editor.edit.setValue(str2)
+        if(isJson(str)){
+            $('#langauge_com').dropdown('set selected', 'javascript')
+        }
+    }
 }

@@ -57,6 +57,7 @@ $(document).on('click', '.btn_format2', onFormatRightBox)
 $(document).on('click', '.btn_2table2', onToogleRightBox)
 $(document).on('click', '.btn_copy2', onCopyRightBoxJson)
 $(document).on('click', '#btn_make_drag_box', onMakeNewDrage)
+$(document).on('click', '#btn_compare_json', onCompare2Editor)
 
 
 //======================================= Funtions =======================================
@@ -307,8 +308,29 @@ function onMakeNewDrage() {
     }
 }
 
+/**
+ * onCompare 2 editor
+ */
+function onCompare2Editor(){
+    try{
+        $('[data-tab="text_compare"]').eq(0).click()
+        var iframe = document.getElementById('text_compare');
+        iframe.contentWindow.onSetCompare(decodeResultEditor.getValue(), saveBoxResult.getValue())
+    }catch(e){
+        console.log(e)
+    }
+}
 
-
+/**
+ * on input change
+ */
+function onDisableBtnComparae(){
+    if(decodeResultEditor.getValue() && saveBoxResult.getValue()){
+        $('#btn_compare_json').removeClass('disabled')
+    }else{
+        $('#btn_compare_json').addClass('disabled')
+    }
+}
 
 /**
  * On Save json to local storage

@@ -1,6 +1,13 @@
 function makeDecodeEditor(){
     decodeResultEditor  = applyEditorJs('url_result');
     saveBoxResult = applyEditorJs('right_editor_box');
+    
+    decodeResultEditor.on('change', function() {
+        onDisableBtnComparae()
+    });
+    saveBoxResult.on('change', function() {
+        onDisableBtnComparae()
+    });
 }
 
 function jsonFormat(str){

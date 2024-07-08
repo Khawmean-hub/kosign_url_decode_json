@@ -485,7 +485,7 @@ function onReplaceJex(){
     try{
         rightEditor.setValue(conVertJexInput(leftEditor.getValue(), include, exclude, true))
     }catch(e){
-        console.error(e);
+        // console.error(e);
     }
 }
 
