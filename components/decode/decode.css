@@ -176,3 +176,15 @@
     right: 18px;
     top: 2px
 }
+
+.dupdatapop {
+    font-size: 10px;
+    position: absolute;
+    right: 0px;
+    bottom: -2px;
+    cursor: pointer;
+}
+
+.dupdatapop i {
+    color: #ff7676 !important;
+}

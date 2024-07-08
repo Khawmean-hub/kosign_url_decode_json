@@ -296,18 +296,45 @@ function getNewName(list) {
     let maxSave = -Infinity; // Initialize with the smallest possible number
     
     list.forEach(item => {
-        const match = item.match(/save (\d+)/);
+        const match = item.match(/Save (\d+)/);
         if (match) {
             const num = parseInt(match[1], 10);
             if (num > maxSave) {
                 maxSave = num;
             }
-        } else if (item === "save") {
+        } else if (item === "Save") {
             if (0 > maxSave) {
                 maxSave = 0;
             }
         }
     });
 
-    return maxSave === -Infinity ? 'Save 1' : 'Save ' + maxSave++; // Return 1 if no "save" found
+    if (maxSave === -Infinity) {
+        return 1; // Return null if no "save" found
+    }
+
+    return maxSave + 1; // Return the next number
+}
+
+
+
+function getWithCheckkDuplicateData(list){
+    list.map(v=>{
+        const dupData = getDuplicateId(v, list);
+        if(dupData){
+            v.dupId = dupData.id
+            v.dupName = dupData.name
+        };
+        return v;
+    })
+    return list;
+}
+
+
+function getDuplicateId(v, list){
+    console.log('...', v)
+    const dupObj = list.find(a=> a.id !== v.id && JSON.stringify(a.data) === JSON.stringify(v.data));
+    console.log(dupObj)
+    if(dupObj) return dupObj;
+    return null;
 }

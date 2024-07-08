@@ -38,7 +38,10 @@ const jsonMenuSetting = `<div class="ui icon left pointing dropdown mini icon_mi
                             </div>
                         </div>`
 const bookmarkOut = `<i class="star outline icon small btn_book_mark_me"></i>`;
-const bookmarkActive = `<i class="star icon small btn_book_mark_me"></i>`
+const bookmarkActive = `<i class="star icon small btn_book_mark_me"></i>`;
+const duplicateDat = (name, isLast) => {
+    return `<div class="dupdatapop" ${isLast ? 'data-position="top right"' : ''} data-tooltip="Duplicate with ${name}" data-inverted=""><i class="circle icon"></i></div>`
+}
 //======================================= Events =======================================
 $(document).on('click', '.btn_clear_data', onClearAllJsonData)
 $(document).on('click', '.btn_delete', onDeleteJsonMenu)
@@ -59,7 +62,7 @@ $(document).on('click', '#btn_make_drag_box', onMakeNewDrage)
 //======================================= Funtions =======================================
 function buildJsonMenuList() {
     // Get local data
-    const data = localData.findAll();
+    const data = getWithCheckkDuplicateData(localData.findAll());
 
     //sort by date
     data.sort(function (a, b) {
@@ -77,6 +80,7 @@ function buildJsonMenuList() {
         html += `
             <div class="box ${activeJsonId === v['id'] ? 'active_select' : ''}" id="${v['id']}" style="background: ${v['color'] ? v['color'] : jsonMenuDefaultColor}">
                 <div class="book_mark_contain">${v['isFavorite'] ? bookmarkActive : bookmarkOut}</div>
+                ${v['dupName'] ? duplicateDat(v['dupName'], i===data.length-1) : ''}
                 ${jsonMenuSetting}
                 <div class="btn_box" data-val="${encodeURIComponent(JSON.stringify(v))}">
                     <p>${v.name}</p>
@@ -248,9 +252,8 @@ function onDeleteJsonMenu(){
         description: MSG.CONFIRM_DELETE_JSON,
         onConfirm: function(){
             localData.deleteById(id)
-            $box.remove()
+            buildJsonMenuList()
             toastr.success(MSG.DELETE_SUCCESS)
-            if(localData.findAll().length === 0){buildJsonMenuList()}
         }
     })
 }
@@ -405,7 +408,7 @@ function addNewJsonToLocal(text){
 
     if(oldData){
         const list = JSON.parse(oldData).flatMap(v=> v.name)
-        newSaveName =  getNewName(list)
+        newSaveName =  'Save '+ getNewName(list)
     }
 
     //new object
