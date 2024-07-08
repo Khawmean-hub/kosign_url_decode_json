@@ -311,8 +311,9 @@ function onMakeNewDrage() {
  * On Save json to local storage
  */
 function saveJsonOnLocal() {
-    const text = decodeResultEditor.getValue();
+    let text = decodeResultEditor.getValue();
     if(text){
+        text = getObjectStr(text)
         if(isJson(text)){
             localData.save(text)
             buildJsonMenuList()

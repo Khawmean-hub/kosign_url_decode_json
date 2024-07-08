@@ -4,12 +4,18 @@ function makeDecodeEditor(){
 }
 
 function jsonFormat(str){
+    str = getObjectStr(str);
     if(isJson(str)){
         return JSON.stringify(JSON.parse(str), null, 4)
     }
     return '';
 }
 
+function getObjectStr(str){
+    str = str.replace(/'/g, '"');
+    str = str.replace(/(\w+):/g, '"$1":');
+    return str;
+}
 
 function findKey(jsonString) {
     const regex = /"([^"]+)":/g;
@@ -220,7 +226,8 @@ const builder = {
  */
 function onToggleTableAndJson($btn, $editorBox, $table, editor){
     if(editor.getValue()){
-        if(isJson(editor.getValue())){
+        const json = getObjectStr(editor.getValue())
+        if(isJson(json)){
             const iconTable = `<i class="table icon"></i>`
             const iconList  = `<i class="list ul icon"></i>`
         
@@ -255,7 +262,8 @@ function onToggleTableAndJson($btn, $editorBox, $table, editor){
 function onAppendJsonToTable($to, editor){
     if(editor.getValue()){
         try{
-            $to.empty().append(generateJson2Table(JSON.parse(editor.getValue())));
+            const json = getObjectStr(editor.getValue())
+            $to.empty().append(generateJson2Table(JSON.parse(json)));
         }catch(e){
             toastr.error(MSG.ERROR_JSON_PARSE)
         }
