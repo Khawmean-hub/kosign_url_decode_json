@@ -1,5 +1,3 @@
-const moment = require("../library/moment");
-
 function toastrSetting(){
     toastr.options = {
         "closeButton": false,
