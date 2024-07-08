@@ -37,13 +37,15 @@ function makeEditor(){
     }
 }
 
+/**
+ * on change language
+ */
 function onChangeLanguage(){
     if(editor){
         let language = $(this).val()
         if(language === 'javascript'){
             language = { name: "javascript", json: true }
         }
-        console.log('language change', language)
         editor.left.orig.setOption("mode", language)
         editor.edit.setOption("mode", language)
     }

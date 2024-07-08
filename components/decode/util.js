@@ -337,11 +337,14 @@ function getWithCheckkDuplicateData(list){
     return list;
 }
 
-
+/**
+ * get duplicate data
+ * @param {Object} v 
+ * @param {Array} list 
+ * @returns 
+ */
 function getDuplicateId(v, list){
-    console.log('...', v)
     const dupObj = list.find(a=> a.id !== v.id && JSON.stringify(a.data) === JSON.stringify(v.data));
-    console.log(dupObj)
     if(dupObj) return dupObj;
     return null;
 }

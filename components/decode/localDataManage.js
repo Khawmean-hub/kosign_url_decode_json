@@ -317,7 +317,7 @@ function onCompare2Editor(){
         var iframe = document.getElementById('text_compare');
         iframe.contentWindow.onSetCompare(decodeResultEditor.getValue(), saveBoxResult.getValue())
     }catch(e){
-        console.log(e)
+        
     }
 }
 
