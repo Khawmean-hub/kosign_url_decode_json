@@ -21,10 +21,10 @@ function onChangeThemeColor() {
 function onLoadTheme() {
     const savedTheme = getThemeName();
     if (savedTheme) {
-        $('body').removeAttr('class').addClass(savedTheme)
         setTimeout(function () {
+            $('body').removeAttr('class').addClass(savedTheme)
             $("iframe").contents().find('body').addClass(savedTheme)
-        }, 500)
+        }, 1000)
     }
 }
 
