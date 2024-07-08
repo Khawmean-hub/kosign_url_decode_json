@@ -8,6 +8,8 @@ const colors = [
     '#3F0071'
 ]
 
+const dateFormat = 'YYYY-MM-DD | hh:mm:ss a'
+
 const MSG = {
     COPY: 'Copy text to the clipboard.',
     ERROR_INVALID_JSON: 'Invalid JSON string.',

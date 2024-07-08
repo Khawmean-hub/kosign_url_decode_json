@@ -89,7 +89,7 @@ function buildJsonMenuList() {
                         <input type="text" placeholder="Rename" value="${v.name}">
                     </div>
 
-                    <div style="margin-top: 3px;"><small>${jsonMenuFormatDate(v.date)}</small></div></div>
+                    <div style="margin-top: 3px;"><small>${v.date}</small></div></div>
                     <div class="mini_menu" style="display: none">
                         <a class="item btn_done">
                             <i class="check circle outline icon"></i>
@@ -125,7 +125,7 @@ function onClickJsonMenu(){
         $(this).parent().addClass('active_select')
     
         $('#box_fixed_active_text').html(json.name).attr('active-json-id', json.id)
-        $('#box_fixed_active_date').html(jsonMenuFormatDate(json.date))
+        $('#box_fixed_active_date').html(json.date)
     }
 }
 
@@ -371,12 +371,6 @@ function onClearAllJsonData(){
     }else{
         toastr.error(MSG.NO_JSON_DATA_TO_CLEAR)
     }
-}
-
-
-
-function jsonMenuFormatDate(str){
-    return moment(str.replace('|', '')).format('YYYY-MM-DD | hh:mm a')
 }
 
 
