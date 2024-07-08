@@ -309,5 +309,5 @@ function getNewName(list) {
         }
     });
 
-    return maxSave === -Infinity ? 'Save 1' : 'Save ' + maxSave; // Return 1 if no "save" found
+    return maxSave === -Infinity ? 'Save 1' : 'Save ' + maxSave++; // Return 1 if no "save" found
 }
