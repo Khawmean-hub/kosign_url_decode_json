@@ -1,3 +1,5 @@
+const moment = require("../library/moment");
+
 function toastrSetting(){
     toastr.options = {
         "closeButton": false,
@@ -39,6 +41,10 @@ function copyToClipboard(str){
     }else {
         toastr.error(MSG.NO_DATA)
     }
+}
+
+function getDateFormat(str){
+    return moment(str, dateFormat).format(dateFormat2)
 }
 
 function isJson(str) {

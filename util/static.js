@@ -8,7 +8,8 @@ const colors = [
     '#3F0071'
 ]
 
-const dateFormat = 'YYYY-MM-DD | hh:mm a'
+const dateFormat = 'YYYY-MM-DD | hh:mm:ss a'
+const dateFormat2 = 'YYYY-MM-DD | hh:mm a'
 
 const MSG = {
     COPY: 'Copy text to the clipboard.',

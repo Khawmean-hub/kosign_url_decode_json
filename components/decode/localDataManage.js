@@ -89,7 +89,7 @@ function buildJsonMenuList() {
                         <input type="text" placeholder="Rename" value="${v.name}">
                     </div>
 
-                    <div style="margin-top: 3px;"><small>${v.date}</small></div></div>
+                    <div style="margin-top: 3px;"><small>${getDateFormat(v.date)}</small></div></div>
                     <div class="mini_menu" style="display: none">
                         <a class="item btn_done">
                             <i class="check circle outline icon"></i>
