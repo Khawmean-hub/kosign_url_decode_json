@@ -41,7 +41,7 @@
 
 .theme-light.theme-red .btn_color_light {
     background-color: var(--light-light-red);
-    color: var(--light-red);
+    color: var(--red);
 }
 
 .theme-light.theme-red .btn_color_light:hover {

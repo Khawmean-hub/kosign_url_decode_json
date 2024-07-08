@@ -42,7 +42,7 @@
 
 .theme-light.theme-blue .btn_color_light {
     background-color: var(--light-light-blue);
-    color: var(--light-blue);
+    color: var(--blue);
 }
 
 .theme-light.theme-blue .btn_color_light:hover {

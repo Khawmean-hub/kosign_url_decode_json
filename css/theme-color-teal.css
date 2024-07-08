@@ -41,7 +41,7 @@
 
 .theme-light.theme-teal .btn_color_light {
     background-color: var(--light-light-teal);
-    color: var(--light-teal);
+    color: var(--teal);
 }
 
 .theme-light.theme-teal .btn_color_light:hover {
