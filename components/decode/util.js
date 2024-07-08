@@ -59,7 +59,7 @@ function onFormatOn(editor){
  * @returns 
  */
 function sortByDate(a, b) {
-    return new moment(b.date.replace('|', '')) - new moment(a.date.replace('|', ''));
+    return moment(b.date.replace('|', '')) - moment(a.date.replace('|', ''));
 }
 
 function isSnakeCase(str) {
