@@ -288,3 +288,26 @@ function generateJson2Table(json) {
     html += tableString.tableEnd();
     return html;
 }
+
+/**
+ * Find max number in string
+ */
+function getNewName(list) {
+    let maxSave = -Infinity; // Initialize with the smallest possible number
+    
+    list.forEach(item => {
+        const match = item.match(/save (\d+)/);
+        if (match) {
+            const num = parseInt(match[1], 10);
+            if (num > maxSave) {
+                maxSave = num;
+            }
+        } else if (item === "save") {
+            if (0 > maxSave) {
+                maxSave = 0;
+            }
+        }
+    });
+
+    return maxSave === -Infinity ? 'Save 1' : 'Save ' + maxSave; // Return 1 if no "save" found
+}

@@ -399,18 +399,26 @@ function getJsonLocalById(id){
  * @param {JSON} newJson 
  */
 function addNewJsonToLocal(text){
+    let oldData = getJsonLocalStorage();
+    
+    let newSaveName = 'Save 1';
+
+    if(oldData){
+        const list = JSON.parse(oldData).flatMap(v=> v.name)
+        newSaveName =  getNewName(list)
+    }
 
     //new object
     const newJson = {
         id: 'json_' + getRandId(),
-        name: Object.keys(JSON.parse(text))[0],
+        name: newSaveName,
         date: moment().format('YYYY-MM-DD | hh:mm:ss a'),
         data: JSON.parse(text),
         color: jsonMenuDefaultColor,
         isFavorite: false
     };
 
-    let oldData = getJsonLocalStorage();
+    
     if (oldData) {
         oldData = JSON.parse(oldData)
         oldData.push(newJson)
