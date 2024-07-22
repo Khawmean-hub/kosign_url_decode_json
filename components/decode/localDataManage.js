@@ -313,9 +313,11 @@ function onMakeNewDrage() {
  */
 function onCompare2Editor(){
     try{
-        $('[data-tab="text_compare"]').eq(0).click()
-        var iframe = document.getElementById('text_compare');
-        iframe.contentWindow.onSetCompare(decodeResultEditor.getValue(), saveBoxResult.getValue())
+        $('#btn_text_compare_page').click()
+        navi.txtCompare(()=>{
+            window.onSetCompare(decodeResultEditor.getValue(), saveBoxResult.getValue())
+        })
+        
     }catch(e){
         
     }

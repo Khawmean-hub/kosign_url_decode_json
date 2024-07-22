@@ -1,0 +1,81 @@
+<div id="layout2">
+    <div id="left_part">
+        <div class="body">
+            <h3>HTML to JavaScript</h3>
+            <form class="ui form small">
+                <div class="field">
+                    <label class="text_fixed_color">Variable Name</label>
+                    <div class="ui left labeled input">
+                        <div class="ui dropdown label btn_color" id="vari_type">
+                            <div class="text" id="type_vari">var</div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <div class="item">var</div>
+                                <div class="item">let</div>
+                            </div>
+                        </div>
+                        <input type="text" placeholder="variable name" id="vari_nm">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="text_fixed_color">Past HTML here</label>
+                    <textarea rows="3" id="raw_html"></textarea>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div id="right_part">
+        <div class="ui form small">
+            <div class="field">
+                <label>Result
+                    <div class="ui icon top left pointing dropdown">
+                        <i class="cog icon"></i>
+                        <div class="menu" id="setting_box">
+                            <div class="header">Settings</div>
+                            <div class="item">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" id="is_show_vari">
+                                    <label>Show Variable Declaration</label>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" id="is_double_q">
+                                    <label>Used double quotes "</label>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" id="is_double_d">
+                                    <label>Used `</label>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" id="is_remove_whitespace">
+                                    <label>Remove whiteSpace</label>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" id="is_remove_line">
+                                    <label>Remove empty line</label>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" id="is_remove_cmd">
+                                    <label>Remove comment</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </label>
+                <textarea rows="25" id="result_html"></textarea>
+            </div>
+        </div>
+    </div>
+</div>

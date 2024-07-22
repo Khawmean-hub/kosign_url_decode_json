@@ -1,0 +1,97 @@
+<div class="ui container pt_60">
+    <form class="ui form" onsubmit="return false;">
+        <div class="ui input massive" style="margin-bottom: 15px;">
+            <div class="ui compact dropdown" id="md_type">
+                <input type="hidden" name="md_type" value="lrc">
+                <div class="text" style="font-weight: bold;">Music Lyric</div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                  <div class="item" data-value="lrc">Music Lyric</div>
+                  <div class="item" data-value="srt">Video Subtitle</div>
+                </div>
+            </div>
+        </div>
+        <div class="two fields">
+
+            <div class="field">
+                <label>Please upload music or video file</label>
+                <div class="ui labeled action input" id="box_file">
+                    <label class="ui label button icon" for="txt_input"><i class="attach icon"></i></label>
+                    <input type="text" id="txt_input" placeholder="Music or video file" readonly>
+                    <button class="ui button icon play btn_color" id="btn_play" disabled><i class="play icon"></i></button>
+                </div>
+                <input type="file" id="file_up" style="display: none;" accept="audio/*,video/*">
+            </div>
+            <div class="field">
+                <label>Youtube link</label>
+                    <div class="ui labeled action input">
+                        <div class="ui label button icon" id="btn_open_youtube"><i class="youtube icon"></i></div>
+                        <input type="text" id="youtubeUrl" placeholder="You can past youtube video link here">
+                        <button class="ui button icon play btn_color" id="btn_play_you" disabled><i class="play icon"></i></button>
+                    </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label id="title_l"></label>
+            <label id="title_l_u"></label>
+            <div class="local_media">
+                <audio id="audioPlayer" controls style="display:none;"></audio>
+                <video id="videoPlayer" controls style="display:none;" width="100%"></video>
+            </div>
+            <div id="you_block">
+                <div id="youtube_ifr"></div>
+            </div>
+        </div>
+        <div class="field">
+            <button class="ui button icon tiny violet" style="display: none;" id="btn_pin"><i
+                    class="map pin icon"></i> Pin time</button>
+        </div>
+
+        <div class="fields">
+            <textarea id="grid_line" style="line-height: 25px;" rows="10"></textarea>
+            <div class="field" style="width: 150px;" id="duration_field">
+                <label> <label data-tooltip="Audio has only time start \nVideo has time start and time end" data-inverted="" data-position="top left"><i class="grey question circle outline icon"></i></label> Duration <i id="btn_minus" class="minus icon grey"
+                        style="margin-left: 5px; margin-right: 5px;"></i> <i class="plus icon grey"
+                        id="btn_plus"></i></label>
+                <textarea id="timer" rows="10" style="resize: none;line-height: 25px;"></textarea>
+            </div>
+            <div class="fourteen wide field">
+                <label><label data-tooltip="If you want italic use: <i>text...</i> (only .src)" data-inverted="" data-position="top left"><i class="question circle outline icon grey"></i></label>  Lyric</label>
+                <textarea id="lyric" rows="10" style="line-height: 25px;"></textarea>
+            </div>
+        </div>
+
+
+        <div class="field" style="padding-top: 10px;">
+            <button class="ui button btn_color" id="btn_save">Save</button>
+            <button type="reset" class="ui button mini right floated" id="btn_clear">Clear</button>
+        </div>
+
+    </form>
+
+    <div class="ui message">
+        <div class="header">
+            How to
+        </div>
+        <ul class="list">
+            <li>Paste lyric into lryic box and make newline for each sentence</li>
+            <li>Upload viedo or music file or paste the youtube link.</li>
+            <li>Click play to start</li>
+            <li>Click pin time or input by yourself.</li>
+            <li>Choose type music lyric or video subtitle</li>
+        </ul>
+    </div>
+
+    <div class="ui info message">
+        <div class="header">
+            Noted
+        </div>
+        <ul class="list">
+            <li>The save file and the music or video must have the same name and in the same path.</li>
+            <li>You can click Esc key to pin.</li>
+            <li>Some player might not support</li>
+            <li>Support player: -Samsung Music, -VC Player</li>
+        </ul>
+    </div>
+</div>

@@ -23,11 +23,10 @@
     <link rel="icon" type="image/x-icon" href="image/favicon.ico">
 
     <link rel="stylesheet" href="library/semantic/semantic.min.css">
-    <link rel="stylesheet" href="library/jquery-ui.css">
-    <link rel="stylesheet" href="library/codemirror/codemirror.css">
-    <link rel="stylesheet" href="library/codemirror/material-theme.css">
-    <link rel="stylesheet" href="library/codemirror/neat-theme.css">
-    <link rel="stylesheet" href="components/jex_convert/jex.css">
+    <link rel="stylesheet" href="library/jquery/jquery-ui.css">
+    <link rel="stylesheet" href="library/codemirror/css/codemirror.css">
+    <link rel="stylesheet" href="library/codemirror/css/material-theme.css">
+    <link rel="stylesheet" href="library/codemirror/css/neat-theme.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="library/toastr.css">
     <link rel="stylesheet" href="css/theme.css">
@@ -39,34 +38,36 @@
     <link rel="stylesheet" href="components/decode/decode.css">
 
     <script src="library/xlsx.js"></script>
-    <script src="library/jquery.js"></script>
-    <script src="library/jquery-ui.js"></script>
+    <script src="library/jquery/jquery.js"></script>
+    <script src="library/jquery/jquery-ui.js"></script>
 
     <script src="library/moment.js"></script>
     <script src="library/semantic/semantic.min.js"></script>
     <script src="library/toastr.js"></script>
-    <script src="library/codemirror/codemirror.js"></script>
-    <script src="library/codemirror/xml.js"></script>
-    <script src="library/codemirror/codemirrorjs.js"></script>
-    <script src="library/codemirror/codemirror-mod.js"></script>
-    <script src="library/codemirror/htmlmix.js"></script>
+    <script src="library/codemirror/js/codemirror.js"></script>
+    <script src="library/codemirror/js/xml.js"></script>
+    <script src="library/codemirror/js/codemirrorjs.js"></script>
+    <script src="library/codemirror/js/codemirror-mod.js"></script>
     
 </head>
 
-<body class="">
-    <div class="all_drage_box">
-
-    </div>
+<body class="theme-light theme-blue">
     <div>
+        <div class="ui active inverted dimmer" id="body_loading_page">
+          <div class="ui text loader">Loading</div>
+        </div>
+        <p></p>
+    </div>
+    <div id="main-content" style="display: none;">
         <div class="ui secondary menu inverted fixed small bg_color my_navbar">
             <div style="display: flex; overflow-x: auto">
                 <div class="active item" data-tab="first">Decode</div>
-                <div class="item" data-tab="jshtml">HTML 2 Js</div>
+                <div class="item" data-tab="jshtml" onclick="navi.html2js()">HTML 2 Js</div>
                 <!-- <div class="item" data-tab="sortEx">Sort File Name</div> -->
-                <div class="item" data-tab="second">Jex Convert</div>
+                <div class="item" data-tab="second" onclick="navi.jex()">Jex Convert</div>
                 <!-- <div class="item" data-tab="calendar_excel">Calendar excel</div> -->
-                <div class="item" data-tab="subtitle_maker">Subtitle maker</div>
-                <div class="item" data-tab="text_compare">Text Compare</div>
+                <div class="item" data-tab="subtitle_maker" onclick="navi.subtitle()">Subtitle maker</div>
+                <div class="item" data-tab="text_compare" onclick="navi.txtCompare()" id="btn_text_compare_page">Text Compare</div>
             </div>
             <div class="ui dropdown item">
                 Other
@@ -86,7 +87,7 @@
                         <div class="ui dropdown item">
                             <i class="dropdown icon i_color"></i>
                             <span class="text">Color</span>
-                            <div class="menu">
+                            <div class="menu" style="right: 100% !important;">
                                 <div class="item btn_theme_color" theme="theme-blue">
                                     <a class="ui blue empty circular label large"></a> Blue
                                 </div>
@@ -149,8 +150,6 @@
                                         <button data-tooltip="Save in local" data-inverted="" data-position="top right" class="ui button btn_save btn_color_light"><i class="save icon"></i></button>
                                         <button data-tooltip="Copy" data-inverted="" data-position="top right"  class="ui button btn_copy btn_color_light"><i class="copy icon"></i></button>
                                     </div>
-
-
 
 
                                     <div class="ui form" style="margin-top: 10px;">
@@ -228,143 +227,7 @@
             <!-- Second Tab  -->
             <!-- ================================================================= -->
             <div class="ui bottom attached tab" data-tab="second">
-
-                <div class="ui form" style="padding: 60px 30px 0 30px;">
-                    <div class="ui form">
-                        <div class="fields columns two">
-                            <!-- <div class="field">
-                          <label>Include Variable Name</label>
-                          <input type="text" placeholder="Include" id="include_txt" >
-                        </div> -->
-                            <div class="field">
-                                <label>Project
-                                    <i class="plus icon" style="color: #2662e3; margin-left: 5px"
-                                        id="new_project_button"></i>
-                                    <i class="trash alternate outline red icon disabled" id="btn_delete_project"></i>
-                                    <i id="btn_export_data"
-                                        style="background: #dae6ff; border-radius: 10px; padding: 0 5px; cursor: pointer; color: #797979;margin-left: 5px">Copy
-                                        export data</i>
-                                    <i id="btn_import_data"
-                                        style="background: #dae6ff; border-radius: 10px; padding: 0 5px; cursor: pointer; color: #797979; margin-left: 5px">Import
-                                        data</i>
-                                </label>
-                                <div class="ui selection dropdown" id="project_drop">
-                                    <input type="hidden" name="gender">
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">Please create new project</div>
-                                    <div class="menu">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="field">
-                                <label>Exclude variable</label>
-                                <input spellcheck="false" type="text" placeholder="Exclude" id="exclude_txt" value="">
-
-                            </div>
-
-                            <div class="field">
-                                <label style="height: 20px"></label>
-                                <button class="ui button btn_color" id="btn_save_ex">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                    <label style="font-size: 12px">Replace All <i class="plus icon"
-                            style="color: #2662e3; margin-left: 5px" id="replace_management_button"></i></label>
-                    <div class="ui form mini" id="check_con" style="margin-bottom: 20px; margin-top: 5px">
-
-                    </div>
-
-                    <div class="fields column two">
-                        <div class="field custom_hegith">
-                            <textarea spellcheck="false" rows="50" id="code_pre"></textarea>
-                            <!--                        <pre id="code_pre" spellcheck="false" contenteditable="true" style="margin: 0"></pre>-->
-                        </div>
-                        <div class="field custom_hegith">
-                            <textarea spellcheck="false" rows="50" id="code_pre2"></textarea>
-                            <!--                        <pre id="code_pre2" spellcheck="false" contenteditable="true" style="margin: 0"></pre>-->
-                        </div>
-                    </div>
-                </div>
-
-                <!--            Modal for new project   -->
-                <div class="ui modal mini" id="new_project_modal">
-                    <div class="content">
-                        <div class="ui form">
-                            <div class="field">
-                                <label>Project Name</label>
-                                <input type="text" placeholder="Project Name" id="new_project_name">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="actions">
-                        <div class="ui approve button btn_color" id="btn_save_new_project">Save</div>
-                    </div>
-                </div>
-                <!--            Modal for new project   -->
-                <div class="ui modal mini" id="import_data_modal">
-                    <div class="content">
-                        <div class="ui form">
-                            <div class="field">
-                                <label>Export Data</label>
-                                <input type="text" placeholder="Please paste export data here" id="import_data_input">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="actions">
-                        <div class="ui approve button btn_color" id="btn_save_import_data">Save</div>
-                    </div>
-                </div>
-                <!--  Replace management   -->
-                <div class="coupled ui modal small" id="replace_management_modal">
-                    <div class="header">
-                        CARDRPT
-                    </div>
-                    <div class="scrolling content">
-                        <div class="ui form">
-                            <div class="field">
-                                <!--                            <label>Replacement</label>-->
-                                <div style="display: grid; grid-template-columns: auto 10px auto 70px 130px">
-                                    <input type="text" placeholder="From" id="from_txt">
-                                    <div></div>
-                                    <input type="text" placeholder="To" id="to_txt">
-                                    <button class="button ui small btn_color" style="margin-left: 5px"
-                                        id="save_new_replace_btn">Add</button>
-                                    <button class="button ui small" style="margin-left: 5px"
-                                        id="show_other_replace">From Others</button>
-                                </div>
-
-                            </div>
-                        </div>
-                        <h4></h4>
-                        <table class="ui single line table" id="replace_table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 30px">No</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                    <th style="width: 30px"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!--                <div class="actions">-->
-                    <!--                    <div class="ui approve button">Save</div>-->
-                    <!--                </div>-->
-                </div>
-
-                <!--  Replace from other project   -->
-                <div class="coupled ui modal tiny" id="loard_other_replace">
-                    <div class="content">
-
-                    </div>
-                    <div class="actions">
-                        <button class="mini ui approve button">Done</button>
-                    </div>
-                </div>
+                <div id="jex"></div>
             </div>
 
 
@@ -423,117 +286,21 @@
             <!-- ====================================================== -->
             <div class="ui bottom attached tab" data-tab="jshtml">
                 <div class="pt_40">
-                    <iframe src="components/html_to_js/html_2_js.html" id="jshtml" frameborder="0"></iframe>
+                    <div id="html_2_js"></div>
                 </div>
             </div>
 
             <!-- Subtitle Maker -->
             <!-- ====================================================== -->
             <div class="ui bottom attached tab" data-tab="subtitle_maker">
-                <div class="ui container pt_60">
-                    <form class="ui form" onsubmit="return false;">
-                        <div class="ui input massive" style="margin-bottom: 15px;">
-                            <div class="ui compact dropdown" id="md_type">
-                                <input type="hidden" name="md_type" value="lrc">
-                                <div class="text" style="font-weight: bold;">Music Lyric</div>
-                                <i class="dropdown icon"></i>
-                                <div class="menu">
-                                  <div class="item" data-value="lrc">Music Lyric</div>
-                                  <div class="item" data-value="srt">Video Subtitle</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="two fields">
-
-                            <div class="field">
-                                <label>Please upload music or video file</label>
-                                <div class="ui labeled action input" id="box_file">
-                                    <label class="ui label button icon" for="txt_input"><i class="attach icon"></i></label>
-                                    <input onclick="onPickFile()" type="text" id="txt_input" placeholder="Music or video file" readonly>
-                                    <button class="ui button icon play btn_color" onclick="onPlay()" id="btn_play" disabled><i class="play icon"></i></button>
-                                </div>
-                                <input type="file" id="file_up" style="display: none;" accept="audio/*,video/*">
-                            </div>
-                            <div class="field">
-                                <label>Youtube link</label>
-                                    <div class="ui labeled action input">
-                                        <div class="ui label button icon" onclick="openYouTube()"><i class="youtube icon"></i></div>
-                                        <input type="text" id="youtubeUrl" placeholder="You can past youtube video link here">
-                                        <button class="ui button icon play btn_color" onclick="youtubePlay()" id="btn_play_you" disabled><i class="play icon"></i></button>
-                                    </div>
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label id="title_l"></label>
-                            <label id="title_l_u"></label>
-                            <div class="local_media">
-                                <audio id="audioPlayer" controls style="display:none;"></audio>
-                                <video id="videoPlayer" controls style="display:none;" width="100%"></video>
-                            </div>
-                            <div id="you_block">
-                                <div id="youtube_ifr"></div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <button class="ui button icon tiny violet" style="display: none;" id="btn_pin"><i
-                                    class="map pin icon"></i> Pin time</button>
-                        </div>
-
-                        <div class="fields">
-                            <textarea id="grid_line" style="line-height: 25px;" rows="10"></textarea>
-                            <div class="field" style="width: 150px;" id="duration_field">
-                                <label> <label data-tooltip="Audio has only time start \nVideo has time start and time end" data-inverted="" data-position="top left"><i class="grey question circle outline icon"></i></label> Duration <i id="btn_minus" class="minus icon grey"
-                                        style="margin-left: 5px; margin-right: 5px;"></i> <i class="plus icon grey"
-                                        id="btn_plus"></i></label>
-                                <textarea id="timer" rows="10" style="resize: none;line-height: 25px;"></textarea>
-                            </div>
-                            <div class="fourteen wide field">
-                                <label><label data-tooltip="If you want italic use: <i>text...</i> (only .src)" data-inverted="" data-position="top left"><i class="question circle outline icon grey"></i></label>  Lyric</label>
-                                <textarea id="lyric" rows="10" style="line-height: 25px;"></textarea>
-                            </div>
-                        </div>
-
-
-                        <div class="field" style="padding-top: 10px;">
-                            <button class="ui button btn_color" id="btn_save">Save</button>
-                            <button type="reset" class="ui button mini right floated" id="btn_clear">Clear</button>
-                        </div>
-
-                    </form>
-
-                    <div class="ui message">
-                        <div class="header">
-                            How to
-                        </div>
-                        <ul class="list">
-                            <li>Paste lyric into lryic box and make newline for each sentence</li>
-                            <li>Upload viedo or music file or paste the youtube link.</li>
-                            <li>Click play to start</li>
-                            <li>Click pin time or input by yourself.</li>
-                            <li>Choose type music lyric or video subtitle</li>
-                        </ul>
-                    </div>
-
-                    <div class="ui info message">
-                        <div class="header">
-                            Noted
-                        </div>
-                        <ul class="list">
-                            <li>The save file and the music or video must have the same name and in the same path.</li>
-                            <li>You can click Esc key to pin.</li>
-                            <li>Some player might not support</li>
-                            <li>Support player: -Samsung Music, -VC Player</li>
-                        </ul>
-                    </div>
-                </div>
+                <div id="subtitle"></div>
             </div>
 
             <!-- Text Compare -->
             <!-- ====================================================== -->
             <div class="ui bottom attached tab" data-tab="text_compare">
                 <div class="pt_40">
-                    <iframe src="components/text_compare/txt.html" id="text_compare" frameborder="0"></iframe>
+                    <div id="text_compare"></div>
                 </div>
             </div>
         </div>
@@ -550,16 +317,13 @@
     <script src="util/popUp.js"></script>
     <script src="data/dataStorage.js"></script>
     <script src="util/util.js"></script>
+    <script src="util/navigat.js"></script>
 
     <!-- components -->
     <script src="components/nav_bar/nav_bar.js"></script>
     <script src="components/decode/util.js"></script>
     <script src="components/decode/decode.js"></script>
     <script src="components/decode/localDataManage.js"></script>    
-    <script src="components/jex_convert/jex223.js"></script>
-    <script src="components/jex_convert/jex223event.js"></script>
-    <script src="components/calendar/calendar.js"></script>
-    <script src="components/subtitle_maker/subtitle.js"></script>
 
     <script src="main.js"></script>
 </body>

@@ -97,25 +97,6 @@ function applyEditorJs(id, isReadOnly = false, line = true){
       });
 }
 
-function applyEditorTextCompare(id){
-    return CodeMirror.MergeView(document.getElementById(id), {
-        value: '',
-        origLeft: '',
-        lineNumbers: true,
-        mode: "text",
-        theme: "material",
-        highlightDifferences: true,
-        connect: "align",
-        collapseIdentical: false,
-        allowEditingOriginals: true ,// Allow editing on both sides,
-        extraKeys: {
-            "Ctrl-F": "findPersistent", // Enable Ctrl-F for search
-            "Ctrl-G": "findNext",
-            "Shift-Ctrl-F": "replace",
-            "Shift-Ctrl-R": "replaceAll"
-        }
-    });
-}
 
 var myModeSpec = {
     name: "htmlmixed",

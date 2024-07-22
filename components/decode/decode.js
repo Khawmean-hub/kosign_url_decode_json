@@ -32,13 +32,6 @@ $(document).on('click', '.btn_show_right', onShowRightBox);
 $(document).on('input', '#url_text', onDecode)
 $(document).on('click','.btn_copy', onCopyLeftBoxJson)
 
-
-$(document).ready(function(){
-    makeDecodeEditor()
-    buildJsonMenuList()
-})
-
-
 //===================================================== Functions ==================================================
 /**
  * Show json data management

@@ -1,20 +1,20 @@
-#layout {
+#html_2_js #layout2 {
     display: flex;
 }
-#layout>div{
+#html_2_js #layout2>div{
     overflow-x: hidden;
 }
-#left_part {
+#html_2_js #left_part {
     min-width: 295px;
     width: 50%;
 }
-#left_part .body {
+#html_2_js #left_part .body {
     border-radius: 10px;
     width: calc(100% - 15px);
     padding: 20px;
     background: #ffffff;
 }
-#left_part .ui-resizable-e:after {
+#html_2_js #left_part .ui-resizable-e:after {
     position: absolute;
     content: "||";
     font-size: 20px;
@@ -27,7 +27,7 @@
     align-items: center;
     color: var(--gray);
 }
-#left_part .ui-resizable-e {
+#html_2_js #left_part .ui-resizable-e {
     cursor: e-resize;
     width: 15px;
     right: 0;
@@ -38,7 +38,7 @@
 }
 
 
-#right_part {
+#html_2_js #right_part {
     border-radius: 10px;
     padding: 20px;
     min-width: 295px;
@@ -46,7 +46,7 @@
     width: 50%;
 }
 
-body {
+#html_2_js {
     padding: 17px 17px 5px 17px;
 }
 
@@ -55,27 +55,27 @@ body {
     grid-template-columns: auto auto;
 }
 
-#layout #left_part .CodeMirror{
-    height: calc(100vh - 200px)
+#html_2_js #layout2 #left_part .CodeMirror{
+    height: calc(100vh - 240px)
 }
-#layout #right_part .CodeMirror{
-    height: calc(100vh - 90px)
+#html_2_js #layout2 #right_part .CodeMirror{
+    height: calc(100vh - 130px)
 }
-#layout .CodeMirror.cm-s-material {
+#html_2_js #layout2 .CodeMirror.cm-s-material {
     border-radius: 5px;
     padding-top: 10px;
     border: 1px solid rgba(34,36,38,.15);
 }
 
-.theme-light.theme-blue #layout .CodeMirror-focused {
+.theme-light.theme-blue #html_2_js #layout2 .CodeMirror-focused {
     border: 1px solid var(--light-blue) !important;
 }
-.theme-light.theme-teal #layout .CodeMirror-focused {
+.theme-light.theme-teal #html_2_js #layout2 .CodeMirror-focused {
     border: 1px solid var(--light-teal) !important;
 }
-.theme-light.theme-green #layout .CodeMirror-focused {
+.theme-light.theme-green #html_2_js #layout2 .CodeMirror-focused {
     border: 1px solid var(--light-green) !important;
 }
-.theme-light.theme-red #layout .CodeMirror-focused {
+.theme-light.theme-red #html_2_js #layout2 .CodeMirror-focused {
     border: 1px solid var(--light-red) !important;
 }

@@ -1,7 +1,7 @@
 //============================================ Events ============================================
 $(document).on('click', '.btn_theme_color', onChangeThemeColor)
-$(document).on('click', '.my_navbar .item:eq(1)', onClickHtml2Js)
-$(document).on('click', '.my_navbar .item:eq(4)', onClickTextCompare)
+// $(document).on('click', '.my_navbar .item:eq(1)', onClickHtml2Js)
+// $(document).on('click', '.my_navbar .item:eq(4)', onClickTextCompare)
 
 //============================================ functions ============================================
 /**
@@ -21,22 +21,10 @@ function onChangeThemeColor() {
 function onLoadTheme() {
     const savedTheme = getThemeName();
     if (savedTheme) {
-        setTimeout(function () {
-            $('body').removeAttr('class').addClass(savedTheme)
-            $("iframe").contents().find('body').addClass(savedTheme)
-        }, 1000)
+        $('body').removeAttr('class').addClass(savedTheme)
     }
-}
-
-
-
-
-function onClickHtml2Js() {
-    var iframe = document.getElementById('jshtml');
-    iframe.contentWindow.makeEditor();
-}
-
-function onClickTextCompare() {
-    var iframe = document.getElementById('text_compare');
-    iframe.contentWindow.makeEditor();
+    $('#main-content').show()
+    $('#body_loading_page').removeClass('active')
+    makeDecodeEditor()
+    buildJsonMenuList()
 }

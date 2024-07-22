@@ -1,0 +1,36 @@
+<div class="box">
+    <h3>Text Compare</h3>
+    <div class="setting_me">
+        <div>
+            <div class="ui form mini">
+                <select class="ui dropdown" id="langauge_com">
+                    <option value="text">Text</option>
+                    <option value="htmlmixed">HTML</option>
+                    <option value="text/css">CSS</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="text/x-java">Java</option>
+                    <option value="text/x-python">Python</option>
+                    <option value="text/x-sql">SQL</option>
+
+                </select>
+                <label class="pl_20 text_color" id="diff_info">Diff count : 0</label>
+                <label class="pl_20 text_color" id="diff_red">Red : 0</label>
+                <label class="pl_20 text_color" id="diff_blue">Green : 0</label>
+            </div>
+
+        </div>
+        <div class="text-center center_buttons">
+            <div data-tooltip="Copy all to the right" data-inverted="" id="btn_copy_2_right">
+                <i class="arrow alternate circle right icon"></i>
+            </div>
+            <div data-tooltip="Swap" data-inverted="" id="btn_swap">
+                <i class="exchange icon"></i>
+            </div>
+            <div data-tooltip="Copy all to the left" data-inverted="" id="btn_copy_2_left">
+                <i class="arrow alternate circle left icon"></i>
+            </div>
+        </div>
+        <div></div>
+    </div>
+    <div id="textCompareEditor"></div>
+</div>

@@ -1,0 +1,73 @@
+#text_compare {
+    padding: 17px 17px 5px 17px;
+}
+
+#text_compare .CodeMirror.cm-s-material, #text_compare .CodeMirror-merge-gap {
+    height: calc(100vh - 180px);
+    border-radius: 5px;
+    padding-top: 10px;
+    border: 1px solid rgba(34,36,38,.15);
+}
+
+.theme-light.theme-blue #text_compare .CodeMirror-focused {
+    border: 1px solid var(--light-blue) !important;
+}
+.theme-light.theme-teal #text_compare .CodeMirror-focused {
+    border: 1px solid var(--light-teal) !important;
+}
+.theme-light.theme-green #text_compare .CodeMirror-focused {
+    border: 1px solid var(--light-green) !important;
+}
+.theme-light.theme-red #text_compare .CodeMirror-focused {
+    border: 1px solid var(--light-red) !important;
+}
+
+#text_compare .CodeMirror-merge{
+    border: none !important;
+}
+
+#text_compare .CodeMirror-merge-gap {
+    border: none !important;
+    background: none;
+}
+
+#text_compare .CodeMirror-merge-2pane .CodeMirror-merge-gap {
+    width: 50px;
+}
+
+#text_compare .CodeMirror-merge-2pane .CodeMirror-merge-pane {
+    width: calc(50% - 25px)
+}
+
+#text_compare .box{
+    padding: 20px;
+    background: white;
+    height: calc(100vh - 70px);
+    border-radius: 10px;
+}
+
+#text_compare .setting_me {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    margin-bottom: 5px;
+}
+
+#text_compare .center_buttons {
+    display: flex;
+    justify-self: center;
+    align-self: flex-end;
+}
+#text_compare .center_buttons div {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+#text_compare .cm-s-material .cm-qualifier {
+    color: rgb(0, 0, 0);
+}
+#text_compare .cm-s-material .cm-variable-2 {
+    color: red;
+}
+#text_compare .cm-s-material .cm-keyword{
+    color: #8524c5;
+}
