@@ -94,16 +94,16 @@
 }
 
 .theme-blue .active_select {
-    border: 1px solid var(--blue);
+    border: 1px solid var(--blue) !important;
 }
 .theme-teal .active_select {
-    border: 1px solid var(--teal);
+    border: 1px solid var(--teal) !important;
 }
 .theme-green .active_select {
-    border: 1px solid var(--green);
+    border: 1px solid var(--green) !important;
 }
 .theme-red .active_select {
-    border: 1px solid var(--red);
+    border: 1px solid var(--red) !important;
 }
 
 .ui-widget-content pre {
