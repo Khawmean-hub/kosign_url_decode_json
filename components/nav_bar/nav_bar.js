@@ -27,4 +27,5 @@ function onLoadTheme() {
     $('#body_loading_page').removeClass('active')
     makeDecodeEditor()
     buildJsonMenuList()
+    $(`[theme="${savedTheme.split(' ')[1]}"]`).addClass('active')
 }
