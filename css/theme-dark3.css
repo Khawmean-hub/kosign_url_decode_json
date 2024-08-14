@@ -112,3 +112,11 @@ body.dark3 {
 .dark3 .text {
     color: #7d45b2;
 }
+
+.dark3 .cm-string .cm-property {
+    color: white !important;
+}
+
+.dark3 .CodeMirror-linenumber {
+    color: #c49ee7 !important;
+}
