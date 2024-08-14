@@ -59,7 +59,7 @@ body.dark3 {
 }
 
 .dark3 .text_fixed_color {
-    color: var(--b-mmm-black) !important;
+    color: white !important;
 }
 .CodeMirror-dialog.CodeMirror-dialog-top {
     background: white;
