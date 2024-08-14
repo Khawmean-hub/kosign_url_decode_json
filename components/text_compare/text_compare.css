@@ -21,6 +21,12 @@
 .theme-light.theme-red #text_compare .CodeMirror-focused {
     border: 1px solid var(--light-red) !important;
 }
+.dark1 #text_compare .CodeMirror-focused {
+    border: 1px solid rgb(167, 167, 167) !important;
+}
+.dark2 #text_compare .CodeMirror-focused {
+    border: 1px solid orange !important;
+}
 
 #text_compare .CodeMirror-merge{
     border: none !important;

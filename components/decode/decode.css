@@ -110,6 +110,10 @@
     border: 1px solid var(--white) !important;
 }
 
+.dark2 .active_select {
+    border: 1px solid orange !important;
+}
+
 .ui-widget-content pre {
     background-color: var(--white);
 }
@@ -130,6 +134,12 @@
 }
 .theme-light.theme-red .layout .CodeMirror-focused {
     border: 1px solid var(--light-red) !important;
+}
+.dark1 .layout .CodeMirror-focused {
+    border: 1px solid rgb(167, 167, 167) !important;
+}
+.dark2 .layout .CodeMirror-focused {
+    border: 1px solid orange !important;
 }
 
 .cus_btn {
