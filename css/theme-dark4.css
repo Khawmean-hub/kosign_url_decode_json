@@ -14,17 +14,17 @@ body.dark4 {
     background-color: #00000090 !important;
 }
 .dark4 .txt_color {
-    color: white !important;
+    color: #ffffffc0 !important;
 }
 
 
 .dark4 .btn_color {
     background: #00000069 !important;
-    color: white !important;
+    color: #ffffffc0 !important;
 }
 
 .dark4 .btn_color i {
-    color: white !important;
+    color: #ffffffc0 !important;
 }
 
 .dark4 .btn_color:hover {
@@ -33,11 +33,11 @@ body.dark4 {
 
 .dark4 .btn_color_light {
     background: #00000034 !important;
-    color: white !important;
+    color: #ffffffc0 !important;
 }
 .dark4 .ui.label.button.icon {
     background: #00000033 !important;
-    color: white;
+    color: #ffffffc0;
 }
 
 .dark4 .btn_color_light:hover {
@@ -47,14 +47,14 @@ body.dark4 {
     background-color: #00000052 !important;  
     /* background-image: linear-gradient(to right, #4776E6 0%, #8E54E9  51%, #4776E6  100%) !important; */
     border: 1px solid rgba(255, 255, 255, 0.158) !important;
-    color: white !important;
+    color: #ffffffc0 !important;
     /* border-image: var(--gr-border) !important;
     border-width: 1px;
     border-style: solid; */
 }
 
 .dark4 .text_fixed_color {
-    color: white !important;
+    color: #ffffffc0 !important;
 }
 .CodeMirror-dialog.CodeMirror-dialog-top {
     background: white;
@@ -94,23 +94,23 @@ body.dark4 {
 
 
 .dark4 i {
-    color: white;
+    color: #ffffffc0;
 }
 
 .dark4 #setting_box label {
-    color: white !important;
+    color: #ffffffc0 !important;
 }
 
 .dark4 #md_type .text {
-    color: white !important;
+    color: #ffffffc0 !important;
 }
 
 .dark4 .text {
-    color: white;
+    color: #ffffffc0;
 }
 
 .dark4 .cm-s-material-ocean .cm-property {
-    color: white !important;
+    color: #ffffffc0 !important;
 }
 
 .dark4 .CodeMirror-linenumber {
@@ -131,15 +131,15 @@ body.dark4 {
 }
 
 .dark4 .ui.dropdown i {
-    color: white;
+    color: #ffffffc0;
 }
 
 .dark4 .ui.dropdown .menu .item {
-    color: white !important;
+    color: #ffffffc0 !important;
 }
 .dark4 .ui.dropdown .text {
-    color: white !important;
+    color: #ffffffc0 !important;
 }
 .dark4 .ui.menu .ui.dropdown .menu>.item {
-    color: white !important;
+    color: #ffffffc0 !important;
 }
