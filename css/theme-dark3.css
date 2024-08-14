@@ -51,7 +51,7 @@ body.dark3 {
 .dark3 input, .dark3 textarea{
     background-image: radial-gradient( circle farthest-corner at 3.2% 49.6%,  rgba(80,12,139,0.87) 0%, rgba(161,10,144,0.72) 83.6% ) !important;    
     /* background-image: linear-gradient(to right, #4776E6 0%, #8E54E9  51%, #4776E6  100%) !important; */
-    
+    border: none !important;
     color: white !important;
     /* border-image: var(--gr-border) !important;
     border-width: 1px;
