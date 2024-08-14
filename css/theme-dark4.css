@@ -10,6 +10,10 @@ body.dark4 {
 .dark4 .my_navbar {
     background-color: #00000090 !important;
 }
+.dark4 .my_navbar .item:hover {
+    background: #ffffff1c;
+    cursor: pointer;
+}
 .dark4 .bg_color_light, .dark4 .body, .dark4 #right_part,.dark4 #text_compare .box {
     background-color: #00000090 !important;
 }
@@ -19,8 +23,8 @@ body.dark4 {
 
 
 .dark4 .btn_color {
-    background: #00000069 !important;
-    color: #ffffffc0 !important;
+    background-image: linear-gradient(135deg, #4c0ba0 0%, #f3618d 100%) !important;
+    color: #ffffff !important;
 }
 
 .dark4 .btn_color i {
@@ -28,7 +32,7 @@ body.dark4 {
 }
 
 .dark4 .btn_color:hover {
-    background: #000000e8 !important;
+    background-image: linear-gradient(43deg, #7a5ff1  51%, #7d45b2  100%) !important;
 }
 
 .dark4 .btn_color_light {
@@ -41,7 +45,7 @@ body.dark4 {
 }
 
 .dark4 .btn_color_light:hover {
-    background: #000000e8 !important;
+    background-image: linear-gradient(43deg, #7a5ff1  51%, #7d45b2  100%) !important;
 }
 .dark4 input, .dark4 textarea{
     background-color: #00000052 !important;  
@@ -126,7 +130,7 @@ body.dark4 {
 }
 
 .dark4 .ui.dropdown .menu, .dark4 .ui.selection.dropdown {
-    background: #130242ec !important;
+    background: #E1769B !important;
     border: none !important;
 }
 
@@ -142,4 +146,25 @@ body.dark4 {
 }
 .dark4 .ui.menu .ui.dropdown .menu>.item {
     color: #ffffffc0 !important;
+}
+.dark4 .CodeMirror-merge-l-chunk {
+    background: #ffffff10 !important;
+    border: none;
+}
+.dark4 #grid_line {
+    color: #ffffff15 !important;
+}
+.dark4 .icon.grey {
+    color: white !important;
+}
+.dark4 .ui.message {
+    box-shadow: none !important;
+    background: rgba(0, 0, 0, 0.11) !important;
+    color: rgba(255, 255, 255, 0.76)
+}
+.dark4 .ui.info.message .header{
+    color: rgba(86, 255, 255, 0.692) !important;
+}
+.dark4 .ui.info.message {
+    color: rgba(86, 255, 255, 0.692) !important;
 }

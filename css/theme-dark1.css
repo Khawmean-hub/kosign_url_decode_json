@@ -109,3 +109,7 @@ body.dark1 {
 .dark1 i {
     color: var(--gray);
 }
+.dark1 .CodeMirror-merge-l-chunk {
+    background: #ffffff10 !important;
+    border: none;
+}

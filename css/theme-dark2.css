@@ -83,3 +83,7 @@ body.dark2 {
 .dark2 i {
     color: orange;
 }
+.dark2 .CodeMirror-merge-l-chunk {
+    background: #ffffff10 !important;
+    border: none;
+}

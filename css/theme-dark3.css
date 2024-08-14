@@ -148,3 +148,7 @@ body.dark3 {
 .dark3 .ui.menu .ui.dropdown .menu>.item {
     color: white !important;
 }
+.dark3 .CodeMirror-merge-l-chunk {
+    background: #ffffff10 !important;
+    border: none;
+}

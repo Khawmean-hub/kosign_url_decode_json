@@ -357,6 +357,10 @@ body {
 .my_navbar .item {
     font-weight: bold !important;
 }
+
+.ui.secondary.inverted.menu .active.item {
+    border-radius: 5px !important;
+}
 .text-center {
     text-align: center;
 }
