@@ -114,6 +114,10 @@
     border: 1px solid white !important;
 }
 
+.dark4 .active_select {
+    border: 1px solid rgba(255, 255, 255, 0.384) !important;
+}
+
 
 .dark2 .active_select {
     border: 1px solid orange !important;

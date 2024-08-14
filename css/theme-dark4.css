@@ -1,0 +1,145 @@
+:root {
+    --gr-border: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #ffa470 100%)
+}
+
+body.dark4 {
+    background-color: #4158D0 !important;
+    background-image: linear-gradient(90deg, #4158D0 0%, #C850C0 46%, #ffa470 100%) !important;
+}
+/* navbar */
+.dark4 .my_navbar {
+    background-color: #00000090 !important;
+}
+.dark4 .bg_color_light, .dark4 .body, .dark4 #right_part,.dark4 #text_compare .box {
+    background-color: #00000090 !important;
+}
+.dark4 .txt_color {
+    color: white !important;
+}
+
+
+.dark4 .btn_color {
+    background: #00000069 !important;
+    color: white !important;
+}
+
+.dark4 .btn_color i {
+    color: white !important;
+}
+
+.dark4 .btn_color:hover {
+    background: #000000e8 !important;
+}
+
+.dark4 .btn_color_light {
+    background: #00000034 !important;
+    color: white !important;
+}
+.dark4 .ui.label.button.icon {
+    background: #00000033 !important;
+    color: white;
+}
+
+.dark4 .btn_color_light:hover {
+    background: #000000e8 !important;
+}
+.dark4 input, .dark4 textarea{
+    background-color: #00000052 !important;  
+    /* background-image: linear-gradient(to right, #4776E6 0%, #8E54E9  51%, #4776E6  100%) !important; */
+    border: 1px solid rgba(255, 255, 255, 0.158) !important;
+    color: white !important;
+    /* border-image: var(--gr-border) !important;
+    border-width: 1px;
+    border-style: solid; */
+}
+
+.dark4 .text_fixed_color {
+    color: white !important;
+}
+.CodeMirror-dialog.CodeMirror-dialog-top {
+    background: white;
+}
+
+.dark4 .CodeMirror{
+    /* border-image: var(--gr-border) !important;
+    border-width: 1px;
+    border-style: solid; */
+    border: 1px solid rgba(255, 255, 255, 0.158) !important;
+    border-radius: 7px;
+    background-color: #00000052 !important;
+}
+
+
+.dark4 .CodeMirror-gutters, .dark4 .CodeMirror-gutter {
+    background: none !important;
+    border: none;
+}
+
+
+/* Change the focus color for Semantic UI input fields */
+.dark4 input:focus,
+.dark4 textarea:focus,
+.dark4 .ui.selection.active.dropdown,
+.dark4 .ui.selection.active.dropdown .menu {
+    /* border-image: var(--gr-border) !important; 
+    border-width: 1px;
+    border-style: solid; */
+    /* border: 1px solid white !important; */
+    box-shadow: none !important
+}
+
+.dark4 label {
+    color: #ffffff !important;
+}
+
+
+.dark4 i {
+    color: white;
+}
+
+.dark4 #setting_box label {
+    color: white !important;
+}
+
+.dark4 #md_type .text {
+    color: white !important;
+}
+
+.dark4 .text {
+    color: white;
+}
+
+.dark4 .cm-s-material-ocean .cm-property {
+    color: white !important;
+}
+
+.dark4 .CodeMirror-linenumber {
+    color: #c49ee7 !important;
+}
+
+.dark4 #save_data_rec small {
+    color: #ddc5f3 !important;
+}
+
+.dark4 .mini_menu {
+    background: #7d45b2;
+}
+
+.dark4 .ui.dropdown .menu, .dark4 .ui.selection.dropdown {
+    background: #130242ec !important;
+    border: none !important;
+}
+
+.dark4 .ui.dropdown i {
+    color: white;
+}
+
+.dark4 .ui.dropdown .menu .item {
+    color: white !important;
+}
+.dark4 .ui.dropdown .text {
+    color: white !important;
+}
+.dark4 .ui.menu .ui.dropdown .menu>.item {
+    color: white !important;
+}
