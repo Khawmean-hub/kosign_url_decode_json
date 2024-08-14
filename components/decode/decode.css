@@ -106,6 +106,10 @@
     border: 1px solid var(--red) !important;
 }
 
+.dark1 .active_select {
+    border: 1px solid var(--white) !important;
+}
+
 .ui-widget-content pre {
     background-color: var(--white);
 }

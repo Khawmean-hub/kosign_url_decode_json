@@ -1,0 +1,111 @@
+
+:root {
+    /* backround */
+    --b-white: #000000;
+    --b-m-white: #202020;
+
+
+    /* text */
+    --b-black: #b1b1b1;
+    --b-m-black: #c0c0c0;
+    --b-mm-black: #686D76;
+    --b-mmm-black: #b3b3b3;
+
+
+    /* border */
+    --b-border: 1px solid #252525;
+
+    --b-red: #EE4E4E;
+}
+
+
+
+
+
+
+
+
+body.dark1 {
+    background: var(--b-m-white) !important;
+}
+/* navbar */
+.dark1 .my_navbar {
+    background: var(--b-white) !important;
+}
+.dark1 .bg_color_light {
+    background: var(--b-white);
+}
+.dark1 .txt_color {
+    color: var(--b-black);
+}
+.dark1 .body, .dark1 #right_part,.dark1 #text_compare .box {
+    background: var(--b-white) !important;
+}
+
+
+.dark1 .btn_color {
+    background-color: var(--light-black);
+    color: var(--white) !important;
+}
+
+.dark1 .btn_color i {
+    color: var(--gray);
+}
+
+.dark1 .btn_color:hover {
+    background-color: var(--b-mm-black);
+}
+
+.dark1 .btn_color_light {
+    background-color: var(--light-black);
+    color: var(--gray);
+}
+
+.dark1 .btn_color_light:hover {
+    background-color: var(--b-mm-black);
+}
+
+.dark1 input, .dark1 textarea{
+    background: var(--light-black) !important;
+    color: white !important;
+    border: var(--b-border) !important;
+}
+
+.dark1 .text_fixed_color {
+    color: var(--b-mmm-black) !important;
+}
+.CodeMirror-dialog.CodeMirror-dialog-top {
+    background: white;
+
+}
+
+.dark1 .CodeMirror{
+    border: var(--b-border) !important;
+    border-radius: 7px;
+    background: var(--light-black) !important;
+}
+
+
+.dark1 .CodeMirror-gutters, .dark1 .CodeMirror-gutter {
+    background: none !important;
+    border: none;
+}
+
+
+/* Change the focus color for Semantic UI input fields */
+.dark1 input:focus,
+.dark1 textarea:focus,
+.dark1 .ui.selection.active.dropdown,
+.dark1 .ui.selection.active.dropdown .menu {
+    border-color: var(--b-m-black) !important; /* Change to your desired border color */
+    box-shadow: none !important
+}
+
+.dark1 label {
+    color: #c0c0c0 !important;
+}
+
+
+.dark1 i {
+    color: var(--gray);
+}

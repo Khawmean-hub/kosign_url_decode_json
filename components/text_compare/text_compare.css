@@ -2,7 +2,7 @@
     padding: 17px 17px 5px 17px;
 }
 
-#text_compare .CodeMirror.cm-s-material, #text_compare .CodeMirror-merge-gap {
+#text_compare .CodeMirror, #text_compare .CodeMirror-merge-gap {
     height: calc(100vh - 180px);
     border-radius: 5px;
     padding-top: 10px;

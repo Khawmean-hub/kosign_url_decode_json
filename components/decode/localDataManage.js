@@ -84,7 +84,7 @@ function buildJsonMenuList() {
                 ${v['dupName'] ? duplicateDat(v['dupName'], i===data.length-1) : ''}
                 ${jsonMenuSetting}
                 <div class="btn_box" data-val="${encodeURIComponent(JSON.stringify(v))}">
-                    <p>${v.name}</p>
+                    <p class="text_fixed_color">${v.name}</p>
                     <div class="ui input mini" style="display: none">
                         <input type="text" placeholder="Rename" value="${v.name}">
                     </div>
@@ -104,6 +104,10 @@ function buildJsonMenuList() {
     $jsonMenuContain.empty().append(html);
     if(!html){$jsonMenuContain.empty().append(jsonMenuNoData);}  
     $('.btn_box_close').dropdown();
+
+    if(getThemeName().includes('dark')){
+        $('#save_data_rec [style="background: #f5f5f5"]').attr('style', 'background: #151515')
+    }
 }
 
 /**

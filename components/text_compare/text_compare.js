@@ -103,12 +103,16 @@ function onSetCompare(str, str2) {
 window.onSetCompare = onSetCompare
 
 function applyEditorTextCompare(id){
+    let themeName = 'material';
+    if(getThemeName().includes('dark')){
+        themeName='material-ocean'
+    }
     return CodeMirror.MergeView(document.getElementById(id), {
         value: '',
         origLeft: '',
         lineNumbers: true,
         mode: "text",
-        theme: "material",
+        theme: themeName,
         highlightDifferences: true,
         connect: "align",
         collapseIdentical: false,

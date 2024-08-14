@@ -88,10 +88,14 @@ function applyEditorJava(id, isReadOnly = false, line = true){
 }
 
 function applyEditorJs(id, isReadOnly = false, line = true){
+    let themeName = 'material';
+    if(getThemeName().includes('dark')){
+        themeName='material-ocean'
+    }
     return CodeMirror.fromTextArea(document.getElementById(id), {
         lineNumbers: true,
         mode: { name: "javascript", json: true },
-        theme: "material"
+        theme: themeName
         // indentUnit: 4,
         // indentWithTabs: true
       });
@@ -107,10 +111,14 @@ var myModeSpec = {
     }
   }
 function applyEditorHtmlMix(id, isReadOnly = false, line = true){
+    let themeName = 'material';
+    if(getThemeName().includes('dark')){
+        themeName='material-ocean'
+    }
     return CodeMirror.fromTextArea(document.getElementById(id), {
         lineNumbers: true,
         mode: myModeSpec,
-        theme: "material",
+        theme: themeName,
         matchBrackets: true,
         autoCloseTags: true,
         // indentUnit: 4,

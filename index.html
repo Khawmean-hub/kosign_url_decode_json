@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="library/codemirror/css/codemirror.css">
     <link rel="stylesheet" href="library/codemirror/css/material-theme.css">
     <link rel="stylesheet" href="library/codemirror/css/neat-theme.css">
+    <link rel="stylesheet" href="library/codemirror/css/ocean.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="library/toastr.css">
     <link rel="stylesheet" href="css/theme.css">
@@ -34,6 +35,8 @@
     <link rel="stylesheet" href="css/theme-color-teal.css">
     <link rel="stylesheet" href="css/theme-color-green.css">
     <link rel="stylesheet" href="css/theme-color-red.css">
+    <link rel="stylesheet" href="css/theme-dark1.css">
+    <link rel="stylesheet" href="css/theme-dark2.css">
 
     <link rel="stylesheet" href="components/decode/decode.css">
 
@@ -51,7 +54,7 @@
     
 </head>
 
-<body class="theme-light theme-blue">
+<body class="theme-dark theme-blue">
     <div>
         <div class="ui active inverted dimmer" id="body_loading_page">
           <div class="ui text loader">Loading</div>
@@ -100,7 +103,12 @@
                                 <div class="item btn_theme_color" theme="theme-red">
                                     <a class="ui red empty circular label large" ></a> Red
                                 </div>
-
+                                <div class="item btn_theme_color" theme="dark1">
+                                    <a class="ui black empty circular label large" ></a> Dark
+                                </div>
+                                <div class="item btn_theme_color" theme="dark2">
+                                    <a class="ui black empty circular label tiny"><a class="ui orange empty circular label tiny"></a> Dark Orange
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -193,7 +201,7 @@
                         <div class="mt_20">
                             <div style="display: grid; grid-template-columns: auto auto;">
                                 <div>
-                                    <h4 id="box_fixed_active_text" class="m_p_0" active-json-id="">Result</h4>
+                                    <h4 id="box_fixed_active_text" class="m_p_0 text_fixed_color" active-json-id="">Result</h4>
                                     <small class="text_fixed_color" id="box_fixed_active_date">Click on menu above to show</small>
                                 </div>
 

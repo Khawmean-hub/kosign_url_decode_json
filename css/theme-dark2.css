@@ -1,0 +1,111 @@
+
+:root {
+    /* backround */
+    --b-white: #000000;
+    --b-m-white: #202020;
+
+
+    /* text */
+    --b-black: #b1b1b1;
+    --b-m-black: #c0c0c0;
+    --b-mm-black: #686D76;
+    --b-mmm-black: #b3b3b3;
+
+
+    /* border */
+    --b-border: 1px solid #252525;
+
+    --b-red: #EE4E4E;
+}
+
+
+
+
+
+
+
+
+body.dark2 {
+    background: var(--b-m-white) !important;
+}
+/* navbar */
+.dark2 .my_navbar {
+    background: var(--b-white) !important;
+}
+.dark2 .bg_color_light {
+    background: var(--b-white);
+}
+.dark2 .txt_color {
+    color: var(--b-black);
+}
+.dark2 .body, .dark2 #right_part,.dark2 #text_compare .box {
+    background: var(--b-white) !important;
+}
+
+
+.dark2 .btn_color {
+    background-color: var(--light-black);
+    color: orange !important;
+}
+
+.dark2 .btn_color i {
+    color: orange !important;
+}
+
+.dark2 .btn_color:hover {
+    background-color: var(--b-mm-black);
+}
+
+.dark2 .btn_color_light {
+    background-color: var(--light-black);
+    color: orange;
+}
+
+.dark2 .btn_color_light:hover {
+    background-color: var(--b-mm-black);
+}
+
+.dark2 input, .dark2 textarea{
+    background: var(--light-black) !important;
+    color: white !important;
+    border: var(--b-border) !important;
+}
+
+.dark2 .text_fixed_color {
+    color: var(--b-mmm-black) !important;
+}
+.CodeMirror-dialog.CodeMirror-dialog-top {
+    background: white;
+
+}
+
+.dark2 .CodeMirror{
+    border: var(--b-border) !important;
+    border-radius: 7px;
+    background: var(--light-black) !important;
+}
+
+
+.dark2 .CodeMirror-gutters, .dark2 .CodeMirror-gutter {
+    background: none !important;
+    border: none;
+}
+
+
+/* Change the focus color for Semantic UI input fields */
+.dark2 input:focus,
+.dark2 textarea:focus,
+.dark2 .ui.selection.active.dropdown,
+.dark2 .ui.selection.active.dropdown .menu {
+    border-color: orange !important; /* Change to your desired border color */
+    box-shadow: none !important
+}
+
+.dark2 label {
+    color: #c0c0c0 !important;
+}
+
+
+.dark2 i {
+    color: orange;
+}
