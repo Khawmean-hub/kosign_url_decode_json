@@ -102,7 +102,7 @@ body.dark3 {
 }
 
 .dark3 #setting_box label {
-    color: #7d45b2 !important;
+    color: white !important;
 }
 
 .dark3 #md_type .text {
@@ -119,4 +119,32 @@ body.dark3 {
 
 .dark3 .CodeMirror-linenumber {
     color: #c49ee7 !important;
+}
+
+.dark3 #save_data_rec small {
+    color: #ddc5f3 !important;
+}
+
+.dark3 .mini_menu {
+    background: #7d45b2;
+}
+
+.dark3 .ui.dropdown .menu, .dark3 .ui.selection.dropdown {
+    background: #4158D0 !important;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #ffa470 100%) !important;
+    border: none !important;
+}
+
+.dark3 .ui.dropdown i {
+    color: #7d45b2;
+}
+
+.dark3 .ui.dropdown .menu .item {
+    color: white !important;
+}
+.dark3 .ui.dropdown .text {
+    color: white !important;
+}
+.dark3 .ui.menu .ui.dropdown .menu>.item {
+    color: white !important;
 }
