@@ -94,8 +94,18 @@ const type = {
 
 
 const tableString = {
-    table: () => '<table class="ui celled table small compact striped">',
-    table2: (val) => '<table class="ui celled table small compact striped">' + val + '</table>',
+    table: () => {
+        if(getThemeName().includes('dark')){
+            return '<table class="ui celled table small compact striped inverted">'
+        }
+        return '<table class="ui celled table small compact striped">'
+    },
+    table2: (val) => {
+        if(getThemeName().includes('dark')){
+            return '<table class="ui celled table small compact striped inverted">' + val + '</table>'
+        }
+        return '<table class="ui celled table small compact striped">' + val + '</table>'
+    },
     thead: () => '<thead>',
     tbody: () => '<tbody>',
     tr: () => '<tr>',
