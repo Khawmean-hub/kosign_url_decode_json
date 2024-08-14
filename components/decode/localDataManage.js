@@ -106,7 +106,11 @@ function buildJsonMenuList() {
     $('.btn_box_close').dropdown();
 
     if(getThemeName().includes('dark')){
-        $('#save_data_rec [style="background: #f5f5f5"]').attr('style', 'background: #151515')
+        if(getThemeName().includes('dark3')){
+            $('#save_data_rec .box').attr('style', 'background-image: radial-gradient( circle farthest-corner at 3.2% 49.6%,  rgba(80,12,139,0.87) 0%, rgba(161,10,144,0.72) 83.6% )')
+        }else {
+            $('#save_data_rec [style="background: #f5f5f5"]').attr('style', 'background: #151515')
+        }
     }
 }
 
