@@ -1,30 +1,4 @@
 
-:root {
-    /* backround */
-    --b-white: #000000;
-    --b-m-white: #202020;
-
-
-    /* text */
-    --b-black: #b1b1b1;
-    --b-m-black: #c0c0c0;
-    --b-mm-black: #686D76;
-    --b-mmm-black: #b3b3b3;
-
-
-    /* border */
-    --b-border: 1px solid #252525;
-
-    --b-red: #EE4E4E;
-}
-
-
-
-
-
-
-
-
 body.dark2 {
     background: var(--b-m-white) !important;
 }

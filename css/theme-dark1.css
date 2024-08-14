@@ -97,7 +97,7 @@ body.dark1 {
 .dark1 textarea:focus,
 .dark1 .ui.selection.active.dropdown,
 .dark1 .ui.selection.active.dropdown .menu {
-    border-color: var(--b-m-black) !important; /* Change to your desired border color */
+    /* border-color: var(--b-m-black) !important;  */
     box-shadow: none !important
 }
 

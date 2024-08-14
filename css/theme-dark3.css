@@ -1,0 +1,102 @@
+:root {
+    --gr-border: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #ffa470 100%)
+}
+
+body.dark3 {
+    background-color: #4158D0 !important;
+    background-image: linear-gradient(90deg, #4158D0 0%, #C850C0 46%, #ffa470 100%) !important;
+}
+/* navbar */
+.dark3 .my_navbar {
+    background-color: #4158D0 !important;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #ffa470 100%) !important;
+}
+.dark3 .bg_color_light {
+    background-color: #4158D0 !important;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #ffa470 100%) !important;
+}
+.dark3 .txt_color {
+    color: white !important;
+}
+.dark3 .body, .dark3 #right_part,.dark3 #text_compare .box {
+    background-color: #4158D0 !important;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #ffa470 100%) !important;
+}
+
+
+.dark3 .btn_color {
+    background-color: #8BC6EC !important;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%) !important;
+    color: white !important;
+}
+
+.dark3 .btn_color i {
+    color: white !important;
+}
+
+.dark3 .btn_color:hover {
+    background-color: #4158D0 !important;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #ffa470 100%) !important;
+}
+
+.dark3 .btn_color_light {
+    background-image: linear-gradient(43deg, #7a5ff1  51%, #7d45b2  100%);
+    color: white;
+}
+
+.dark3 .btn_color_light:hover {
+    background-color: #8BC6EC !important;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%) !important;
+}
+.dark3 input, .dark3 textarea{
+    background-image: radial-gradient( circle farthest-corner at 3.2% 49.6%,  rgba(80,12,139,0.87) 0%, rgba(161,10,144,0.72) 83.6% ) !important;    
+    /* background-image: linear-gradient(to right, #4776E6 0%, #8E54E9  51%, #4776E6  100%) !important; */
+    
+    color: white !important;
+    /* border-image: var(--gr-border) !important;
+    border-width: 1px;
+    border-style: solid; */
+}
+
+.dark3 .text_fixed_color {
+    color: var(--b-mmm-black) !important;
+}
+.CodeMirror-dialog.CodeMirror-dialog-top {
+    background: white;
+}
+
+.dark3 .CodeMirror{
+    /* border-image: var(--gr-border) !important;
+    border-width: 1px;
+    border-style: solid; */
+    border-radius: 7px;
+    background-image: radial-gradient( circle farthest-corner at 3.2% 49.6%,  rgba(80,12,139,0.87) 0%, rgba(161,10,144,0.72) 83.6% );
+}
+
+
+.dark3 .CodeMirror-gutters, .dark3 .CodeMirror-gutter {
+    background: none !important;
+    border: none;
+}
+
+
+/* Change the focus color for Semantic UI input fields */
+.dark3 input:focus,
+.dark3 textarea:focus,
+.dark3 .ui.selection.active.dropdown,
+.dark3 .ui.selection.active.dropdown .menu {
+    /* border-image: var(--gr-border) !important; 
+    border-width: 1px;
+    border-style: solid; */
+    /* border: 1px solid white !important; */
+    box-shadow: none !important
+}
+
+.dark3 label {
+    color: #c0c0c0 !important;
+}
+
+
+.dark3 i {
+    color: white;
+}
