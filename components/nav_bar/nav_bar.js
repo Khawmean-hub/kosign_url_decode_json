@@ -149,6 +149,6 @@ function onInputLinkImg() {
 
 function onShowSidebar(){
     $('#setting_side_bar')
-    .sidebar('setting', 'transition', 'overlay')
+    .sidebar('setting', 'transition', 'scale down')
     .sidebar('toggle')
 }
