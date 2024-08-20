@@ -168,3 +168,8 @@ body.dark4 {
 .dark4 .ui.info.message {
     color: rgba(86, 255, 255, 0.692) !important;
 }
+
+.dark4 #bg-img-modal {
+    border: 1px solid rgba(255, 255, 255, 0.158) !important;
+    border-radius: 7px;
+}

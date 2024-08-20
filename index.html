@@ -91,7 +91,7 @@
                         <div class="header">Setting</div>
                         <div class="ui dropdown item">
                             <i class="dropdown icon i_color"></i>
-                            <span class="text">Color</span>
+                            <span class="text">Apprearence</span>
                             <div class="menu" style="right: 100% !important;">
                                 <div class="item btn_theme_color" theme="theme-blue">
                                     <a class="ui blue empty circular label large"></a> Blue
@@ -116,6 +116,27 @@
                                 </div>
                                 <div class="item btn_theme_color" theme="dark4">
                                     <a class="ui black empty circular label tiny"><a class="ui blue empty circular label tiny"></a> Gradient2
+                                </div>
+                                <div class="ui divider"></div>
+                                <div class="header">Background Image <span data-tooltip="Recommend for theme Gradient2"><i class="question circle outline icon"></i></span></div>
+                                <div class="item btn-bg-img-none"><i class="ban icon"></i> None</div>
+                                <div class="item btn-bg-img">
+                                    <img class="ui image" src="./image/wp2561560.webp">
+                                </div>
+                                <div class="item btn-bg-img">
+                                    <img class="ui image" src="./image/uwp4306413.gif">
+                                </div>
+                                <div class="item btn-bg-img">
+                                    <img class="ui image" src="./image/wp2757839-wallpaper-gif.gif">
+                                </div>
+                                <div class="item btn-bg-img">
+                                    <img class="ui image" src="./image/14565.gif">
+                                </div>
+                                <div class="item btn-bg-img">
+                                    <img class="ui image" src="./image/wp4609703-mobile-legends-skins-wallpapers.jpg">
+                                </div>
+                                <div class="item btn-bg-img-your">
+                                    <i class="image icon"></i> Your Image
                                 </div>
                             </div>
                         </div>
@@ -327,6 +348,41 @@
     <div id="message-block"></div>
 
     <input type="hidden" name="" id="tem_input">
+
+
+<!-- Modal -->
+<div class="ui basic tiny modal bg_color_light" id="bg-img-modal">
+    <div class="header">
+      Background Image Upload
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field">
+                <label for="">URL link</label>
+                <div class="ui left icon input">
+                    <input type="text" placeholder="Paste link here" id="link_bg_img_input">
+                    <i class="linkify icon"></i>
+                </div>
+            </div>
+            <div class="field">
+                <label for="">Upload file</label>
+                <div class="ui left icon input">
+                    <input type="text" placeholder="Click to upload image" id="bg_img_upload_text">
+                    <i class="paperclip icon"></i>
+                    <input type="file" accept="image/*" id="bg_img_upload" style="display: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+      <div class="ui black deny button btn_color_light small">
+        Close
+      </div>
+      <div class="ui positive right button btn_color small" id="btn_upload_bg_img">
+       Save
+      </div>
+    </div>
+  </div>
 
 <!-- ========================================== Script ========================================== -->
     <script src="util/static.js"></script>
