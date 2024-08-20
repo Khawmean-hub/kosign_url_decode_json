@@ -376,3 +376,29 @@ iframe {
     width: 100%;
     height: calc(100vh - 45px);
 }
+
+
+#setting_side_bar .btn_theme_color:hover, 
+#setting_side_bar .btn-bg-img:hover {
+    background-color: #ffffff1f;
+    cursor: pointer;
+}
+
+#setting_side_bar .btn_theme_color, 
+#setting_side_bar .btn-bg-img, 
+#setting_side_bar .btn-bg-img-none,
+#setting_side_bar .btn-bg-img-your {
+   color: #929292;
+}
+
+.btn-bg-img-none>div, .btn-bg-img-your>div {
+    border: 1px solid rgb(37, 37, 37);
+    border-radius: 7px;
+    background-color: #181818;
+    text-align: left;
+    padding: 20px;
+}
+.btn-bg-img-none>div:hover, .btn-bg-img-your>div:hover {
+    background-color: #282828;
+    cursor: pointer;
+}

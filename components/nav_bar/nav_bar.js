@@ -7,6 +7,7 @@ $(document).on('click', '#bg_img_upload_text', onClickUpload)
 $(document).on('change', '#bg_img_upload', onChangeFileUploadImg)
 $(document).on('click', '#btn_upload_bg_img', onSaveBgImg)
 $(document).on('input', '#link_bg_img_input', onInputLinkImg)
+$(document).on('click', '.cus_btn', onShowSidebar)
 // $(document).on('click', '.my_navbar .item:eq(1)', onClickHtml2Js)
 // $(document).on('click', '.my_navbar .item:eq(4)', onClickTextCompare)
 
@@ -144,4 +145,10 @@ function onInputLinkImg() {
     window.lastAtion = 'link'
     const link = $(this).val()
     window.tempLink = link;
+}
+
+function onShowSidebar(){
+    $('#setting_side_bar')
+    .sidebar('setting', 'transition', 'overlay')
+    .sidebar('toggle')
 }
