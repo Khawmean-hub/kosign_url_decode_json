@@ -13,16 +13,18 @@ function setThemeName(themeName){
 function getBgImg(){
     const img = localStorage.getItem(BG_IMG) || '';
     if(img){
-        $("body").attr("style", `background-image: url(${img}) !important; background-size: cover;`);
+        $("#theme").attr("style", `background-image: url(${img}) !important; background-size: cover;`);
+        $('body').attr("style", `background-image: url(${img}) !important; background-size: cover !important`);
     }
     return img;
 }
 
 function setBgImg(bgImg){
     if(bgImg){
-        $("body").attr("style", `background-image: url(${bgImg}) !important; background-size: cover;`);
+        $("#theme").attr("style", `background-image: url(${bgImg}) !important; background-size: cover;`);
+        $('body').attr("style", `background-image: url(${bgImg}) !important; background-size: cover !important;`);
     }else{
-        $('body').css('background-image', '');
+        $('#theme').css('background-image', '');
     }
     localStorage.setItem(BG_IMG, bgImg);
 }

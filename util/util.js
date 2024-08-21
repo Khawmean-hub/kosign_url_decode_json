@@ -29,7 +29,7 @@ function copyToClipboard(str){
     if(str){
         const $temp = $("<textarea>");
         // Append the temporary text area element to the body
-        $("body").append($temp);
+        $("#theme").append($temp);
         // Set the value of the temporary text area to the text to be copied
         $temp.val(str).select();
         // Execute the copy command

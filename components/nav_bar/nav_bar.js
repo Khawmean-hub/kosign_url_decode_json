@@ -18,7 +18,7 @@ $(document).on('click', '.cus_btn', onShowSidebar)
 function onChangeThemeColor() {
     const themeText = $(this).attr('theme')
     if (themeText.includes('dark')) {
-        $('body').removeAttr('class').addClass(themeText)
+        $('#theme').removeAttr('class').addClass(themeText)
         $('.ui.input,.ui.checkbox, .ui.modal, .ui.form, .ui.table').addClass('inverted')
         if (themeText.includes('dark3')) {
             $('#save_data_rec .box').attr('style', 'border: none; background-image: radial-gradient( circle farthest-corner at 3.2% 49.6%, rgba(161,10,144,0.72) 0%,  rgba(80,12,139,0.87) 83.6%);')
@@ -32,7 +32,7 @@ function onChangeThemeColor() {
         setThemeName(themeText);
     } else {
         const theme = 'theme-light ' + themeText;
-        $('body').removeAttr('class').addClass(theme)
+        $('#theme').removeAttr('class').addClass(theme)
         $('.ui.input, .ui.checkbox, .ui.modal, .ui.form, .ui.table').removeClass('inverted')
         $('#save_data_rec [style="background: #151515"]').attr('style', 'background: #f5f5f5')
         editroLight()
@@ -54,7 +54,7 @@ function onLoadTheme() {
             // $('.ui.input, .ui.checkbox, .ui.modal, .ui.form, .ui.table').removeClass('inverted')
             // editroLight()
         }
-        $('body').removeAttr('class').addClass(savedTheme)
+        $('#theme').removeAttr('class').addClass(savedTheme)
     }
     $('#main-content').show()
     $('#body_loading_page').removeClass('active')
@@ -149,6 +149,8 @@ function onInputLinkImg() {
 
 function onShowSidebar(){
     $('#setting_side_bar')
-    .sidebar('setting', 'transition', 'scale down')
+    .sidebar({
+        transition: 'scale down'
+    })
     .sidebar('toggle')
 }

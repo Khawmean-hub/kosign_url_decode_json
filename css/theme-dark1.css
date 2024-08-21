@@ -25,7 +25,7 @@
 
 
 
-body.dark1 {
+#theme.dark1 {
     background: var(--b-m-white) !important;
 }
 /* navbar */

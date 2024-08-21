@@ -308,7 +308,7 @@ function onMakeNewDrage() {
         try {
             let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
             width=600,height=300,left=100,top=100`;
-            open(`popup.html?_THEME_=${$('body').attr('class')}&&_JSON_=${decodeURIComponent(JSON.stringify(newJson))}`, 'test', params);
+            open(`popup.html?_THEME_=${$('#theme').attr('class')}&&_JSON_=${decodeURIComponent(JSON.stringify(newJson))}`, 'test', params);
         } catch (e) {
             return;
         }

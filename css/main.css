@@ -336,7 +336,7 @@ textarea {
 
 
 
-body {
+#theme {
     background: rgb(247 249 255);
 }
 
@@ -401,4 +401,9 @@ iframe {
 .btn-bg-img-none>div:hover, .btn-bg-img-your>div:hover {
     background-color: #282828;
     cursor: pointer;
+}
+
+#theme {
+    width: 100vw;
+    height: 100vh;
 }

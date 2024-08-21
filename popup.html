@@ -70,11 +70,13 @@
         }
         
         body {
-            background-color: white !important;
+            background-color: white;
         }
     </style>
 </head>
-<body class="">
+<body>
+   <div id="theme">
+
    
     <div class="my_container2">
         <div style="display: grid; grid-template-columns: auto auto;">
@@ -99,7 +101,7 @@
         <div id="table-container3" style="display: none; overflow-x: auto;"></div>
 
     </div>
-
+</div>
 
 
 <!-- ========================================== Script ========================================== -->
@@ -122,7 +124,7 @@
             try{
                 const json = JSON.parse(decodeURIComponent(window.location.search).split("_JSON_=")[1])
                 const theme = decodeURIComponent(window.location.search).split("_THEME_=")[1].split('&&')[0]
-                $('body').attr('class', theme)
+                $('#theme').attr('class', theme)
                
                 popUpEditor.setValue(json.text)
                 
