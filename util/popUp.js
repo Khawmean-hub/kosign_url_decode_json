@@ -19,6 +19,7 @@ function onError({description="Error",title="Error",btnName='OK' ,callBack = ()=
     $('#pop-main').append(generateError('err'+id, translate(btnName, local), translate(title, local), description, '#F44336')); // Append modal to body
     
     $('#err'+id).modal({duration: modalDuration}).modal('show'); // show modal
+    $('body').removeClass('dimmable').css('height', 'auto');
 
     // apply function for button
     $('#err'+id+' .actions-single .button').click(function(){
@@ -37,6 +38,7 @@ function onInfo({description="Information",title="Information",btnName='OK' ,cal
     $('#pop-main').append(generateError('err'+id, translate(btnName, local), translate(title, local), description, '#154461')); // Append modal to body
     
     $('#err'+id).modal({duration: modalDuration}).modal('show'); // show modal
+    $('body').removeClass('dimmable').css('height', 'auto');
 
     // apply function for button
     $('#err'+id+' .actions-single .button').click(function(){
@@ -54,6 +56,7 @@ function onSuccess({description="Success",title="Success",btnName='OK' ,callBack
     $('#pop-main').append(generateError('err'+id, translate(btnName, local), translate(title, local), description, '#2E7D31')); // Append modal to body
     
     $('#err'+id).modal({duration: modalDuration}).modal('show'); // show modal
+    $('body').removeClass('dimmable').css('height', 'auto');
 
     // apply function for button
     $('#err'+id+' .actions-single .button').click(function(){
@@ -71,6 +74,7 @@ function onWaring({description="Warning",title="Warning",btnName='OK' ,callBack 
     $('#pop-main').append(generateError('err'+id, translate(btnName, local), translate(title, local), description, '#c5bc13')); // Append modal to body
     
     $('#err'+id).modal({duration: modalDuration}).modal('show'); // show modal
+    $('body').removeClass('dimmable').css('height', 'auto');
 
     // apply function for button
     $('#err'+id+' .actions-single .button').click(function(){
@@ -98,6 +102,7 @@ function onConfirm({title = "Confirm", description = "Do you want to delete this
     $('#pop-main').append(generateConfirm('err'+id, translate(cancelButtonName, local), translate(confirmButtonName, local), translate(title, local), description)); // Append modal to body
     
     $('#err'+id).modal({duration: modalDuration}).modal('show'); // show modal
+    $('body').removeClass('dimmable').css('height', 'auto');
 
     // apply function for button Confirm
     $('#err'+id+' .positive').click(function(){

@@ -107,6 +107,7 @@ function onChnageBgImageNone() {
 }
 function onChnageBgImageYour() {
     $('#bg-img-modal').modal('show')
+    $('body').removeClass('dimmable').css('height', 'auto');
 }
 
 function onClickUpload() {

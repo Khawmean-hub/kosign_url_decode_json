@@ -506,6 +506,7 @@ function events() {
 
     $('#new_project_button').click(function () {
         $('#new_project_modal').modal('show');
+        $('body').removeClass('dimmable').css('height', 'auto');
     })
 
     $('#exclude_txt').on('input', function () {
@@ -528,6 +529,7 @@ function events() {
             return;
         }
         $('#replace_management_modal').modal('show');
+        $('body').removeClass('dimmable').css('height', 'auto');
     })
 
     $("#btn_save_new_project").click(function () {
@@ -571,6 +573,7 @@ function events() {
 
     $('#btn_import_data').click(function () {
         $('#import_data_modal').modal('show');
+        $('body').removeClass('dimmable').css('height', 'auto');
     })
 
     $('#btn_save_import_data').click(function () {
