@@ -49,14 +49,14 @@
         </div>
 
         <div class="fields">
-            <textarea id="grid_line" style="line-height: 25px;" rows="10"></textarea>
-            <div class="field" style="width: 150px;" id="duration_field">
+            <textarea id="grid_line" style="line-height: 25px; background: none !important; border: none !important" rows="10"></textarea>
+            <div class="field" style="width: 150px; z-index: 2;" id="duration_field">
                 <label> <label data-tooltip="Audio has only time start \nVideo has time start and time end" data-inverted="" data-position="top left"><i class="grey question circle outline icon"></i></label> Duration <i id="btn_minus" class="minus icon grey"
                         style="margin-left: 5px; margin-right: 5px;"></i> <i class="plus icon grey"
                         id="btn_plus"></i></label>
                 <textarea id="timer" rows="10" style="resize: none;line-height: 25px;"></textarea>
             </div>
-            <div class="fourteen wide field">
+            <div class="fourteen wide field" style="z-index: 3;">
                 <label><label data-tooltip="If you want italic use: <i>text...</i> (only .src)" data-inverted="" data-position="top left"><i class="question circle outline icon grey"></i></label>  Lyric</label>
                 <textarea id="lyric" rows="10" style="line-height: 25px;"></textarea>
             </div>

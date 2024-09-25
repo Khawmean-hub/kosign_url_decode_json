@@ -287,6 +287,7 @@ function getProjectFromLocal() {
     if (ls) {
         return JSON.parse(ls);
     }
+    return defaultProject;
 }
 
 function confirmSaveDefault() {
