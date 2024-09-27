@@ -134,3 +134,102 @@ function applyEditorHtmlMix(id, isReadOnly = false, line = true){
 function getRandId() {
     return Math.floor(Math.random() * (100000000 - 100000 + 1) + 100000) // Generate ID for modal
 }
+
+
+
+// for json color
+const jsonEditorStyleDef = {
+    lineNumer: {
+        color: '',
+        selector: '.CodeMirror-linenumber'
+    },
+    stringVal: {
+        color: '',
+        selector: '.cm-string'
+    },
+    numberVal: {
+        color: '',
+        selector: '.cm-number'
+    },
+    booleanVal: {
+        color: '',
+        selector: '.cm-atom'
+    },
+    curlybraces: {
+        color: '',
+        selector: '.CodeMirror'
+    },
+    key: {
+        color: '',
+        selector: '.cm-property'
+    },
+}
+
+function applyJsonStyle(){
+    var headerStyle = ''
+    if(window.jsonStyleObj){
+        var keys = Object.keys(window.jsonStyleObj)
+        keys.map(v=>{
+            var color = window.jsonStyleObj[v]['color']
+            var select = window.jsonStyleObj[v]['selector']
+            if(color){
+                headerStyle += `#theme ${select}{ color: ${color} !important;}\n` 
+            }
+        })
+        
+    }
+    $('#headerStyle_cust').empty().append(headerStyle);
+}
+
+function onChangeJsonColor(){
+    var colorData = $(this).val()
+    var key = $(this).attr('json-color-key')
+    if(colorData){
+        window.jsonStyleObj[key]['color'] = colorData;
+        setJsonStyleData()
+        applyJsonStyle()
+    }
+    
+    
+}
+
+function onLoadJsonStyle(){
+    getJsonStyleData()
+    applyJsonStyle()
+    var keys = Object.keys(window.jsonStyleObj)
+    keys.map(v=>{
+        $('[json-color-key="'+v+'"]').val(window.jsonStyleObj[v]['color'])
+    })
+}
+
+function onClearJsonCss(){
+    window.jsonStyleObj = Object.assign({}, {
+        lineNumer: {
+            color: '',
+            selector: '.CodeMirror-linenumber'
+        },
+        stringVal: {
+            color: '',
+            selector: '.cm-string'
+        },
+        numberVal: {
+            color: '',
+            selector: '.cm-number'
+        },
+        booleanVal: {
+            color: '',
+            selector: '.cm-atom'
+        },
+        curlybraces: {
+            color: '',
+            selector: '.CodeMirror'
+        },
+        key: {
+            color: '',
+            selector: '.cm-property'
+        },
+    })
+    setJsonStyleData()
+    applyJsonStyle()
+    $('.jsonStyleForm input').val('')
+}

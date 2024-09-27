@@ -28,3 +28,17 @@ function setBgImg(bgImg){
     }
     localStorage.setItem(BG_IMG, bgImg);
 }
+
+
+function getJsonStyleData(){
+    const jsonData = localStorage.getItem('json_style_data');
+    if(jsonData){
+        window.jsonStyleObj = JSON.parse(jsonData);
+    }else {
+        window.jsonStyleObj = Object.assign({}, jsonEditorStyleDef)
+    }
+}
+
+function setJsonStyleData(){
+    localStorage.setItem('json_style_data', JSON.stringify(window.jsonStyleObj));
+}

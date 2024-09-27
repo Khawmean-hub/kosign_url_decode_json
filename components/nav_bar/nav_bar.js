@@ -10,6 +10,9 @@ $(document).on('input', '#link_bg_img_input', onInputLinkImg)
 $(document).on('click', '.cus_btn', onShowSidebar)
 // $(document).on('click', '.my_navbar .item:eq(1)', onClickHtml2Js)
 // $(document).on('click', '.my_navbar .item:eq(4)', onClickTextCompare)
+$(document).on('input', '.jsonStyleForm input', onChangeJsonColor)
+$(document).on('click', '#btn_clear_json_css', onClearJsonCss)
+$(document).on('click', '#btn_focus_mode', onFocusMode)
 
 //============================================ functions ============================================
 /**
@@ -154,4 +157,23 @@ function onShowSidebar(){
         transition: 'scale down'
     })
     .sidebar('toggle')
+}
+
+
+
+function onFocusMode(){
+    if($('.my_navbar').eq(0).css('display') != 'flex'){
+        $('.my_navbar').eq(0).css('display', 'flex')
+        $('.controll_div').show()
+        $('#layout').eq(0).css('padding-top', '42px')
+        $('.right_mmmm').css('margin-top', '20px')
+        $('#layout .CodeMirror').css('height', 'calc(100vh - 300px)')
+
+    }else{
+        $('.my_navbar').eq(0).css('display', 'none')
+        $('.controll_div').hide()
+        $('#layout').eq(0).css('padding-top', '0')
+        $('.right_mmmm').css('margin-top', '0')
+        $('#layout .CodeMirror').css('height', 'calc(100vh - 70px)')
+    }
 }

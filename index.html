@@ -53,18 +53,21 @@
     <script src="library/codemirror/js/xml.js"></script>
     <script src="library/codemirror/js/codemirrorjs.js"></script>
     <script src="library/codemirror/js/codemirror-mod.js"></script>
-    
+
+    <style id="headerStyle_cust">
+
+    </style>
 </head>
 
 <body>
     <div id="theme" class="theme-dark theme-blue">
-    <div>
-        <div class="ui active inverted" id="body_loading_page">
-          <div class="ui text loader">Loading</div>
+        <div>
+            <div class="ui active inverted" id="body_loading_page">
+                <div class="ui text loader">Loading</div>
+            </div>
+            <p></p>
         </div>
-        <p></p>
-    </div>
-    <div class="ui sidebar large vertical menu right inverted bg_color_light" id="setting_side_bar">
+        <div class="ui sidebar large vertical menu right inverted bg_color_light" id="setting_side_bar">
             <div class="menu">
                 <div class="header item">Theme</div>
                 <div class="item btn_theme_color" theme="theme-blue">
@@ -74,27 +77,91 @@
                     <a class="ui teal empty circular label tiny"></a> Teal
                 </div>
                 <div class="item btn_theme_color" theme="theme-green">
-                    <a class="ui green empty circular label tiny" ></a> Green
+                    <a class="ui green empty circular label tiny"></a> Green
                 </div>
                 <div class="item btn_theme_color" theme="theme-red">
-                    <a class="ui red empty circular label tiny" ></a> Red
+                    <a class="ui red empty circular label tiny"></a> Red
                 </div>
                 <div class="item btn_theme_color" theme="dark1">
-                    <a class="ui black empty circular label tiny" ></a> Dark
+                    <a class="ui black empty circular label tiny"></a> Dark
                 </div>
                 <div class="item btn_theme_color" theme="dark2">
-                    <a class="ui black empty circular label tiny"><a class="ui orange empty circular label tiny"></a> Dark Orange
+                    <a class="ui black empty circular label tiny"><a class="ui orange empty circular label tiny"></a>
+                        Dark Orange
                 </div>
                 <div class="item btn_theme_color" theme="dark3">
-                    <a class="ui blue empty circular label tiny"><a class="ui orange empty circular label tiny"></a> Gradient1
+                    <a class="ui blue empty circular label tiny"><a class="ui orange empty circular label tiny"></a>
+                        Gradient1
                 </div>
                 <div class="item btn_theme_color" theme="dark4">
-                    <a class="ui black empty circular label tiny"><a class="ui blue empty circular label tiny"></a> Gradient2
+                    <a class="ui black empty circular label tiny"><a class="ui blue empty circular label tiny"></a>
+                        Gradient2
                 </div>
             </div>
             <div class="ui divider"></div>
+
+            <div>
+                <div class="menu">
+                    <div class="header item">Json Editor Custom Color</div>
+                </div>
+                <div style="padding:  0 20px;">
+                    <div class="jsonStyleForm">
+                        <div>
+                            <label for="lineNumer">Line Number</label>
+                        </div>
+                        <div>
+                            <input type="color" name="lineNumer" id="" json-color-key="lineNumer">
+                        </div>
+                    </div>
+                    <div class="jsonStyleForm">
+                        <div>
+                            <label for="curlybraces">Curlybrac</label>
+                        </div>
+                        <div>
+                            <input type="color" name="" id="curlybraces" json-color-key="curlybraces">
+                        </div>
+                    </div>
+                    <div class="jsonStyleForm">
+                        <div>
+                            <label for="jsonKey">Key</label>
+                        </div>
+                        <div>
+                            <input type="color" name="" id="jsonKey" json-color-key="key">
+                        </div>
+                    </div>
+                    <div class="jsonStyleForm">
+                        <div>
+                            <label for="stringVal">String</label>
+                        </div>
+                        <div>
+                            <input type="color" name="" id="stringVal" json-color-key="stringVal">
+                        </div>
+                    </div>
+                    <div class="jsonStyleForm">
+                        <div>
+                            <label for="numberVal">Number</label>
+                        </div>
+                        <div>
+                            <input type="color" name="" id="numberVal" json-color-key="numberVal">
+                        </div>
+                    </div>
+                    <div class="jsonStyleForm">
+                        <div>
+                            <label for="booleanVal">Boolean</label>
+                        </div>
+                        <div>
+                            <input type="color" name="" id="booleanVal" json-color-key="booleanVal">
+                        </div>
+                    </div>
+                    <button class="ui fluid small button black" id="btn_clear_json_css" style="margin-top: 10px;">Reset
+                        all</button>
+                </div>
+            </div>
+
+            <div class="ui divider"></div>
             <div class="menu">
-                <div class="header item">Background Image <span data-tooltip="Recommend for theme Gradient2"><i class="question circle outline icon"></i></span></div>
+                <div class="header item">Background Image <span data-tooltip="Recommend for theme Gradient2"><i
+                            class="question circle outline icon"></i></span></div>
                 <div class="item btn-bg-img-none">
                     <div><i class="ban icon"></i> None</div>
                 </div>
@@ -117,240 +184,280 @@
                     <img class="ui rounded image" src="./image/wp4609703-mobile-legends-skins-wallpapers.jpg">
                 </div>
             </div>
-      </div>
-      <div class="pusher">
-        <div id="main-content" style="display: none;">
-            <div class="ui secondary menu inverted fixed small bg_color my_navbar">
-                <div style="display: flex; overflow-x: auto">
-                    <div class="active item" data-tab="first">Decode</div>
-                    <div class="item" data-tab="jshtml" onclick="navi.html2js()">HTML 2 Js</div>
-                    <!-- <div class="item" data-tab="sortEx">Sort File Name</div> -->
-                    <div class="item" data-tab="second" onclick="navi.jex()">Jex Convert</div>
-                    <!-- <div class="item" data-tab="calendar_excel">Calendar excel</div> -->
-                    <div class="item" data-tab="subtitle_maker" onclick="navi.subtitle()">Subtitle maker</div>
-                    <div class="item" data-tab="text_compare" onclick="navi.txtCompare()" id="btn_text_compare_page">Text Compare</div>
-                </div>
-                <div class="ui dropdown item">
-                    Other
-                    <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <a href="https://json-diff.com/" target="_blank" class="item">JSON Diff</a>
-                        <a href="https://transform.tools/json-to-typescript" target="_blank" class="item">Transform</a>
-                        <a href="https://dbdiagram.io/d?utm_referrer=https%3A%2F%2Fwww.google.com%2F" target="_blank" class="item">DB Diagram</a>
-                        <a href="https://khawmean-hub.github.io/tinynoted/" target="_blank" class="item">TinyNoted</a>
+        </div>
+        <div class="pusher">
+            <div id="main-content" style="display: none;">
+                <div class="ui secondary menu inverted fixed small bg_color my_navbar">
+                    <div style="display: flex; overflow-x: auto">
+                        <div class="active item" data-tab="first">Decode</div>
+                        <div class="item" data-tab="jshtml" onclick="navi.html2js()">HTML 2 Js</div>
+                        <!-- <div class="item" data-tab="sortEx">Sort File Name</div> -->
+                        <div class="item" data-tab="second" onclick="navi.jex()">Jex Convert</div>
+                        <!-- <div class="item" data-tab="calendar_excel">Calendar excel</div> -->
+                        <div class="item" data-tab="subtitle_maker" onclick="navi.subtitle()">Subtitle maker</div>
+                        <div class="item" data-tab="text_compare" onclick="navi.txtCompare()"
+                            id="btn_text_compare_page">Text Compare</div>
                     </div>
-                </div>
-                <div class="right menu">
-                    <div class="ui icon dropdown button circular cus_btn">
-                        <i class="cog icon"></i>
-                        <!-- <div class="menu">
+                    <div class="ui dropdown item">
+                        Other
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a href="https://json-diff.com/" target="_blank" class="item">JSON Diff</a>
+                            <a href="https://transform.tools/json-to-typescript" target="_blank"
+                                class="item">Transform</a>
+                            <a href="https://dbdiagram.io/d?utm_referrer=https%3A%2F%2Fwww.google.com%2F"
+                                target="_blank" class="item">DB Diagram</a>
+                            <a href="https://khawmean-hub.github.io/tinynoted/" target="_blank"
+                                class="item">TinyNoted</a>
+                        </div>
+                    </div>
+                    <div class="right menu">
+                        <div class="ui icon dropdown button circular cus_btn">
+                            <i class="cog icon"></i>
+                            <!-- <div class="menu">
                             <div class="header">Setting</div>
                             <div class="ui item" id="btn_show_sidebar">
                                 <span class="text">Apprearence</span>
                             </div>
                         </div> -->
+                        </div>
                     </div>
                 </div>
-            </div>
-    
-            <div class="ui bottom attached active tab ">
-                <div class="ui bottom attached tab active" data-tab="first">
-                    <div class="layout" id="layout">
-                        <div class="floated_bottom">
-                            <button class="ui circular icon button huge btn_color btn_show_right"><i class="history icon"></i></button>
-                        </div>
-                        <!-- left -->
-                        <div id="left_part">
-                            <div class="left_part bg_color_light" >
-                                <div class="ui form small">
-                                    <h3 class="ui header txt_color">URI Decode</h3>
-                                    <div class="field">
-                                        <label class="text_fixed_color" for="url_text">Paste here</label>
-                                        <div class="ui input actions">
-                                            <div id="btn_paste_url" data-tooltip="Paste" data-inverted="" data-position="bottom left" class="ui button icon btn_color_light"><i class="paste icon"></i></div>
-                                            <input type="text" id="url_text" placeholder="Paste url encode here">
-                                        </div>
-                                    </div>
-                                    <div class="field">
-    
-                                        <label class="text_fixed_color">Result</label>
-    
-                                        <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted=""
-                                                data-position="top left" class="ui icon button tiny btn_color_light btn_keys_json">Key to JSON
-                                        </button>
-                                        <button data-tooltip="Ex: getData => GET_DATA" data-inverted="" data-position="top left"
-                                                class="ui icon button btn_color_light tiny btn_snake_case">Snake Case
-                                        </button>
-                                        <button data-tooltip="Ex: GET_DATA => getData" data-inverted="" data-position="top left"
-                                                class="ui icon button btn_color_light tiny btn_camel_case">Camel Case
-                                        </button>
-    
-    
-    
-                                        <div class="ui icon buttons tiny right floated">
-                                            <button data-tooltip="Format" data-inverted="" class="ui icon button btn_color_light tiny btn_format_url_result_box"><i class="magic icon"></i></button>
-                                            <button data-tooltip="View as Table" data-inverted="" class="ui button icon btn_color_light tiny btn_2table_url_result_box">
-                                                <i class="table icon"></i>
-                                            </button>
-                                            <button data-tooltip="Save in local" data-inverted="" data-position="top right" class="ui button btn_save btn_color_light"><i class="save icon"></i></button>
-                                            <button data-tooltip="Copy" data-inverted="" data-position="top right"  class="ui button btn_copy btn_color_light"><i class="copy icon"></i></button>
-                                        </div>
-    
-    
-                                        <div class="ui form" style="margin-top: 10px;">
+
+                <div class="ui bottom attached active tab ">
+                    <div class="ui bottom attached tab active" data-tab="first">
+                        <div class="layout" id="layout">
+                            <div class="floated_bottom">
+                                <button class="ui circular icon button small btn_color_light" id="btn_focus_mode"><i
+                                        class="search plus icon"></i></button>
+                                <button class="ui circular icon button huge btn_color btn_show_right"><i
+                                        class="history icon"></i></button>
+                            </div>
+                            <!-- left -->
+                            <div id="left_part">
+                                <div class="left_part bg_color_light">
+                                    <div class="ui form small">
+                                        <div class="controll_div">
+                                            <h3 class="ui header txt_color">URI Decode</h3>
                                             <div class="field">
-                                                <!--                                <label>Result</label>-->
-                                                <!-- <textarea rows="26" id="url_result"></textarea> -->
-                                                <!-- <pre id="url_result" contenteditable="true" spellcheck="false" style="margin: 0"></pre> -->
-                                                 <textarea name="" id="url_result"></textarea>
+                                                <label class="text_fixed_color" for="url_text">Paste here</label>
+                                                <div class="ui input actions">
+                                                    <div id="btn_paste_url" data-tooltip="Paste" data-inverted=""
+                                                        data-position="bottom left"
+                                                        class="ui button icon btn_color_light"><i
+                                                            class="paste icon"></i></div>
+                                                    <input type="text" id="url_text"
+                                                        placeholder="Paste url encode here">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div id="table-container" style="display: none; overflow-x: auto"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Right -->
-                        <div id="right_part" class="right_part bg_color_light">
-                            <div style="display: flex; justify-content: space-between;">
-                                <div>
-                                    <h4 class="text_fixed_color">Recent</h4>
-                                </div>
-                                <div>
-                                    <button class="ui button mini btn_clear_data btn_color_light">Clear Data</button>
-                                    <!--                                <div class="ui label btn_zoom2">-->
-                                    <!--                                    <i class="zoom icon"></i> Zoom In-->
-                                    <!--                                </div>-->
-                                </div>
-    
-                            </div>
-                            <div style="height: 67px; margin-top: 5px;">
-                                <div>
-                                    <div style="display: flex; overflow-x: auto; height: 83px" id="save_data_rec">
-                                        <div style="padding: 30px; border-radius: 10px;">
-                                            <h4 style="color: rgb(146, 146, 146);">
-                                                No Data</h4>
-                                        </div>
-                                    </div>
-                                </div>
-    
-                            </div>
-                            <div class="mt_20">
-                                <div style="display: grid; grid-template-columns: auto auto;">
-                                    <div>
-                                        <h4 id="box_fixed_active_text" class="m_p_0 text_fixed_color" active-json-id="">Result</h4>
-                                        <small class="text_fixed_color" id="box_fixed_active_date">Click on menu above to show</small>
-                                    </div>
-    
-                                    <div style="text-align: right;">
-                                        <button class="ui button tiny btn_color_light disabled" id="btn_compare_json">Compare</button>
-                                        <div class="ui icon buttons tiny right floated">
-                                            <button data-tooltip="Format" data-inverted="" class="ui icon button tiny btn_color_light btn_format2"><i class="magic icon"></i></button>
-    
-                                            <button data-tooltip="View as Table" data-inverted="" class="ui button icon tiny btn_color_light btn_2table2">
-                                                <i class="table icon"></i>
+                                        <div class="field">
+
+                                            <label class="text_fixed_color controll_div" style="padding-top: 15px;">Result</label>
+
+                                            <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted=""
+                                                data-position="top left"
+                                                class="ui icon button tiny btn_color_light btn_keys_json controll_div">Key to JSON
                                             </button>
-                                            <button data-tooltip="Copy" data-inverted="" class="ui icon button tiny btn_color_light btn_copy2"><i class="copy icon"></i></button>
-                                            <button data-tooltip="Open new window" data-inverted=""
-                                            data-position="top right" class="ui button icon tiny btn_color_light" id="btn_make_drag_box"><i
-                                                class="external square alternate icon"></i></button>
+                                            <button data-tooltip="Ex: getData => GET_DATA" data-inverted=""
+                                                data-position="top left"
+                                                class="ui icon button btn_color_light tiny btn_snake_case controll_div">Snake Case
+                                            </button>
+                                            <button data-tooltip="Ex: GET_DATA => getData" data-inverted=""
+                                                data-position="top left"
+                                                class="ui icon button btn_color_light tiny btn_camel_case controll_div">Camel Case
+                                            </button>
+
+
+
+                                            <div class="ui icon buttons tiny right floated controll_div">
+                                                <button data-tooltip="Format" data-inverted=""
+                                                    class="ui icon button btn_color_light tiny btn_format_url_result_box"><i
+                                                        class="magic icon"></i></button>
+                                                <button data-tooltip="View as Table" data-inverted=""
+                                                    class="ui button icon btn_color_light tiny btn_2table_url_result_box">
+                                                    <i class="table icon"></i>
+                                                </button>
+                                                <button data-tooltip="Save in local" data-inverted=""
+                                                    data-position="top right"
+                                                    class="ui button btn_save btn_color_light"><i
+                                                        class="save icon"></i></button>
+                                                <button data-tooltip="Copy" data-inverted="" data-position="top right"
+                                                    class="ui button btn_copy btn_color_light"><i
+                                                        class="copy icon"></i></button>
+                                            </div>
+
+
+                                            <div class="ui form" style="margin-top: 10px;">
+                                                <div class="field">
+                                                    <!--                                <label>Result</label>-->
+                                                    <!-- <textarea rows="26" id="url_result"></textarea> -->
+                                                    <!-- <pre id="url_result" contenteditable="true" spellcheck="false" style="margin: 0"></pre> -->
+                                                    <textarea name="" id="url_result"></textarea>
+                                                </div>
+                                            </div>
+                                            <div id="table-container" style="display: none; overflow-x: auto"></div>
                                         </div>
                                     </div>
-    
-                                </div>
-    
-                                <div class="save1" style="margin-top: 10px">
-                                    <!-- <pre contenteditable="true" style="margin: 0" spellcheck="false"></pre> -->
-                                     <textarea name="" id="right_editor_box"></textarea>
                                 </div>
                             </div>
-                            <div id="table-container2" style="display: none; overflow-x: auto"></div>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Second Tab  -->
-                <!-- ================================================================= -->
-                <div class="ui bottom attached tab" data-tab="second">
-                    <div id="jex"></div>
-                </div>
-    
-    
-                <!-- Calendar tab  -->
-                <!-- ================================================================= -->
-                <div class="ui bottom attached tab pt_42" data-tab="calendar_excel">
-                    <div class="my_container">
-                        <div class="ui form">
-                            <div class="field">
-                                <label>Excel File</label>
-                                <input type="file"
-                                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                                    id="excel_file">
-                            </div>
-    
-                            <div class="two fields">
-                                <div class="three wide field">
-                                    <label>Table Name</label>
-                                    <input type="text" value="txaf_schd" id="table_name" oninput="readExcel()">
-                                </div>
-                                <div class="three wide field">
-                                    <label>Change Sheet</label>
-                                    <select class="ui fluid search dropdown" id="sheet_select" onchange="onChangeSheet()">
-                                    </select>
-                                </div>
-                                <div class="three wide field">
-                                    <label>Change year</label>
-                                    <select class="ui fluid search dropdown" id="year_select" onchange="readExcel()">
-                                    </select>
-                                </div>
-                            </div>
-    
-                            <div class="field">
-                                <label>Result <small style="color:#3743ec;" id="total_row"></small> <small
-                                        style="color: red" id="duplicate_msg"></small></label>
-                                <div class="ui top attached tabular menu">
-                                    <div class="active item" data-tab="cal_result">SQL</div>
-                                    <div class="item" data-tab="cal_table">Table</div>
-                                </div>
-                                <div class="ui bottom attached active tab segment" data-tab="cal_result">
-                                    <textarea rows="40" id="result_sql" spellcheck="false"></textarea>
-                                </div>
-                                <div class="ui bottom attached tab segment" data-tab="cal_table">
-                                    <div id="cal_table">
-    
+                            <!-- Right -->
+                            <div id="right_part" class="right_part bg_color_light">
+                                <div class="controll_div">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <div>
+                                            <h4 class="text_fixed_color">Recent</h4>
+                                        </div>
+                                        <div>
+                                            <button class="ui button mini btn_clear_data btn_color_light">Clear
+                                                Data</button>
+                                            <!--                                <div class="ui label btn_zoom2">-->
+                                            <!--                                    <i class="zoom icon"></i> Zoom In-->
+                                            <!--                                </div>-->
+                                        </div>
+
+                                    </div>
+                                    <div style="height: 67px; margin-top: 5px;">
+                                        <div>
+                                            <div style="display: flex; overflow-x: auto; height: 83px"
+                                                id="save_data_rec">
+                                                <div style="padding: 30px; border-radius: 10px;">
+                                                    <h4 style="color: rgb(146, 146, 146);">
+                                                        No Data</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
-                                <!--                        <label>Result</label>-->
-                                <!--                        <textarea rows="25" id="result_sql"></textarea>-->
+                                <div class="mt_20 right_mmmm">
+                                    <div style="display: grid; grid-template-columns: auto auto;" class="controll_div">
+                                        <div>
+                                            <h4 id="box_fixed_active_text" class="m_p_0 text_fixed_color"
+                                                active-json-id="">Result</h4>
+                                            <small class="text_fixed_color" id="box_fixed_active_date">Click on menu
+                                                above to show</small>
+                                        </div>
+
+                                        <div style="text-align: right;">
+                                            <button class="ui button tiny btn_color_light disabled"
+                                                id="btn_compare_json">Compare</button>
+                                            <div class="ui icon buttons tiny right floated">
+                                                <button data-tooltip="Format" data-inverted=""
+                                                    class="ui icon button tiny btn_color_light btn_format2"><i
+                                                        class="magic icon"></i></button>
+
+                                                <button data-tooltip="View as Table" data-inverted=""
+                                                    class="ui button icon tiny btn_color_light btn_2table2">
+                                                    <i class="table icon"></i>
+                                                </button>
+                                                <button data-tooltip="Copy" data-inverted=""
+                                                    class="ui icon button tiny btn_color_light btn_copy2"><i
+                                                        class="copy icon"></i></button>
+                                                <button data-tooltip="Open new window" data-inverted=""
+                                                    data-position="top right"
+                                                    class="ui button icon tiny btn_color_light"
+                                                    id="btn_make_drag_box"><i
+                                                        class="external square alternate icon"></i></button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="save1" style="margin-top: 10px">
+                                        <!-- <pre contenteditable="true" style="margin: 0" spellcheck="false"></pre> -->
+                                        <textarea name="" id="right_editor_box"></textarea>
+                                    </div>
+                                </div>
+                                <div id="table-container2" style="display: none; overflow-x: auto"></div>
                             </div>
                         </div>
                     </div>
-                </div>
-    
-                <!-- HTML 2 JS -->
-                <!-- ====================================================== -->
-                <div class="ui bottom attached tab" data-tab="jshtml">
-                    <div class="pt_40">
-                        <div id="html_2_js"></div>
+
+                    <!-- Second Tab  -->
+                    <!-- ================================================================= -->
+                    <div class="ui bottom attached tab" data-tab="second">
+                        <div id="jex"></div>
                     </div>
-                </div>
-    
-                <!-- Subtitle Maker -->
-                <!-- ====================================================== -->
-                <div class="ui bottom attached tab" data-tab="subtitle_maker">
-                    <div id="subtitle"></div>
-                </div>
-    
-                <!-- Text Compare -->
-                <!-- ====================================================== -->
-                <div class="ui bottom attached tab" data-tab="text_compare">
-                    <div class="pt_40">
-                        <div id="text_compare"></div>
+
+
+                    <!-- Calendar tab  -->
+                    <!-- ================================================================= -->
+                    <div class="ui bottom attached tab pt_42" data-tab="calendar_excel">
+                        <div class="my_container">
+                            <div class="ui form">
+                                <div class="field">
+                                    <label>Excel File</label>
+                                    <input type="file"
+                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                        id="excel_file">
+                                </div>
+
+                                <div class="two fields">
+                                    <div class="three wide field">
+                                        <label>Table Name</label>
+                                        <input type="text" value="txaf_schd" id="table_name" oninput="readExcel()">
+                                    </div>
+                                    <div class="three wide field">
+                                        <label>Change Sheet</label>
+                                        <select class="ui fluid search dropdown" id="sheet_select"
+                                            onchange="onChangeSheet()">
+                                        </select>
+                                    </div>
+                                    <div class="three wide field">
+                                        <label>Change year</label>
+                                        <select class="ui fluid search dropdown" id="year_select"
+                                            onchange="readExcel()">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label>Result <small style="color:#3743ec;" id="total_row"></small> <small
+                                            style="color: red" id="duplicate_msg"></small></label>
+                                    <div class="ui top attached tabular menu">
+                                        <div class="active item" data-tab="cal_result">SQL</div>
+                                        <div class="item" data-tab="cal_table">Table</div>
+                                    </div>
+                                    <div class="ui bottom attached active tab segment" data-tab="cal_result">
+                                        <textarea rows="40" id="result_sql" spellcheck="false"></textarea>
+                                    </div>
+                                    <div class="ui bottom attached tab segment" data-tab="cal_table">
+                                        <div id="cal_table">
+
+                                        </div>
+                                    </div>
+                                    <!--                        <label>Result</label>-->
+                                    <!--                        <textarea rows="25" id="result_sql"></textarea>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HTML 2 JS -->
+                    <!-- ====================================================== -->
+                    <div class="ui bottom attached tab" data-tab="jshtml">
+                        <div class="pt_40">
+                            <div id="html_2_js"></div>
+                        </div>
+                    </div>
+
+                    <!-- Subtitle Maker -->
+                    <!-- ====================================================== -->
+                    <div class="ui bottom attached tab" data-tab="subtitle_maker">
+                        <div id="subtitle"></div>
+                    </div>
+
+                    <!-- Text Compare -->
+                    <!-- ====================================================== -->
+                    <div class="ui bottom attached tab" data-tab="text_compare">
+                        <div class="pt_40">
+                            <div id="text_compare"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-      </div>
     </div>
 
 
@@ -360,41 +467,41 @@
     <input type="hidden" name="" id="tem_input">
 
 
-<!-- Modal -->
-<div class="ui basic tiny modal bg_color_light" id="bg-img-modal">
-    <div class="header">
-      Background Image Upload
-    </div>
-    <div class="content">
-        <div class="ui form">
-            <div class="field">
-                <label for="">URL link</label>
-                <div class="ui left icon input">
-                    <input type="text" placeholder="Paste link here" id="link_bg_img_input">
-                    <i class="linkify icon"></i>
+    <!-- Modal -->
+    <div class="ui basic tiny modal bg_color_light" id="bg-img-modal">
+        <div class="header">
+            Background Image Upload
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <label for="">URL link</label>
+                    <div class="ui left icon input">
+                        <input type="text" placeholder="Paste link here" id="link_bg_img_input">
+                        <i class="linkify icon"></i>
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <label for="">Upload file</label>
-                <div class="ui left icon input">
-                    <input type="text" placeholder="Click to upload image" id="bg_img_upload_text">
-                    <i class="paperclip icon"></i>
-                    <input type="file" accept="image/*" id="bg_img_upload" style="display: none;">
+                <div class="field">
+                    <label for="">Upload file</label>
+                    <div class="ui left icon input">
+                        <input type="text" placeholder="Click to upload image" id="bg_img_upload_text">
+                        <i class="paperclip icon"></i>
+                        <input type="file" accept="image/*" id="bg_img_upload" style="display: none;">
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="actions">
+            <div class="ui black deny button btn_color_light small">
+                Close
+            </div>
+            <div class="ui positive right button btn_color small" id="btn_upload_bg_img">
+                Save
+            </div>
+        </div>
     </div>
-    <div class="actions">
-      <div class="ui black deny button btn_color_light small">
-        Close
-      </div>
-      <div class="ui positive right button btn_color small" id="btn_upload_bg_img">
-       Save
-      </div>
-    </div>
-  </div>
 
-<!-- ========================================== Script ========================================== -->
+    <!-- ========================================== Script ========================================== -->
     <script src="util/static.js"></script>
     <script src="util/popUp.js"></script>
     <script src="data/dataStorage.js"></script>
@@ -405,7 +512,7 @@
     <script src="components/nav_bar/nav_bar.js"></script>
     <script src="components/decode/util.js"></script>
     <script src="components/decode/decode.js"></script>
-    <script src="components/decode/localDataManage.js"></script>    
+    <script src="components/decode/localDataManage.js"></script>
 
     <script src="main.js"></script>
 </body>

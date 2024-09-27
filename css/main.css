@@ -408,3 +408,14 @@ iframe {
     height: 100vh;
     overflow: auto;
 }
+
+
+.jsonStyleForm {
+    display: flex;
+    justify-content: space-between;
+}
+
+.jsonStyleForm label {
+    color: #ccc;
+    font-size: 12px;
+}
