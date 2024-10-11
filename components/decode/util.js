@@ -78,8 +78,9 @@ function isLowerCase(str) {
 }
 
 function camelToSnakeCase(str) {
-    return str.replace(/([A-Z])/g, '_$1').toUpperCase();
+    return str.charAt(0).toUpperCase() + str.slice(1).replace(/([a-z])([A-Z])/g, '$1_$2').replace(/([A-Z])([A-Z][a-z])/g, '$1_$2').toUpperCase();
 }
+
 function snakeToCamelCase(str) {
     return str.toLowerCase().replace(/_([a-z])/g, function (match) {
         return match[1].toUpperCase();
