@@ -20,7 +20,8 @@ function jsonFormat(str){
 
 function getObjectStr(str){
     str = str.replace(/'/g, '"');
-    str = str.replace(/(\w+):/g, '"$1":');
+    // str = str.replace(/(\w+):/g, '"$1":');
+    str = str.replace(/([{,]\s*)(\w+)\s*:/g, '$1"$2":');
     return str;
 }
 
