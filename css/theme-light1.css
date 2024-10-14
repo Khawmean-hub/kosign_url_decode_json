@@ -1,0 +1,183 @@
+:root {
+    --gr-border: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #ffa470 100%)
+}
+
+#theme.light1 {
+    background-color: #96a7ff !important;
+    background-image: linear-gradient(90deg, #8da0ff 0%, #f883f0 46%, #ffa470 100%) !important;
+}
+/* navbar */
+.light1 .my_navbar {
+    background-color: #ffffffc2 !important;
+}
+.light1 .my_navbar .item {
+    color: #000000 !important;
+}
+#theme.light1 .my_navbar .active.item {
+    color: #000000 !important;
+}
+
+.light1 .my_navbar .item:hover {
+    background: #ffffff1c;
+    cursor: pointer;
+}
+.light1 .bg_color_light, .light1 .body, .light1 #right_part,.light1 #text_compare .box {
+    background-color: #ffffffc2 !important;
+}
+.light1 .txt_color {
+    color: #000000c0 !important;
+}
+
+
+.light1 .btn_color {
+    background-image: linear-gradient(135deg, #cea8ff 0%, #ff98b7 100%) !important;
+    color: #000000 !important;
+}
+
+.light1 .btn_color i {
+    color: #000000c0 !important;
+}
+
+.light1 .btn_color:hover {
+    background-image: linear-gradient(43deg, #c2b4ff  51%, #ca91ff  100%) !important;
+}
+
+.light1 .btn_color_light {
+    background: #ffffff65 !important;
+    color: #000000c0 !important;
+}
+.light1 .ui.label.button.icon {
+    background: #ffffff33 !important;
+    color: #000000c0;
+}
+
+.light1 .btn_color_light:hover {
+    background-image: linear-gradient(43deg, #d1c7ff  51%, #e2c4ff  100%) !important;
+}
+.light1 input, .light1 textarea{
+    background-color: #ffffff52 !important;  
+    /* background-image: linear-gradient(to right, #4776E6 0%, #8E54E9  51%, #4776E6  100%) !important; */
+    border: 1px solid #dbdbdb !important;
+    color: #000000c0 !important;
+    /* border-image: var(--gr-border) !important;
+    border-width: 1px;
+    border-style: solid; */
+}
+
+.light1 .text_fixed_color {
+    color: #000000c0 !important;
+}
+.CodeMirror-dialog.CodeMirror-dialog-top {
+    background: rgb(0, 0, 0);
+}
+
+.light1 .CodeMirror{
+    /* border-image: var(--gr-border) !important;
+    border-width: 1px;
+    border-style: solid; */
+    border: 1px solid #dbdbdb !important;
+    border-radius: 7px;
+    background-color: #ffffff52 !important;
+}
+
+
+.light1 .CodeMirror-gutters, .light1 .CodeMirror-gutter {
+    background: none !important;
+    border: none;
+}
+
+
+/* Change the focus color for Semantic UI input fields */
+.light1 input:focus,
+.light1 textarea:focus,
+.light1 .ui.selection.active.dropdown,
+.light1 .ui.selection.active.dropdown .menu {
+    /* border-image: var(--gr-border) !important; 
+    border-width: 1px;
+    border-style: solid; */
+    /* border: 1px solid white !important; */
+    box-shadow: none !important
+}
+
+.light1 label {
+    color: #000000 !important;
+}
+
+
+.light1 i {
+    color: #000000c0;
+}
+
+.light1 #setting_box label {
+    color: #000000c0 !important;
+}
+
+.light1 #md_type .text {
+    color: #000000c0 !important;
+}
+
+.light1 .text {
+    color: #000000c0;
+}
+
+.light1 .cm-s-material-ocean .cm-property {
+    color: #000000c0 !important;
+}
+
+.light1 .CodeMirror-linenumber {
+    color: #30263a !important;
+}
+
+.light1 #save_data_rec small {
+    color: #30263a !important;
+}
+
+.light1 .mini_menu {
+    background: #474747;
+}
+
+.light1 .ui.dropdown .menu, .light1 .ui.selection.dropdown {
+    background: #ffffff !important;
+    border: none !important;
+}
+
+.light1 .ui.dropdown i {
+    color: #000000c0;
+}
+
+.light1 .ui.dropdown .menu .item {
+    color: #000000c0 !important;
+}
+.light1 .ui.dropdown .text {
+    color: #000000c0 !important;
+}
+.light1 .ui.menu .ui.dropdown .menu>.item {
+    color: #000000c0 !important;
+}
+.light1 .CodeMirror-merge-l-chunk {
+    background: #00000010 !important;
+    border: none;
+}
+.light1 #grid_line {
+    color: #00000015 !important;
+}
+.light1 .icon.grey {
+    color: rgb(0, 0, 0) !important;
+}
+.light1 .ui.message {
+    box-shadow: none !important;
+    background: rgba(255, 255, 255, 0.11) !important;
+    color: rgba(0, 0, 0, 0.76)
+}
+.light1 .ui.info.message .header{
+    color: rgba(86, 255, 255, 0.692) !important;
+}
+.light1 .ui.info.message {
+    color: rgba(86, 255, 255, 0.692) !important;
+}
+
+.light1 #bg-img-modal {
+    border: 1px solid #dbdbdb !important;
+    border-radius: 7px;
+}
+

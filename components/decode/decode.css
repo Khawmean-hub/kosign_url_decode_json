@@ -30,6 +30,9 @@
     align-items: center;
     color: var(--gray);
 }
+#theme.light1 .ui-resizable-e:after {
+    color: rgb(247, 247, 247) !important;
+}
 #left_part .ui-resizable-e {
     cursor: e-resize;
     width: 15px;
@@ -104,6 +107,10 @@
 }
 .theme-red .active_select {
     border: 1px solid var(--red) !important;
+}
+
+.light1 .active_select {
+    border: 1px solid rgba(0, 0, 0, 0.384) !important;
 }
 
 .dark1 .active_select {
