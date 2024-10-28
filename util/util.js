@@ -188,9 +188,7 @@ function onChangeJsonColor(){
         window.jsonStyleObj[key]['color'] = colorData;
         setJsonStyleData()
         applyJsonStyle()
-    }
-    
-    
+    } 
 }
 
 function onLoadJsonStyle(){
@@ -232,4 +230,96 @@ function onClearJsonCss(){
     setJsonStyleData()
     applyJsonStyle()
     $('.jsonStyleForm input').val('')
+}
+
+
+function onChnageFontEditor(){
+    var value = $(this).val()
+    var isSize = $(this).attr('id') == 'font_size'
+    if(value && Number(value) >= 5 && Number(value) <= 100){
+        if(isSize){
+            window.fontEditor.fontSize = value;
+        }else{
+            window.fontEditor.lineHeight = value;
+        }
+        setFontEditor()
+        applyFontEditor()
+    }else{
+        $(this).val(14)
+        toastr.error('Value must be smaller than 100 and greater than 5.')
+    }
+}
+
+function onClearFontEditor(){
+    window.fontEditor.fontSize = 0;
+    window.fontEditor.lineHeight = 0;
+    setFontEditor()
+    $('#font_editor input').val('')
+    $('#font_size_cust').empty()
+}
+
+function applyFontEditor(){
+    var css = ''
+    if(window.fontEditor.fontSize && Number(window.fontEditor.fontSize) >= 5){
+        css += 'font-size: ' + window.fontEditor.fontSize + 'px;'
+    }
+    if(window.fontEditor.lineHeight && Number(window.fontEditor.lineHeight) >= 5){
+        css += 'line-height: ' + window.fontEditor.lineHeight + 'px;'
+    }
+
+    var finalCss = `
+    .CodeMirror {
+        ${css}
+    }
+    `
+    $('#font_size_cust').empty().append(finalCss);
+}
+
+function onLoadFontEditor(){
+    getFontEditor();
+    applyFontEditor();
+    
+    if(window.fontEditor.fontSize && Number(window.fontEditor.fontSize) >= 5){
+       $('#font_editor input:eq(0)').val(window.fontEditor.fontSize)
+    }
+    if(window.fontEditor.lineHeight && Number(window.fontEditor.lineHeight) >= 5){
+        $('#font_editor input:eq(1)').val(window.fontEditor.lineHeight)
+    }
+}
+
+function transformStringToObject(input) {
+    const result = {};
+
+    // Split the input by spaces and loop over each part
+    input.split(' ').forEach(part => {
+        const index = part.indexOf('-');
+
+        // If no dash is found, assign an empty string to the key
+        if (index === -1) {
+            result[part] = "";
+            return;
+        }
+
+        const key = part.substring(0, index);
+        const valuePart = part.substring(index + 1);
+
+        // Check if valuePart is empty, assign empty string
+        if (valuePart === "") {
+            result[key] = "";
+        }
+        // Check for double dash at the start for negative numbers
+        else if (valuePart.startsWith('--') && !isNaN(valuePart.substring(2))) {
+            result[key] = -parseInt(valuePart.substring(2), 10);
+        } 
+        // Check if value is a number
+        else if (!isNaN(valuePart)) {
+            result[key] = parseInt(valuePart, 10);
+        } 
+        // Otherwise, assign the string value as-is
+        else {
+            result[key] = valuePart;
+        }
+    });
+
+    return result;
 }

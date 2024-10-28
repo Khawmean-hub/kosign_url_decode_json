@@ -42,3 +42,12 @@ function getJsonStyleData(){
 function setJsonStyleData(){
     localStorage.setItem('json_style_data', JSON.stringify(window.jsonStyleObj));
 }
+
+function getFontEditor(){
+   var value = localStorage.getItem('font_editor_data') || '{"fontSize": 0,"lineHeight": 0}';
+   window.fontEditor = JSON.parse(value);
+}
+
+function setFontEditor(){
+    localStorage.setItem('font_editor_data', JSON.stringify(window.fontEditor));
+}

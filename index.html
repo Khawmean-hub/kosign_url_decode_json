@@ -19,9 +19,9 @@
     <meta content="Webflow" name="generator">
 
     <meta property="og:type" content="website">
-	<meta property="og:title" content="URL Decode">
-	<meta property="og:image" content="https://khawmean-hub.github.io/kosign_url_decode_json/image/share.png">
-	<meta property="og:url" content="https://khawmean-hub.github.io/kosign_url_decode_json/">
+    <meta property="og:title" content="URL Decode">
+    <meta property="og:image" content="https://khawmean-hub.github.io/kosign_url_decode_json/image/share.png">
+    <meta property="og:url" content="https://khawmean-hub.github.io/kosign_url_decode_json/">
     <meta property="og:url" content="https://khaw.vercel.app/">
 
     <title>URL Decode</title>
@@ -60,159 +60,186 @@
     <script src="library/codemirror/js/codemirrorjs.js"></script>
     <script src="library/codemirror/js/codemirror-mod.js"></script>
 
-    <style id="headerStyle_cust">
-
-    </style>
+    <style id="headerStyle_cust"></style>
+    <style id="font_size_cust"></style>
 </head>
 
 <body>
-    <div id="theme" class="theme-dark theme-blue">
-        <div>
-            <div class="ui active inverted" id="body_loading_page">
-                <div class="ui text loader">Loading</div>
-            </div>
-            <p></p>
-        </div>
-        <div class="ui sidebar large vertical menu right inverted bg_color_light" id="setting_side_bar">
-            <div class="menu">
-                <div class="header item">Theme</div>
-                <div class="item btn_theme_color" theme="theme-blue">
-                    <a class="ui blue empty circular label tiny"></a> Blue
-                </div>
-                <div class="item btn_theme_color" theme="theme-teal">
-                    <a class="ui teal empty circular label tiny"></a> Teal
-                </div>
-                <div class="item btn_theme_color" theme="theme-green">
-                    <a class="ui green empty circular label tiny"></a> Green
-                </div>
-                <div class="item btn_theme_color" theme="theme-red">
-                    <a class="ui red empty circular label tiny"></a> Red
-                </div>
-                <div class="item btn_theme_color" theme="light1">
-                    <a class="ui red empty circular label tiny"></a> Light Gradient
-                </div>
-                <div class="item btn_theme_color" theme="dark1">
-                    <a class="ui black empty circular label tiny"></a> Dark
-                </div>
-                <div class="item btn_theme_color" theme="dark2">
-                    <a class="ui black empty circular label tiny"><a class="ui orange empty circular label tiny"></a>
-                        Dark Orange
-                </div>
-                <div class="item btn_theme_color" theme="dark3">
-                    <a class="ui blue empty circular label tiny"><a class="ui orange empty circular label tiny"></a>
-                        Gradient1
-                </div>
-                <div class="item btn_theme_color" theme="dark4">
-                    <a class="ui black empty circular label tiny"><a class="ui blue empty circular label tiny"></a>
-                        Gradient2
-                </div>
-            </div>
-            <div class="ui divider"></div>
 
+    <div class="ui sidebar large vertical menu right inverted bg_color_light" id="setting_side_bar">
+        <div class="menu">
+            <div class="header item">Theme</div>
+            <div class="item btn_theme_color" theme="theme-blue">
+                <a class="ui blue empty circular label tiny"></a> Blue
+            </div>
+            <div class="item btn_theme_color" theme="theme-teal">
+                <a class="ui teal empty circular label tiny"></a> Teal
+            </div>
+            <div class="item btn_theme_color" theme="theme-green">
+                <a class="ui green empty circular label tiny"></a> Green
+            </div>
+            <div class="item btn_theme_color" theme="theme-red">
+                <a class="ui red empty circular label tiny"></a> Red
+            </div>
+            <div class="item btn_theme_color" theme="light1">
+                <a class="ui red empty circular label tiny"></a> Light Gradient
+            </div>
+            <div class="item btn_theme_color" theme="dark1">
+                <a class="ui black empty circular label tiny"></a> Dark
+            </div>
+            <div class="item btn_theme_color" theme="dark2">
+                <a class="ui black empty circular label tiny"><a class="ui orange empty circular label tiny"></a>
+                    Dark Orange
+            </div>
+            <div class="item btn_theme_color" theme="dark3">
+                <a class="ui blue empty circular label tiny"><a class="ui orange empty circular label tiny"></a>
+                    Gradient1
+            </div>
+            <div class="item btn_theme_color" theme="dark4">
+                <a class="ui black empty circular label tiny"><a class="ui blue empty circular label tiny"></a>
+                    Gradient2
+            </div>
+        </div>
+        <div class="ui divider"></div>
+
+        <div id="json_editor_color">
+            <div class="menu">
+                <div class="header item">Json Editor Custom Color</div>
+            </div>
+            <div style="padding:  0 20px;">
+                <div class="jsonStyleForm">
+                    <div>
+                        <label for="lineNumer">Line Number</label>
+                    </div>
+                    <div>
+                        <input type="color" name="lineNumer" id="" json-color-key="lineNumer">
+                    </div>
+                </div>
+                <div class="jsonStyleForm">
+                    <div>
+                        <label for="curlybraces">Curlybrac</label>
+                    </div>
+                    <div>
+                        <input type="color" name="" id="curlybraces" json-color-key="curlybraces">
+                    </div>
+                </div>
+                <div class="jsonStyleForm">
+                    <div>
+                        <label for="jsonKey">Key</label>
+                    </div>
+                    <div>
+                        <input type="color" name="" id="jsonKey" json-color-key="key">
+                    </div>
+                </div>
+                <div class="jsonStyleForm">
+                    <div>
+                        <label for="stringVal">String</label>
+                    </div>
+                    <div>
+                        <input type="color" name="" id="stringVal" json-color-key="stringVal">
+                    </div>
+                </div>
+                <div class="jsonStyleForm">
+                    <div>
+                        <label for="numberVal">Number</label>
+                    </div>
+                    <div>
+                        <input type="color" name="" id="numberVal" json-color-key="numberVal">
+                    </div>
+                </div>
+                <div class="jsonStyleForm">
+                    <div>
+                        <label for="booleanVal">Boolean</label>
+                    </div>
+                    <div>
+                        <input type="color" name="" id="booleanVal" json-color-key="booleanVal">
+                    </div>
+                </div>
+                <button class="ui fluid small button black" id="btn_clear_json_css" style="margin-top: 10px;">Reset
+                    all</button>
+            </div>
+        </div>
+
+        <div id="font_editor">
+            <div class="menu">
+                <div class="header item">Editor font</div>
+            </div>
+            <div style="padding:  0 20px;">
+                <div class="jsonStyleForm">
+                    <div>
+                        <label for="lineNumer">Font size</label>
+                    </div>
+                    <div>
+                        <input style="width: 60px;" type="number" min="5" max="100" id="font_size">
+                    </div>
+                </div>
+                <div class="jsonStyleForm">
+                    <div>
+                        <label for="curlybraces">Line height</label>
+                    </div>
+                    <div>
+                        <input style="width: 60px;" type="number" min="5" max="100" id="line_height">
+                    </div>
+                </div>
+
+                <button class="ui fluid small button black" id="btn_clear_form" style="margin-top: 10px;">Reset
+                    all</button>
+            </div>
+        </div>
+
+        <div class="ui divider"></div>
+        <div class="menu">
+            <div class="header item">Background Image <span data-tooltip="Recommend for theme Gradient2"><i
+                        class="question circle outline icon"></i></span></div>
+            <div class="item btn-bg-img-none">
+                <div><i class="ban icon"></i> None</div>
+            </div>
+            <div class="item btn-bg-img-your">
+                <div><i class="image icon"></i> Your Image</div>
+            </div>
+            <div class="item btn-bg-img">
+                <img class="ui rounded image" src="./image/ankorwat.jpg">
+            </div>
+            <div class="item btn-bg-img">
+                <img class="ui rounded image" src="./image/wall.jpg">
+            </div>
+            <div class="item btn-bg-img">
+                <img class="ui rounded image" src="./image/blackpink.jpg">
+            </div>
+            <div class="item btn-bg-img">
+                <img class="ui rounded image" src="./image/bg-dark-06.jpg">
+            </div>
+            <div class="item btn-bg-img">
+                <img class="ui rounded image" src="./image/wp2561560.webp">
+            </div>
+            <div class="item btn-bg-img">
+                <img class="ui rounded image" src="./image/uwp4306413.gif">
+            </div>
+            <div class="item btn-bg-img">
+                <img class="ui rounded image" src="./image/wp2757839-wallpaper-gif.gif">
+            </div>
+            <div class="item btn-bg-img">
+                <img class="ui rounded image" src="./image/14565.gif">
+            </div>
+            <div class="item btn-bg-img">
+                <img class="ui rounded image" src="./image/wp4609703-mobile-legends-skins-wallpapers.jpg">
+            </div>
+            <div class="item btn-bg-img">
+                <img class="ui rounded image" src="./image/onepiece.png">
+            </div>
+            <div class="item btn-bg-img">
+                <img class="ui rounded image" src="./image/anya.jpg">
+            </div>
+        </div>
+    </div>
+    <div class="pusher">
+        <div id="theme" class="theme-dark theme-blue">
             <div>
-                <div class="menu">
-                    <div class="header item">Json Editor Custom Color</div>
+                <div class="ui active inverted" id="body_loading_page">
+                    <div class="ui text loader">Loading</div>
                 </div>
-                <div style="padding:  0 20px;">
-                    <div class="jsonStyleForm">
-                        <div>
-                            <label for="lineNumer">Line Number</label>
-                        </div>
-                        <div>
-                            <input type="color" name="lineNumer" id="" json-color-key="lineNumer">
-                        </div>
-                    </div>
-                    <div class="jsonStyleForm">
-                        <div>
-                            <label for="curlybraces">Curlybrac</label>
-                        </div>
-                        <div>
-                            <input type="color" name="" id="curlybraces" json-color-key="curlybraces">
-                        </div>
-                    </div>
-                    <div class="jsonStyleForm">
-                        <div>
-                            <label for="jsonKey">Key</label>
-                        </div>
-                        <div>
-                            <input type="color" name="" id="jsonKey" json-color-key="key">
-                        </div>
-                    </div>
-                    <div class="jsonStyleForm">
-                        <div>
-                            <label for="stringVal">String</label>
-                        </div>
-                        <div>
-                            <input type="color" name="" id="stringVal" json-color-key="stringVal">
-                        </div>
-                    </div>
-                    <div class="jsonStyleForm">
-                        <div>
-                            <label for="numberVal">Number</label>
-                        </div>
-                        <div>
-                            <input type="color" name="" id="numberVal" json-color-key="numberVal">
-                        </div>
-                    </div>
-                    <div class="jsonStyleForm">
-                        <div>
-                            <label for="booleanVal">Boolean</label>
-                        </div>
-                        <div>
-                            <input type="color" name="" id="booleanVal" json-color-key="booleanVal">
-                        </div>
-                    </div>
-                    <button class="ui fluid small button black" id="btn_clear_json_css" style="margin-top: 10px;">Reset
-                        all</button>
-                </div>
+                <p></p>
             </div>
-
-            <div class="ui divider"></div>
-            <div class="menu">
-                <div class="header item">Background Image <span data-tooltip="Recommend for theme Gradient2"><i
-                            class="question circle outline icon"></i></span></div>
-                <div class="item btn-bg-img-none">
-                    <div><i class="ban icon"></i> None</div>
-                </div>
-                <div class="item btn-bg-img-your">
-                    <div><i class="image icon"></i> Your Image</div>
-                </div>
-                <div class="item btn-bg-img">
-                    <img class="ui rounded image" src="./image/ankorwat.jpg">
-                </div>
-                <div class="item btn-bg-img">
-                    <img class="ui rounded image" src="./image/wall.jpg">
-                </div>
-                <div class="item btn-bg-img">
-                    <img class="ui rounded image" src="./image/blackpink.jpg">
-                </div>
-                <div class="item btn-bg-img">
-                    <img class="ui rounded image" src="./image/bg-dark-06.jpg">
-                </div>
-                <div class="item btn-bg-img">
-                    <img class="ui rounded image" src="./image/wp2561560.webp">
-                </div>
-                <div class="item btn-bg-img">
-                    <img class="ui rounded image" src="./image/uwp4306413.gif">
-                </div>
-                <div class="item btn-bg-img">
-                    <img class="ui rounded image" src="./image/wp2757839-wallpaper-gif.gif">
-                </div>
-                <div class="item btn-bg-img">
-                    <img class="ui rounded image" src="./image/14565.gif">
-                </div>
-                <div class="item btn-bg-img">
-                    <img class="ui rounded image" src="./image/wp4609703-mobile-legends-skins-wallpapers.jpg">
-                </div>
-                <div class="item btn-bg-img">
-                    <img class="ui rounded image" src="./image/onepiece.png">
-                </div>
-                <div class="item btn-bg-img">
-                    <img class="ui rounded image" src="./image/anya.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="pusher">
             <div id="main-content" style="display: none;">
                 <div class="ui secondary menu inverted fixed small bg_color my_navbar">
                     <div style="display: flex; overflow-x: auto">
@@ -280,19 +307,23 @@
                                         </div>
                                         <div class="field">
 
-                                            <label class="text_fixed_color controll_div" style="padding-top: 15px;">Result</label>
+                                            <label class="text_fixed_color controll_div"
+                                                style="padding-top: 15px;">Result</label>
 
                                             <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted=""
                                                 data-position="top left"
-                                                class="ui icon button tiny btn_color_light btn_keys_json controll_div">Key to JSON
+                                                class="ui icon button tiny btn_color_light btn_keys_json controll_div">Key
+                                                to JSON
                                             </button>
                                             <button data-tooltip="Ex: getData => GET_DATA" data-inverted=""
                                                 data-position="top left"
-                                                class="ui icon button btn_color_light tiny btn_snake_case controll_div">Snake Case
+                                                class="ui icon button btn_color_light tiny btn_snake_case controll_div">Snake
+                                                Case
                                             </button>
                                             <button data-tooltip="Ex: GET_DATA => getData" data-inverted=""
                                                 data-position="top left"
-                                                class="ui icon button btn_color_light tiny btn_camel_case controll_div">Camel Case
+                                                class="ui icon button btn_color_light tiny btn_camel_case controll_div">Camel
+                                                Case
                                             </button>
 
 

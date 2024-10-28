@@ -10,7 +10,9 @@ $(document).on('input', '#link_bg_img_input', onInputLinkImg)
 $(document).on('click', '.cus_btn', onShowSidebar)
 // $(document).on('click', '.my_navbar .item:eq(1)', onClickHtml2Js)
 // $(document).on('click', '.my_navbar .item:eq(4)', onClickTextCompare)
-$(document).on('input', '.jsonStyleForm input', onChangeJsonColor)
+$(document).on('input', '#json_editor_color input', onChangeJsonColor)
+$(document).on('input', '#font_editor input', onChnageFontEditor)
+$(document).on('click', '#font_editor button', onClearFontEditor)
 $(document).on('click', '#btn_clear_json_css', onClearJsonCss)
 $(document).on('click', '#btn_focus_mode', onFocusMode)
 
@@ -177,3 +179,4 @@ function onFocusMode(){
         $('#layout .CodeMirror').css('height', 'calc(100vh - 70px)')
     }
 }
+
