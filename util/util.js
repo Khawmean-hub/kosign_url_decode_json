@@ -291,8 +291,8 @@ function transformStringToObject(input) {
 
     // Check if input is a string
     try{
-        JSON.parse(input)
-        return input;
+        var val = JSON.parse(input)
+        return val;
     }catch(e){}
 
     input = input.replaceAll('\n', ' ')
