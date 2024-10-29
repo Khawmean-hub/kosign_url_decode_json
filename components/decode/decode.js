@@ -93,7 +93,7 @@ function onDecode() {
 function onKeyToJson(){
     if(decodeResultEditor.getValue()){
         //decodeResultEditor.setValue(jsonFormat(onlyKeyToJson(decodeResultEditor.getValue())))
-        decodeResultEditor.setValue(jsonFormat(JSON.stringify(transformStringToObject(decodeResultEditor.getValue().replaceAll('\n', ' ')))))
+        decodeResultEditor.setValue(jsonFormat(JSON.stringify(transformStringToObject(decodeResultEditor.getValue()))))
     }else{
         toastr.error(MSG.NO_TEXT_TO_CONVERT)
     }

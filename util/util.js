@@ -295,6 +295,8 @@ function transformStringToObject(input) {
         return input;
     }catch(e){}
 
+    input = input.replaceAll('\n', ' ')
+
     const result = {};
 
     // Split the input by spaces and loop over each part
