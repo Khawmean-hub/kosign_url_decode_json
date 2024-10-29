@@ -288,6 +288,13 @@ function onLoadFontEditor(){
 }
 
 function transformStringToObject(input) {
+
+    // Check if input is a string
+    try{
+        JSON.parse(input)
+        return input;
+    }catch(e){}
+
     const result = {};
 
     // Split the input by spaces and loop over each part
