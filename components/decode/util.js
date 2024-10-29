@@ -8,6 +8,8 @@ function makeDecodeEditor(){
     saveBoxResult.on('change', function() {
         onDisableBtnComparae()
     });
+
+    makeZoomInOut()
 }
 
 function jsonFormat(str){
@@ -359,4 +361,45 @@ function getDuplicateId(v, list){
     const dupObj = list.find(a=> a.id !== v.id && JSON.stringify(a.data) === JSON.stringify(v.data));
     if(dupObj) return dupObj;
     return null;
+}
+
+
+function makeZoomInOut(){
+    //====================== Zoom in =======================
+    const editorElement = $('#left_part .CodeMirror');
+    let zoomLevel = 100; // Initial zoom level at 100%
+
+    // Listen for the wheel event on the CodeMirror editor
+    editorElement.on('wheel', function(e) {
+    if (e.originalEvent.ctrlKey) {
+        e.preventDefault(); // Prevent default zooming of the page
+        zoomLevel += e.originalEvent.deltaY < 0 ? 10 : -10; // Increase or decrease zoom level
+        zoomLevel = Math.min(Math.max(zoomLevel, 50), 300); // Limit zoom between 50% and 300%
+        
+        // Apply font size and line height based on zoom level
+        editorElement.css({
+        'font-size': `${zoomLevel}%`,
+        'line-height': `${zoomLevel}%`
+        });
+    }
+    });
+
+
+    const editorElement2 = $('#right_part .CodeMirror');
+    let zoomLevel2 = 100; // Initial zoom level at 100%
+
+    // Listen for the wheel event on the CodeMirror editor
+    editorElement2.on('wheel', function(e) {
+    if (e.originalEvent.ctrlKey) {
+        e.preventDefault(); // Prevent default zooming of the page
+        zoomLevel2 += e.originalEvent.deltaY < 0 ? 10 : -10; // Increase or decrease zoom level
+        zoomLevel2 = Math.min(Math.max(zoomLevel2, 50), 300); // Limit zoom between 50% and 300%
+        
+        // Apply font size and line height based on zoom level
+        editorElement2.css({
+        'font-size': `${zoomLevel2}%`,
+        'line-height': `${zoomLevel2}%`
+        });
+    }
+    });
 }
