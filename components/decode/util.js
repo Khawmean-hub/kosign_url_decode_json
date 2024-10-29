@@ -371,17 +371,19 @@ function makeZoomInOut(){
 
     // Listen for the wheel event on the CodeMirror editor
     editorElement.on('wheel', function(e) {
-    if (e.originalEvent.ctrlKey) {
-        e.preventDefault(); // Prevent default zooming of the page
-        zoomLevel += e.originalEvent.deltaY < 0 ? 10 : -10; // Increase or decrease zoom level
-        zoomLevel = Math.min(Math.max(zoomLevel, 50), 300); // Limit zoom between 50% and 300%
-        
-        // Apply font size and line height based on zoom level
-        editorElement.css({
-        'font-size': `${zoomLevel}%`,
-        'line-height': `${zoomLevel}%`
-        });
-    }
+        if (e.originalEvent.ctrlKey) {
+            e.preventDefault(); // Prevent default zooming of the page
+            zoomLevel += e.originalEvent.deltaY < 0 ? 10 : -10; // Increase or decrease zoom level
+            zoomLevel = Math.min(Math.max(zoomLevel, 50), 300); // Limit zoom between 50% and 300%
+            
+            // Apply font size and line height based on zoom level
+            editorElement.css({
+            'font-size': `${zoomLevel}%`,
+            'line-height': `${zoomLevel}%`
+            });
+
+            decodeResultEditor.setValue(decodeResultEditor.getValue())
+        }
     });
 
 
@@ -400,6 +402,8 @@ function makeZoomInOut(){
         'font-size': `${zoomLevel2}%`,
         'line-height': `${zoomLevel2}%`
         });
+
+        saveBoxResult.setValue(saveBoxResult.getValue())
     }
     });
 }
