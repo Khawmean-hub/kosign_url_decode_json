@@ -1,7 +1,82 @@
 function makeDecodeEditor(){
-    decodeResultEditor  = applyEditorJs('url_result');
-    saveBoxResult = applyEditorJs('right_editor_box');
-    
+    // decodeResultEditor  = applyEditorJs('url_result');
+    // saveBoxResult = applyEditorJs('right_editor_box');
+
+    let themeName = 'material';
+    if (getThemeName().includes('dark')) {
+        themeName = 'material-ocean'
+    }
+    decodeResultEditor = CodeMirror.fromTextArea(document.getElementById('url_result'), {
+        lineNumbers: true,
+        mode: { name: "javascript", json: true },
+        theme: themeName,
+        lineWrapping: true,
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        foldOptions: {
+            widget: (from, to) => {
+                var count = undefined;
+
+                // Get open / close token
+                var startToken = '{', endToken = '}';
+                var prevLine = decodeResultEditor.getLine(from.line);
+                if (prevLine.lastIndexOf('[') > prevLine.lastIndexOf('{')) {
+                    startToken = '[', endToken = ']';
+                }
+
+                // Get json content
+                var internal = decodeResultEditor.getRange(from, to);
+                var toParse = startToken + internal + endToken;
+
+                // Get key count
+                try {
+                    var parsed = JSON.parse(toParse);
+                    count = Object.keys(parsed).length;
+                } catch (e) { }
+
+                return count ? `\u21A4${count}\u21A6` : '\u2194';
+            }
+        }
+        // indentUnit: 4,
+        // indentWithTabs: true
+    });
+
+    saveBoxResult = CodeMirror.fromTextArea(document.getElementById('right_editor_box'), {
+        lineNumbers: true,
+        mode: { name: "javascript", json: true },
+        theme: themeName,
+        lineWrapping: true,
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        foldOptions: {
+            widget: (from, to) => {
+                var count = undefined;
+
+                // Get open / close token
+                var startToken = '{', endToken = '}';
+                var prevLine = saveBoxResult.getLine(from.line);
+                if (prevLine.lastIndexOf('[') > prevLine.lastIndexOf('{')) {
+                    startToken = '[', endToken = ']';
+                }
+
+                // Get json content
+                var internal = saveBoxResult.getRange(from, to);
+                var toParse = startToken + internal + endToken;
+
+                // Get key count
+                try {
+                    var parsed = JSON.parse(toParse);
+                    count = Object.keys(parsed).length;
+                } catch (e) { }
+
+                return count ? `\u21A4${count}\u21A6` : '\u2194';
+            }
+        }
+        // indentUnit: 4,
+        // indentWithTabs: true
+    });
+
+
     decodeResultEditor.on('change', function() {
         onDisableBtnComparae()
     });

@@ -95,7 +95,7 @@ function applyEditorJs(id, isReadOnly = false, line = true){
     return CodeMirror.fromTextArea(document.getElementById(id), {
         lineNumbers: true,
         mode: { name: "javascript", json: true },
-        theme: themeName
+        theme: themeName,
         // indentUnit: 4,
         // indentWithTabs: true
       });
