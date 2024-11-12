@@ -122,9 +122,13 @@ function buildJsonMenuList() {
 function onClickJsonMenu(){
     if($(this).parent().hasClass('active_select')){
         $('.box').removeClass('active_select');
-        saveBoxResult.setValue('');
         $('#box_fixed_active_text').html('Result').attr('active-json-id', '')
         $('#box_fixed_active_date').html('Click on menu above to show')
+
+        if($('#right_part .btn_2table2 i').hasClass('list')){
+            $('#table-container2').empty().append(tableString.noData())
+        }
+        saveBoxResult.setValue('');
     }else{
         const txt = decodeURIComponent($(this).attr('data-val'))
         const json = JSON.parse(txt)
@@ -136,6 +140,8 @@ function onClickJsonMenu(){
     
         $('#box_fixed_active_text').html(json.name).attr('active-json-id', json.id)
         $('#box_fixed_active_date').html(json.date)
+
+        onAppendJsonToTable($('#table-container2'), saveBoxResult)
     }
 }
 

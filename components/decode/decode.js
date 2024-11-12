@@ -41,8 +41,8 @@ function onShowRightBox() {
         $rightBox.hide()
         $leftBox.css('width', '100%')
     } else {
-        $leftBox.css('width', '70%')
-        $rightBox.css('width', '30%').show()
+        $leftBox.css('width', '50%')
+        $rightBox.css('width', '50%').show()
     }
 }
 

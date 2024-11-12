@@ -60,11 +60,11 @@
 @media only screen and (min-width: 1025px) {
     .right_part {
         display: block;
-        width: 40%;
+        width: 50%;
     }
 
     #left_part {
-        width: 60%;
+        width: 50%;
     }
 }
 
