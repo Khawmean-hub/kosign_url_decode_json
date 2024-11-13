@@ -56,10 +56,10 @@
 }
 
 #html_2_js #layout2 #left_part .CodeMirror{
-    height: calc(100vh - 240px)
+    height: calc(100vh - 250px)
 }
 #html_2_js #layout2 #right_part .CodeMirror{
-    height: calc(100vh - 130px)
+    height: calc(100vh - 140px)
 }
 #html_2_js #layout2 .CodeMirror.cm-s-material {
     border-radius: 5px;

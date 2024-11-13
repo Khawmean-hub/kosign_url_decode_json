@@ -38,6 +38,15 @@ $(document).on('click', '#vari_type', function () {
     htmlToJsResult();
 })
 
+$(document).on('click', '#btn_html2js_format', onFormatHtml2js)
+
+$(document).on('click', '#btn_html2js_paste', async function(){
+    const text = await navigator.clipboard.readText();
+    leftEditor.setValue(text)
+})
+
+$(document).on('click', '#btn_html2js_copy', function(){copyToClipboard(rightEditor.getValue())})
+
 
 
 //===================================================== Functions ==================================================
@@ -99,3 +108,17 @@ function makeEditor () {
     }
 }
 
+function onFormatHtml2js(){
+    if(leftEditor){
+        // Get the content from CodeMirror
+        var content = leftEditor.getValue().trim();
+        // Beautify the content
+        var formattedContent = html_beautify(content, {
+            indent_size: 2,
+            space_in_empty_paren: true,
+            brace_style: "collapse,preserve-inline",
+        });
+        // Set the formatted content back to CodeMirror
+        leftEditor.setValue(formattedContent);
+    }
+}
