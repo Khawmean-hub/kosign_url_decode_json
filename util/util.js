@@ -79,11 +79,16 @@ function isNotJson(str) {
 
 
 function applyEditorJava(id, isReadOnly = false, line = true){
+    let themeName = 'material';
+    if(getThemeName().includes('dark')){
+        themeName='material-ocean'
+    }
     return CodeMirror.fromTextArea(document.getElementById(id), {
         lineNumbers: true,
         mode: 'text/x-java',
         indentUnit: 4,
-        indentWithTabs: true
+        indentWithTabs: true,
+        theme: themeName
       });
 }
 
