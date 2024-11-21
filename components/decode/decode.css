@@ -219,3 +219,14 @@
 .dupdatapop i {
     color: #ff7676 !important;
 }
+
+.bg_box_color {
+    background: rgb(238, 238, 238);
+}
+
+.dark3 .bg_box_color, .dark4 .bg_box_color {
+    background: rgba(0, 0, 0, 0.295) !important;
+}
+.dark1 .bg_box_color, .dark2 .bg_box_color {
+    background: rgb(31, 31, 31);
+}

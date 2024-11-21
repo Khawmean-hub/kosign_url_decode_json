@@ -1,6 +1,6 @@
 const LOCAL_SESSION_JSON_DATA = 'kosign_save_data';
 const jsonMenuDefaultColor = '#f5f5f5'
-const jsonMenuNoData = `<div style="padding: 30px;background: #f7f7f7; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">No Data</h4></div>`;
+const jsonMenuNoData = `<div class="bg_box_color" style="padding: 30px;#f7f7f7; border-radius: 10px;"><h4 style="color: rgb(146, 146, 146);">No Data</h4></div>`;
 const jsonMenuSetting = `<div class="ui icon left pointing dropdown mini icon_mini btn_box_close">
                             <i class="ellipsis vertical icon"></i>
                             <div class="menu">

@@ -75,14 +75,13 @@ function editroDark() {
         decodeResultEditor.setOption('theme', 'material-ocean')
         saveBoxResult.setOption('theme', 'material-ocean')
     }
-    // if(leftEditor != undefined){
-    //     leftEditor.setOption('theme', 'material-ocean')
-    //     rightEditor.setOption('theme', 'material-ocean')
-    // }
-    // if(editor != undefined){
-    //     editor.left.orig.setOption("theme", 'material-ocean')
-    //     editor.edit.setOption("theme", 'material-ocean')
-    // }
+
+    try{
+        if(leftEditor){
+            leftEditor.setOption('theme', 'material-ocean')
+            rightEditor.setOption('theme', 'material-ocean')
+        }
+    }catch(e){}
 }
 
 function editroLight() {

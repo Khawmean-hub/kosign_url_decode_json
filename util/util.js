@@ -288,7 +288,9 @@ function onLoadFontEditor(){
 }
 
 function transformStringToObject(input) {
-
+    if(input) {
+        input= input.trim()
+    }
     // Check if input is a string
     try{
         var val = JSON.parse(input)
