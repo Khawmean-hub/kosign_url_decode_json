@@ -36,5 +36,6 @@ const MSG = {
     DELETE_SUCCESS: 'Json item deleted.',
     NO_NAME: 'Please input name.',
     SAVE: 'JSON has been saved.',
-    NO_JSON_DATA_TO_CLEAR: "You don't have any data."
+    NO_JSON_DATA_TO_CLEAR: "You don't have any data.",
+    TRY_TO_DECODE_AGAIN: 'Try to decode again.'
 }

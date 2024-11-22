@@ -60,7 +60,7 @@ function onCopyLeftBoxJson(){
  */
 async function onPasteUrl() {
     const text = await navigator.clipboard.readText();
-    $urlInput.val(text)
+    $urlInput.val(text).trigger('input');
     onDecode()
 }
 
@@ -71,9 +71,18 @@ async function onPasteUrl() {
 function onDecode() {
     var urlStr = $urlInput.val()
     if (!urlStr) {
-        toastr.error(MSG.ERROR_NO_COPIED)
+        toastr.error(MSG.NO_DATA)
+        decodeResultEditor.setValue('');
+    }else {
+        var newstr = jsonFormat(urlStr);
+        console.log(newstr)
+        if(newstr){
+            decodeResultEditor.setValue(newstr);
+        }else{
+            tryToDecode(urlStr)
+        }
     }
-    else if (isJsonOrEncodeUrl(urlStr)) {
+    /*else if (isJsonOrEncodeUrl(urlStr)) {
         try {
             var str = JSON.stringify(JSON.parse(decodeURIComponent(urlStr)), undefined, 4);
             decodeResultEditor.setValue(str);
@@ -84,8 +93,37 @@ function onDecode() {
     else {
         toastr.error(MSG.NOT_VALID_INPUT)
         $urlInput.val('')
-    }
+    }*/
 }
+
+const maxTryDecode = 4;
+let tryDecodeTime = 1;
+/**
+ * Try to decode multiple time
+ */
+function tryToDecode(str){
+    try{
+        var decodeStr = decodeURIComponent(str)
+        try{
+            var decodeJson2 = JSON.parse(decodeStr)
+            var str = JSON.stringify(decodeJson2, undefined, 4);
+            decodeResultEditor.setValue(str);
+            var msg = 'Try to decode '+tryDecodeTime+' time' + (tryDecodeTime > 1 ? 's': '') + ' to get result.';
+            toastr.info(msg)
+            tryDecodeTime = 1;
+        }catch(e){
+            tryDecodeTime += 1;
+            if(tryDecodeTime <= maxTryDecode){
+                tryToDecode(decodeStr)
+            }else{
+                tryDecodeTime = 1;
+                decodeResultEditor.setValue(str);
+                toastr.error(MSG.ERROR_JSON_PARSE)
+            }
+        }
+    }catch(e){}
+}
+
 
 /**
  * Key to JSON

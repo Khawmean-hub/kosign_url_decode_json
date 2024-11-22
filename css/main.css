@@ -419,3 +419,6 @@ iframe {
     color: #ccc;
     font-size: 12px;
 }
+.display-none {
+    display: none !important;
+}

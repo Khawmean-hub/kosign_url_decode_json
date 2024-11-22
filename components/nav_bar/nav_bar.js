@@ -15,6 +15,8 @@ $(document).on('input', '#font_editor input', onChnageFontEditor)
 $(document).on('click', '#font_editor button', onClearFontEditor)
 $(document).on('click', '#btn_clear_json_css', onClearJsonCss)
 $(document).on('click', '#btn_focus_mode', onFocusMode)
+$(document).on('input', '.input_have_clear', onShowBtnClearOrNot)
+$(document).on('click', '.btn_clear_its_input', onClearItsInput)
 
 //============================================ functions ============================================
 /**
@@ -179,3 +181,17 @@ function onFocusMode(){
     }
 }
 
+
+function onShowBtnClearOrNot(){
+    const val = $(this).val()
+    if(val.trim() === ''){
+        $(this).siblings('.btn_clear_its_input').hide()
+    }else{
+        $(this).siblings('.btn_clear_its_input').show()
+    }
+}
+
+function onClearItsInput(){
+    $(this).siblings('input').val('').trigger('input')
+    $(this).hide()
+}
