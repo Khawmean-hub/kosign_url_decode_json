@@ -230,3 +230,7 @@
 .dark1 .bg_box_color, .dark2 .bg_box_color {
     background: rgb(31, 31, 31);
 }
+
+.light1 .bg_box_color {
+    background: #ffffffee;
+}

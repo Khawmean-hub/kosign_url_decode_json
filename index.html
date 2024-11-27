@@ -82,6 +82,7 @@
 
     <div class="ui sidebar large vertical menu right inverted bg_color_light" id="setting_side_bar">
         <div class="menu">
+            <div class="header item"><p>Web Version 2.2.0</p></div>
             <div class="header item">Theme</div>
             <div class="item btn_theme_color" theme="theme-blue">
                 <a class="ui blue empty circular label tiny"></a> Blue
@@ -200,6 +201,18 @@
                     all</button>
             </div>
         </div>
+        <div class="ui divider"></div>
+        <div style="padding:  0 20px;">
+            <div class="menu jsonStyleForm">
+                <div>
+                    <label for="showGuidLine">Show guild line</label>
+                </div>
+                <div class="ui fitted slider checkbox checked">
+                    <input type="checkbox" id="showGuidLine" name="newsletter" checked>
+                    <label></label>
+                </div>
+            </div>
+        </div>
 
         <div class="ui divider"></div>
         <div class="menu">
@@ -280,6 +293,7 @@
                         </div>
                     </div>
                     <div class="right menu">
+                        <p class="download_file_ext" style="margin: 8px"><a href="/data/URL Decode desktop v2.1.0.exe" download="URL Decode desktop v2.1.0.exe" style="cursor: pointer;">Download</a> Desktop offline version 2.1.0</p>
                         <div class="ui icon dropdown button circular cus_btn">
                             <i class="cog icon"></i>
                             <!-- <div class="menu">
@@ -321,10 +335,7 @@
                                         </div>
                                         <div class="field">
 
-                                            <label class="text_fixed_color controll_div"
-                                                style="padding-top: 15px;">Result</label>
-
-                                            <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted=""
+                                            <!-- <button data-tooltip="Ex: userNm => {'userNm': ''}" data-inverted=""
                                                 data-position="top left"
                                                 class="ui icon button tiny btn_color_light btn_keys_json controll_div">Key
                                                 to JSON
@@ -338,27 +349,54 @@
                                                 data-position="top left"
                                                 class="ui icon button btn_color_light tiny btn_camel_case controll_div">Camel
                                                 Case
-                                            </button>
+                                            </button> -->
+                                            <label class="text_fixed_color controll_div" style="padding-top: 15px;">Result</label>
 
-
-
-                                            <div class="ui icon buttons tiny right floated controll_div">
-                                                <button data-tooltip="Format" data-inverted=""
-                                                    class="ui icon button btn_color_light tiny btn_format_url_result_box"><i
-                                                        class="magic icon"></i></button>
-                                                <button data-tooltip="View as Table" data-inverted=""
-                                                    class="ui button icon btn_color_light tiny btn_2table_url_result_box">
-                                                    <i class="table icon"></i>
-                                                </button>
-                                                <button data-tooltip="Save in local" data-inverted=""
-                                                    data-position="top right"
-                                                    class="ui button btn_save btn_color_light"><i
-                                                        class="save icon"></i></button>
-                                                <button data-tooltip="Copy" data-inverted="" data-position="top right"
-                                                    class="ui button btn_copy btn_color_light"><i
-                                                        class="copy icon"></i></button>
+                                            <div style="display: flex; justify-content: space-between; align-items: center;" class="controll_div">
+                                                <div class="ui compact menu mini btn_color_light" style="border: none; box-shadow: none;">
+                                                    <div class="ui simple dropdown item">
+                                                      Transform to
+                                                      <i class="dropdown icon"></i>
+                                                      <div class="menu">
+                                                        <div class="item btn_keys_json show-guild-line">Key to JSON</div>
+                                                        <div class="ui flowing popup transition hidden" style="width: 500px;">
+                                                            <img class="ui massive rounded image" src="/image/guid/key_to_json.gif">     
+                                                        </div>
+                                                        <div class="item btn_snake_case show-guild-line">Snake Case</div>
+                                                        <div class="ui flowing popup transition hidden" style="width: 500px;">
+                                                            <img class="ui massive rounded image" src="/image/guid/to_snake_case.gif">     
+                                                        </div>
+                                                        <div class="item btn_camel_case show-guild-line">Camel Case</div>
+                                                        <div class="ui flowing popup transition hidden" style="width: 500px;">
+                                                            <img class="ui massive rounded image" src="/image/guid/to_camel_case.gif">     
+                                                        </div>
+                                                        <div class="item btn_json_ts" data-position="right center" data-tooltip="JSON to TypeScript Inferface">TypeScript (TS)</div>
+                                                        <div class="item btn_json_sql" data-position="right center" data-tooltip="JSON to SQL ceated table (Posgresql)">SQL Table</div>
+                                                        <div class="item btn_json_select" data-position="right center" data-tooltip="JSON to SQL select (Posgresql)">SQL Select</div>
+                                                        <div class="item btn_json_insert" data-position="right center" data-tooltip="JSON to SQL insert (Posgresql)">SQL Insert</div>
+                                                        <div class="item btn_json_update" data-position="right center" data-tooltip="JSON to SQL update (Posgresql)">SQL Update</div>
+                                                        <div class="item btn_json_encdoe" data-position="right center" data-tooltip="JSON to Encode string (encodeURIComponent)">Encode</div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                
+                                                <div class="ui icon buttons tiny right floated controll_div">
+                                                    <button data-tooltip="Format" data-inverted=""
+                                                        class="ui icon button btn_color_light tiny btn_format_url_result_box"><i
+                                                            class="magic icon"></i></button>
+                                                    <button data-tooltip="View as Table" data-inverted=""
+                                                        class="ui button icon btn_color_light tiny btn_2table_url_result_box">
+                                                        <i class="table icon"></i>
+                                                    </button>
+                                                    <button data-tooltip="Save in local" data-inverted=""
+                                                        data-position="top right"
+                                                        class="ui button btn_save btn_color_light"><i
+                                                            class="save icon"></i></button>
+                                                    <button data-tooltip="Copy" data-inverted="" data-position="top right"
+                                                        class="ui button btn_copy btn_color_light"><i
+                                                            class="copy icon"></i></button>
+                                                </div>
                                             </div>
-
 
                                             <div class="ui form" style="margin-top: 10px;">
                                                 <div class="field">

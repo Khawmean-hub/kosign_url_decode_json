@@ -129,7 +129,7 @@
     background: #7d45b2;
 }
 
-.dark4 .ui.dropdown.selection {
+.dark4 .ui.dropdown.selection, .dark4 .ui.menu .dropdown.item .menu {
     background: #00000052 !important;
     border: 1px solid rgba(255, 255, 255, 0.158) !important;
 }
@@ -187,3 +187,6 @@
     border-radius: 7px;
 }
 
+.dark4 .ui.menu .item {
+    color: white;
+}

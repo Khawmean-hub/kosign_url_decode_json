@@ -8,21 +8,22 @@
 }
 /* navbar */
 .light1 .my_navbar {
-    background-color: #ffffffc2 !important;
+    background-color: #ffffff !important;
 }
 .light1 .my_navbar .item {
     color: #000000 !important;
 }
 #theme.light1 .my_navbar .active.item {
     color: #000000 !important;
+    background: #eeeeee !important;
 }
 
 .light1 .my_navbar .item:hover {
-    background: #ffffff1c;
+    background: #eeeeee;
     cursor: pointer;
 }
 .light1 .bg_color_light, .light1 .body, .light1 #right_part,.light1 #text_compare .box {
-    background-color: #ffffffc2 !important;
+    background-color: #ffffffdc !important;
 }
 .light1 .txt_color {
     color: #000000c0 !important;
@@ -43,18 +44,18 @@
 }
 
 .light1 .btn_color_light {
-    background: #ffffff65 !important;
+    background: #ffffffdc !important;
     color: #000000c0 !important;
 }
 .light1 .ui.label.button.icon {
-    background: #ffffff33 !important;
+    background: #ffffffe0 !important;
     color: #000000c0;
 }
 
 .light1 .btn_color_light:hover {
     background-image: linear-gradient(43deg, #d1c7ff  51%, #e2c4ff  100%) !important;
 }
-.light1 input, .light1 textarea{
+.light1 textarea{
     background-color: #ffffff52 !important;  
     /* background-image: linear-gradient(to right, #4776E6 0%, #8E54E9  51%, #4776E6  100%) !important; */
     border: 1px solid #dbdbdb !important;
@@ -62,6 +63,12 @@
     /* border-image: var(--gr-border) !important;
     border-width: 1px;
     border-style: solid; */
+}
+.light1 input {
+    background-color: #ffffff !important;  
+    /* background-image: linear-gradient(to right, #4776E6 0%, #8E54E9  51%, #4776E6  100%) !important; */
+    border: 1px solid #dbdbdb !important;
+    color: #000000c0 !important;
 }
 
 .light1 .text_fixed_color {
@@ -138,7 +145,7 @@
 
 .light1 .ui.dropdown .menu, .light1 .ui.selection.dropdown {
     background: #ffffff !important;
-    border: none !important;
+    /* border: none !important; */
 }
 
 .light1 .ui.dropdown i {
@@ -179,5 +186,23 @@
 .light1 #bg-img-modal {
     border: 1px solid #dbdbdb !important;
     border-radius: 7px;
+}
+
+.light1 .ui.selection.dropdown {
+    background: #ffffff !important;
+    border: 1px solid rgb(235, 235, 235) !important;
+}
+
+.light1 .menu.transition {
+    background: #ffffffdc !important;
+    border: 1px solid #e7e7e7 !important;
+}
+
+.light1 .ui.selection.dropdown .menu>.item{
+    border-top: 1px solid #f5f5f5 !important;
+} 
+
+.light1 .ui.menu .ui.dropdown .menu>.item:hover {
+    background: #ebebeb !important;
 }
 

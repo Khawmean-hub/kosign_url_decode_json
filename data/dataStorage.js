@@ -1,6 +1,6 @@
 const THEME_SESSION_NM = 'url_decode_theme_save';
 const BG_IMG = 'url_decode_bg_image'
-
+const GUILD_LINE_SETTING = 'url_decode_setting_guild_line'
 
 function getThemeName(){
     return localStorage.getItem(THEME_SESSION_NM) || 'theme-light theme-blue';
@@ -50,4 +50,16 @@ function getFontEditor(){
 
 function setFontEditor(){
     localStorage.setItem('font_editor_data', JSON.stringify(window.fontEditor));
+}
+
+function getGuidLineSetting(){
+    var val = localStorage.getItem(GUILD_LINE_SETTING);
+    val = (val == null || val== undefined ? true : val) 
+    val = (val=='false' ? false : true)
+    $('#showGuidLine').prop('checked', val)
+    return val;
+}
+
+function setGuidLineSetting(val){
+    localStorage.setItem(GUILD_LINE_SETTING, val);
 }

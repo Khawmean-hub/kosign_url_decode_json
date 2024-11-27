@@ -16,6 +16,14 @@
     background: var(--b-white) !important;
 }
 
+#theme.dark2 .my_navbar .active.item {
+    color: orange !important;
+}
+
+#theme.dark2 .my_navbar .item:hover{
+    background: rgb(43, 43, 43) !important;
+} 
+
 
 .dark2 .btn_color {
     background-color: var(--light-black);
@@ -88,7 +96,7 @@
     border: none;
 }
 
-.dark2 .ui.selection.dropdown {
+.dark2 .ui.selection.dropdown, .dark2 .ui.menu .dropdown.item .menu  {
     background: var(--light-black) !important;
     border: 1px solid rgba(255, 255, 255, 0.158) !important;
     color: orange !important;
@@ -119,4 +127,8 @@
 }
 .dark2 .ui.menu .ui.dropdown .menu>.item:hover {
     background: #ffffff10 !important;
+}
+
+.dark2 .ui.menu .item {
+    color: orange;
 }

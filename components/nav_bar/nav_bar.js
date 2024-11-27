@@ -17,6 +17,7 @@ $(document).on('click', '#btn_clear_json_css', onClearJsonCss)
 $(document).on('click', '#btn_focus_mode', onFocusMode)
 $(document).on('input', '.input_have_clear', onShowBtnClearOrNot)
 $(document).on('click', '.btn_clear_its_input', onClearItsInput)
+$(document).on('change', '#showGuidLine', onSetGuildLine)
 
 //============================================ functions ============================================
 /**
@@ -105,7 +106,6 @@ function editroLight() {
 
 function onChnageBgImage() {
     const bgImage = $(this).find('img').attr('src')
-    console.log('>>>>', bgImage)
     setBgImg(bgImage)
 }
 function onChnageBgImageNone() {
@@ -170,7 +170,7 @@ function onFocusMode(){
         $('.controll_div').show()
         $('#layout').eq(0).css('padding-top', '42px')
         $('.right_mmmm').css('margin-top', '20px')
-        $('#layout .CodeMirror').css('height', 'calc(100vh - 300px)')
+        $('#layout .CodeMirror').css('height', 'calc(100vh - 280px)')
 
     }else{
         $('.my_navbar').eq(0).css('display', 'none')
@@ -194,4 +194,13 @@ function onShowBtnClearOrNot(){
 function onClearItsInput(){
     $(this).siblings('input').val('').trigger('input')
     $(this).hide()
+}
+
+
+function onSetGuildLine(){
+    const guildLine = $(this).prop('checked')
+    setGuidLineSetting(guildLine)
+    if(!guildLine){
+        $('.ui.topup').remove();
+    }
 }

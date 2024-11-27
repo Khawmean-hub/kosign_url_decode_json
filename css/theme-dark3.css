@@ -129,7 +129,7 @@
     background: #7d45b2;
 }
 
-.dark3 .ui.dropdown .menu, .dark3 .ui.selection.dropdown {
+.dark3 .ui.dropdown .menu, .dark3 .ui.selection.dropdown, .dark3 .ui.menu .dropdown.item .menu {
     background: #4158D0 !important;
     background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #ffa470 100%) !important;
     border: none !important;
@@ -151,4 +151,7 @@
 .dark3 .CodeMirror-merge-l-chunk {
     background: #ffffff10 !important;
     border: none;
+}
+.dark3 .ui.menu .item {
+    color: white;
 }

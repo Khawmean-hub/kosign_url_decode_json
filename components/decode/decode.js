@@ -22,6 +22,12 @@ $(document).on('click', '#btn_paste_url', onPasteUrl)
 $(document).on('click', '.btn_keys_json', onKeyToJson)
 $(document).on('click', '.btn_snake_case', onChangeToSnakeCase)
 $(document).on('click', '.btn_camel_case', onChangeToCamelCase)
+$(document).on('click', '.btn_json_ts', onTransformToTS)
+$(document).on('click', '.btn_json_sql', onTransformToSQL)
+$(document).on('click', '.btn_json_select', onTransformToSelect)
+$(document).on('click', '.btn_json_insert', onTransformToInsert)
+$(document).on('click', '.btn_json_update', onTransformToUpdate)
+$(document).on('click', '.btn_json_encdoe', onTransformToEncode)
 
 $(document).on('click', '.btn_format_url_result_box', onFormatUrlResultBox)
 $(document).on('click', '.btn_2table_url_result_box', on2TableLeftBox)
@@ -75,7 +81,6 @@ function onDecode() {
         decodeResultEditor.setValue('');
     }else {
         var newstr = jsonFormat(urlStr);
-        console.log(newstr)
         if(newstr){
             decodeResultEditor.setValue(newstr);
         }else{
@@ -239,4 +244,59 @@ function on2TableLeftBox(){
  */
 function onSaveJsonOnLocal() {
     saveJsonOnLocal()
+}
+
+function onTransformToTS(){
+    var res = jsonToTypeScriptInterface(getJSONFromLeftBoxEditor())
+    if(res){
+        decodeResultEditor.setValue(res)
+    }
+}
+
+function getJSONFromLeftBoxEditor(){
+    try{
+        var text = decodeResultEditor.getValue();
+        if(text){
+            return JSON.parse(text)
+        }else{
+            toastr.error(MSG.NO_TEXT_TRANSFORM)
+        }
+    }catch(e){
+        toastr.error(MSG.NOT_JSON3)
+    }
+}
+
+function onTransformToSQL(){
+    var res = jsonToPostgreSQLTable(getJSONFromLeftBoxEditor())
+    if(res){
+        decodeResultEditor.setValue(res)
+    }
+}
+
+function onTransformToSelect(){
+    var res = jsonToPostgreSQLSelect(getJSONFromLeftBoxEditor())
+    if(res){
+        decodeResultEditor.setValue(res)
+    }
+}
+
+function onTransformToInsert(){
+    var res = jsonToPostgreSQLInsert(getJSONFromLeftBoxEditor())
+    if(res){
+        decodeResultEditor.setValue(res)
+    }
+}
+
+function onTransformToUpdate(){
+    var res = jsonToPostgreSQLUpdate(getJSONFromLeftBoxEditor())
+    if(res){
+        decodeResultEditor.setValue(res)
+    }
+}
+
+function onTransformToEncode(){
+    var res = encodeURIComponent(JSON.stringify(getJSONFromLeftBoxEditor()))
+    if(res && res != 'undefined'){
+        decodeResultEditor.setValue(res)
+    }
 }

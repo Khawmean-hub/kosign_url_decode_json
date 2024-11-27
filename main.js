@@ -6,4 +6,6 @@ $(document).ready(function(){
     $('.ui.dropdown').dropdown();
     onLoadJsonStyle();
     onLoadFontEditor()
+
+    getGuidLineSetting() ? $('.show-guild-line').popup({position: 'right center'}) : ''
 })

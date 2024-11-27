@@ -114,7 +114,7 @@
     border: none;
 }
 
-.dark1 .ui.selection.dropdown {
+.dark1 .ui.selection.dropdown, .dark1 .ui.menu .dropdown.item .menu  {
     background: var(--light-black) !important;
     border: 1px solid rgba(255, 255, 255, 0.158) !important;
     color: orange !important;
@@ -145,4 +145,8 @@
 }
 .dark1 .ui.menu .ui.dropdown .menu>.item:hover {
     background: #ffffff10 !important;
+}
+
+.dark1 .ui.menu .item {
+    color: #c0c0c0;
 }

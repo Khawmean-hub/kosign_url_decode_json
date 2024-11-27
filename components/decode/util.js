@@ -479,3 +479,129 @@ function makeZoomInOut(){
     }
     });
 }
+
+//transform to type script
+function jsonToTypeScriptInterface(json, interfaceName = "Root") {
+    function getType(value) {
+        if (Array.isArray(value)) {
+            if (value.length > 0) {
+                return `${getType(value[0])}[]`;
+            }
+            return "any[]"; // Empty arrays default to `any[]`
+        }
+        if (value === null) return "null";
+        if (typeof value === "object") return "object";
+        return typeof value;
+    }
+
+    function generateInterface(obj, name) {
+        const fields = Object.entries(obj).map(([key, value]) => {
+            const type =
+                typeof value === "object" && !Array.isArray(value) && value !== null
+                    ? generateInterface(value, key.charAt(0).toUpperCase() + key.slice(1))
+                    : getType(value);
+            return `  ${key}: ${type};`;
+        });
+
+        const interfaceDefinition = `interface ${name} {\n${fields.join("\n")}\n}`;
+        return interfaceDefinition;
+    }
+
+    const result = generateInterface(json, interfaceName);
+    return result;
+}
+
+//transform to SQL created
+function jsonToPostgreSQLTable(json, tableName = "my_table") {
+    function getPostgreSQLType(value) {
+        if (typeof value === "number") {
+            return Number.isInteger(value) ? "INTEGER" : "DOUBLE PRECISION";
+        }
+        if (typeof value === "string") {
+            return "TEXT";
+        }
+        if (typeof value === "boolean") {
+            return "BOOLEAN";
+        }
+        if (value === null) {
+            return "TEXT"; // Default type for null values
+        }
+        if (Array.isArray(value)) {
+            return "JSONB"; // Store arrays as JSONB
+        }
+        if (typeof value === "object") {
+            return "JSONB"; // Store nested objects as JSONB
+        }
+        return "TEXT"; // Default fallback type
+    }
+
+    const columns = Object.entries(json).map(([key, value]) => {
+        const type = getPostgreSQLType(value);
+        return `  "${key}" ${type}`;
+    });
+
+    const createTableSQL = `CREATE TABLE "${tableName}" (\n${columns.join(",\n")}\n);`;
+    return createTableSQL;
+}
+
+//transform to SQL select
+function jsonToPostgreSQLSelect(json, tableName = "my_table") {
+    // Extract the keys from the JSON to use as column names
+    const columns = Object.keys(json).map((key) => `${key}`).join(", ");
+    const query = `SELECT ${columns} FROM "${tableName}";`;
+
+    return query;
+}
+
+//JSON to insert sql
+function jsonToPostgreSQLInsert(json, tableName = "my_table") {
+    const columns = Object.keys(json).map((key) => `"${key}"`).join(", ");
+    const values = Object.values(json)
+        .map((value) => {
+            if (value === null) return "NULL"; // Handle null values
+            if (typeof value === "string") return `'${value.replace(/'/g, "''")}'`; // Escape single quotes
+            if (typeof value === "boolean") return value ? "TRUE" : "FALSE"; // Boolean conversion
+            if (Array.isArray(value) || typeof value === "object") {
+                return `'${JSON.stringify(value).replace(/'/g, "''")}'`; // Serialize arrays/objects to JSON
+            }
+            return value; // Numbers
+        })
+        .join(", ");
+
+    const insertSQL = `INSERT INTO "${tableName}" (${columns}) VALUES (${values});`;
+
+    return insertSQL;
+}
+
+//transform to sql update
+function jsonToPostgreSQLUpdate(json, tableName = "my_table", whereClause = {}) {
+    // Generate SET clause
+    const setClause = Object.entries(json)
+        .map(([key, value]) => {
+            if (value === null) return `"${key}" = NULL`;
+            if (typeof value === "string") return `"${key}" = '${value.replace(/'/g, "''")}'`;
+            if (typeof value === "boolean") return `"${key}" = ${value ? "TRUE" : "FALSE"}`;
+            if (Array.isArray(value) || typeof value === "object") {
+                return `"${key}" = '${JSON.stringify(value).replace(/'/g, "''")}'`;
+            }
+            return `"${key}" = ${value}`; // Numbers
+        })
+        .join(", ");
+
+    // Generate WHERE clause
+    const whereConditions = Object.entries(whereClause)
+        .map(([key, value]) => {
+            if (value === null) return `"${key}" IS NULL`;
+            if (typeof value === "string") return `"${key}" = '${value.replace(/'/g, "''")}'`;
+            if (typeof value === "boolean") return `"${key}" = ${value ? "TRUE" : "FALSE"}`;
+            if (Array.isArray(value) || typeof value === "object") {
+                return `"${key}"::jsonb = '${JSON.stringify(value).replace(/'/g, "''")}'`;
+            }
+            return `"${key}" = ${value}`; // Numbers
+        })
+        .join(" AND ");
+
+    const query = `UPDATE "${tableName}" SET ${setClause}${whereConditions ? ` WHERE ${whereConditions}` : ""};`;
+
+    return query;
+}

@@ -332,6 +332,10 @@ textarea {
     #duration_field {
         width: 100% !important;
     }
+
+    .download_file_ext {
+        display: none;
+    }
 }
 
 

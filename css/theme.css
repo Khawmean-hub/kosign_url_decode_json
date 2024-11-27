@@ -15,11 +15,22 @@
     color: var(--black);
 }
 
+.download_file_ext {
+    color: #ffffffc5;
+}
 
+.download_file_ext a {
+    color: rgb(255, 255, 255);
+    text-decoration: underline;
+}
 
+.light1 .download_file_ext {
+    color: #7c7c7c;
+}
 
-
-
+.light1 .download_file_ext a {
+    color: rgb(46, 128, 252);
+}
 
 
 /* ========================== Dark ==========================*/

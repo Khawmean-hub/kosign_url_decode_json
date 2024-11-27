@@ -133,9 +133,7 @@ function events() {
     $('#btn_clear').click(players.reset)
 
     $('#btn_minus').click(minusOrPlush)
-    $('#btn_plus').click(function () {
-        minusOrPlush(true)
-    })
+    $('#btn_plus').click(function(){ minusOrPlush({isAdd: true})})
 
     $('#btn_save').click(onSaveSub)
 
@@ -311,7 +309,8 @@ function getYouTubeVideoId(url) {
 
 
 
-function minusOrPlush(isAdd) {
+function minusOrPlush({isAdd=false}) {
+
     var timer = $('#timer').val()
     var type = $('#md_type').dropdown('get value');
     if (timer) {

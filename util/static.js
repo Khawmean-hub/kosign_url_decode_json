@@ -37,5 +37,7 @@ const MSG = {
     NO_NAME: 'Please input name.',
     SAVE: 'JSON has been saved.',
     NO_JSON_DATA_TO_CLEAR: "You don't have any data.",
-    TRY_TO_DECODE_AGAIN: 'Try to decode again.'
+    TRY_TO_DECODE_AGAIN: 'Try to decode again.',
+    NOT_JSON3: "Not a json.",
+    NO_TEXT_TRANSFORM: "No text to transform."
 }
