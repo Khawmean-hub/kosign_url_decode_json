@@ -210,13 +210,15 @@ function onChnagePatternSelection(){
 function onDeletePattern(){
     if(confirm('Are you sure want to delete this pattern?')){
         var id = $('#pattern_selection').val()
-        if(id){
+        if(id && id != '00'){
             var pattern = getPatternById(id);
             if(pattern){
                 deletePatternData(id);
                 onBuildPatternSelection();
                 toastr.success('Delete pattern.')
             }
+        }else{
+            alert('Please select pattern.')
         }
     }
 }
