@@ -1,3 +1,9 @@
 #jex .custom_hegith .CodeMirror  {
     height: calc(100vh - 270px);
 }
+
+#jex .CodeMirror.cm-s-material {
+    border-radius: 5px;
+    padding-top: 10px;
+    border: 1px solid rgba(34,36,38,.15);
+}
