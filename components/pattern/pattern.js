@@ -216,9 +216,10 @@ function onDeletePattern(){
                 deletePatternData(id);
                 onBuildPatternSelection();
                 toastr.success('Delete pattern.')
+                $('#btn_pattern_delete').addClass('disabled')
             }
         }else{
-            alert('Please select pattern.')
+            toastr.error('Please select pattern.')
         }
     }
 }
