@@ -70,6 +70,7 @@
     <script src="library/codemirror/js/xml.js"></script>
     <script src="library/codemirror/js/codemirrorjs.js"></script>
     <script src="library/codemirror/js/codemirror-mod.js"></script>
+    <script src="library/codemirror/js/other_lang.js"></script>
     <script src="library/html-beauti.js"></script>
 
 
@@ -82,7 +83,10 @@
 
     <div class="ui sidebar large vertical menu right inverted bg_color_light" id="setting_side_bar">
         <div class="menu">
-            <div class="header item"><p>Web Version 2.2.0</p></div>
+            <!-- ------------------------------------------------------------------------------------------------------ -->
+            <!-- Setting version                                                                                        -->
+            <!-- ------------------------------------------------------------------------------------------------------ -->
+            <div class="header item"><p>Web Version 2.3.0</p></div>
             <div class="header item">Theme</div>
             <div class="item btn_theme_color" theme="theme-blue">
                 <a class="ui blue empty circular label tiny"></a> Blue
@@ -268,21 +272,36 @@
                 <p></p>
             </div>
             <div id="main-content" style="display: none;">
+
+                <!-- ------------------------------------------------------------------------------------------------- -->
+                <!--            Navbar Menu                                                                             -->
+                <!-- ------------------------------------------------------------------------------------------------- -->
                 <div class="ui secondary menu inverted fixed small bg_color my_navbar">
-                    <div style="display: flex; overflow-x: auto">
+                    <div style="display: flex; overflow-x: auto" class="main_menu">
                         <div class="active item" data-tab="first">Decode</div>
                         <div class="item" data-tab="jshtml" onclick="navi.html2js()">HTML 2 Js</div>
                         <!-- <div class="item" data-tab="sortEx">Sort File Name</div> -->
-                        <div class="item" data-tab="second" onclick="navi.jex()">Jex Convert</div>
-                        <!-- <div class="item" data-tab="calendar_excel">Calendar excel</div> -->
-                        <div class="item" data-tab="subtitle_maker" onclick="navi.subtitle()">Subtitle maker</div>
                         <div class="item" data-tab="text_compare" onclick="navi.txtCompare()"
                             id="btn_text_compare_page">Text Compare</div>
                     </div>
                     <div class="ui dropdown item">
-                        Other
+                        Other <div class="ui yellow empty circular label mini"></div>
                         <i class="dropdown icon"></i>
-                        <div class="menu">
+                        <div class="menu" id="other_menu">
+                            <div class="item" data-tab="subtitle_maker" onclick="navi.subtitle();">Subtitle maker
+                                <div class="ui mini label">
+                                Moved
+                              </div></div>
+                            <div class="item" data-tab="second" onclick="navi.jex();">Jex Convert 
+                                <div class="ui mini label">
+                                Moved
+                              </div></div>
+                            <div class="item" data-tab="pattern" onclick="navi.pattern();">Pattern 
+                                <div class="ui mini label yellow">New</div>
+                            </div>
+                            <div class="item" data-tab="calendar_excel01" onclick="navi.calendar();">Calendar Excel
+                                <div class="ui mini pink label">B2B</div>
+                            </div>
                             <a href="https://json-diff.com/" target="_blank" class="item">JSON Diff</a>
                             <a href="https://transform.tools/json-to-typescript" target="_blank"
                                 class="item">Transform</a>
@@ -310,9 +329,9 @@
                     <div class="ui bottom attached tab active" data-tab="first">
                         <div class="layout" id="layout">
                             <div class="floated_bottom">
-                                <button class="ui circular icon button small btn_color_light" id="btn_focus_mode"><i
+                                <button class="ui circular icon button small btn_color_light show_my_popup" data-variation="inverted" data-position="top right" data-html="Toggle Expand Editor." id="btn_focus_mode"><i
                                         class="search plus icon"></i></button>
-                                <button class="ui circular icon button huge btn_color btn_show_right"><i
+                                <button class="ui circular icon button huge btn_color btn_show_right show_my_popup" data-variation="inverted" data-position="top right" data-html="(Hide/Show) JSON Storage"><i
                                         class="history icon"></i></button>
                             </div>
                             <!-- left -->
@@ -325,7 +344,7 @@
                                                 <label class="text_fixed_color" for="url_text">Paste here</label>
                                                 <div class="ui input actions icon">
                                                     <div id="btn_paste_url" data-tooltip="Paste" data-inverted=""
-                                                        data-position="bottom left"
+                                                        data-position="right center"
                                                         class="ui button icon btn_color_light"><i
                                                             class="paste icon"></i></div>
                                                     <input type="text" class="input_have_clear" id="url_text" placeholder="Paste url encode here">
@@ -360,22 +379,22 @@
                                                       <div class="menu">
                                                         <div class="item btn_keys_json show-guild-line">Key to JSON</div>
                                                         <div class="ui flowing popup transition hidden" style="width: 500px;">
-                                                            <img class="ui massive rounded image" src="/image/guid/key_to_json.gif">     
+                                                            <img class="ui massive rounded image" src="./image/guid/key_to_json.gif">     
                                                         </div>
                                                         <div class="item btn_snake_case show-guild-line">Snake Case</div>
                                                         <div class="ui flowing popup transition hidden" style="width: 500px;">
-                                                            <img class="ui massive rounded image" src="/image/guid/to_snake_case.gif">     
+                                                            <img class="ui massive rounded image" src="./image/guid/to_snake_case.gif">     
                                                         </div>
                                                         <div class="item btn_camel_case show-guild-line">Camel Case</div>
                                                         <div class="ui flowing popup transition hidden" style="width: 500px;">
-                                                            <img class="ui massive rounded image" src="/image/guid/to_camel_case.gif">     
+                                                            <img class="ui massive rounded image" src="./image/guid/to_camel_case.gif">     
                                                         </div>
-                                                        <div class="item btn_json_ts" data-position="right center" data-tooltip="JSON to TypeScript Inferface">TypeScript (TS)</div>
-                                                        <div class="item btn_json_sql" data-position="right center" data-tooltip="JSON to SQL ceated table (Posgresql)">SQL Table</div>
-                                                        <div class="item btn_json_select" data-position="right center" data-tooltip="JSON to SQL select (Posgresql)">SQL Select</div>
-                                                        <div class="item btn_json_insert" data-position="right center" data-tooltip="JSON to SQL insert (Posgresql)">SQL Insert</div>
-                                                        <div class="item btn_json_update" data-position="right center" data-tooltip="JSON to SQL update (Posgresql)">SQL Update</div>
-                                                        <div class="item btn_json_encdoe" data-position="right center" data-tooltip="JSON to Encode string (encodeURIComponent)">Encode</div>
+                                                        <div class="item btn_json_ts" data-position="right center" data-inverted="" data-tooltip="JSON to TypeScript Inferface">TypeScript (TS)</div>
+                                                        <div class="item btn_json_sql" data-position="right center" data-inverted="" data-tooltip="JSON to SQL ceated table (Posgresql)">SQL Table</div>
+                                                        <div class="item btn_json_select" data-position="right center" data-inverted="" data-tooltip="JSON to SQL select (Posgresql)">SQL Select</div>
+                                                        <div class="item btn_json_insert" data-position="right center" data-inverted="" data-tooltip="JSON to SQL insert (Posgresql)">SQL Insert</div>
+                                                        <div class="item btn_json_update" data-position="right center" data-inverted="" data-tooltip="JSON to SQL update (Posgresql)">SQL Update</div>
+                                                        <div class="item btn_json_encdoe" data-position="right center" data-inverted="" data-tooltip="JSON to Encode string (encodeURIComponent)">Encode</div>
                                                       </div>
                                                     </div>
                                                   </div>
@@ -416,7 +435,7 @@
                                 <div class="controll_div">
                                     <div style="display: flex; justify-content: space-between;">
                                         <div>
-                                            <h4 class="text_fixed_color">Recent</h4>
+                                            <h4 class="text_fixed_color">JSON Storage</h4>
                                         </div>
                                         <div>
                                             <button class="ui button mini btn_clear_data btn_color_light">Clear
@@ -450,7 +469,7 @@
                                         </div>
 
                                         <div style="text-align: right;">
-                                            <button class="ui button tiny btn_color_light disabled"
+                                            <button class="ui button tiny btn_color_light disabled" data-position="top right" data-inverted="" data-tooltip="Move to Text Compare Tab"
                                                 id="btn_compare_json">Compare</button>
                                             <div class="ui icon buttons tiny right floated">
                                                 <button data-tooltip="Format" data-inverted=""
@@ -490,60 +509,6 @@
                         <div id="jex"></div>
                     </div>
 
-
-                    <!-- Calendar tab  -->
-                    <!-- ================================================================= -->
-                    <div class="ui bottom attached tab pt_42" data-tab="calendar_excel">
-                        <div class="my_container">
-                            <div class="ui form">
-                                <div class="field">
-                                    <label>Excel File</label>
-                                    <input type="file"
-                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                                        id="excel_file">
-                                </div>
-
-                                <div class="two fields">
-                                    <div class="three wide field">
-                                        <label>Table Name</label>
-                                        <input type="text" value="txaf_schd" id="table_name" oninput="readExcel()">
-                                    </div>
-                                    <div class="three wide field">
-                                        <label>Change Sheet</label>
-                                        <select class="ui fluid search dropdown" id="sheet_select"
-                                            onchange="onChangeSheet()">
-                                        </select>
-                                    </div>
-                                    <div class="three wide field">
-                                        <label>Change year</label>
-                                        <select class="ui fluid search dropdown" id="year_select"
-                                            onchange="readExcel()">
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="field">
-                                    <label>Result <small style="color:#3743ec;" id="total_row"></small> <small
-                                            style="color: red" id="duplicate_msg"></small></label>
-                                    <div class="ui top attached tabular menu">
-                                        <div class="active item" data-tab="cal_result">SQL</div>
-                                        <div class="item" data-tab="cal_table">Table</div>
-                                    </div>
-                                    <div class="ui bottom attached active tab segment" data-tab="cal_result">
-                                        <textarea rows="40" id="result_sql" spellcheck="false"></textarea>
-                                    </div>
-                                    <div class="ui bottom attached tab segment" data-tab="cal_table">
-                                        <div id="cal_table">
-
-                                        </div>
-                                    </div>
-                                    <!--                        <label>Result</label>-->
-                                    <!--                        <textarea rows="25" id="result_sql"></textarea>-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- HTML 2 JS -->
                     <!-- ====================================================== -->
                     <div class="ui bottom attached tab" data-tab="jshtml">
@@ -563,6 +528,24 @@
                     <div class="ui bottom attached tab" data-tab="text_compare">
                         <div class="pt_40">
                             <div id="text_compare"></div>
+                        </div>
+                    </div>
+
+
+                    <!-- pattern -->
+                    <!-- ====================================================== -->
+                    <div class="ui bottom attached tab" data-tab="pattern">
+                        <div class="pt_40">
+                            <div id="pattern"></div>
+                        </div>
+                    </div>
+
+
+                    <!-- Calendar tab  -->
+                    <!-- ================================================================= -->
+                    <div class="ui bottom attached tab" data-tab="calendar_excel01">
+                        <div class="pt_40">
+                            <div id="calendar_excel"></div>
                         </div>
                     </div>
                 </div>

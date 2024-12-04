@@ -41,7 +41,9 @@ const navi = {
     html2js: () => { loadComponent('html_2_js') },
     jex: ()=> {loadComponent('jex')},
     subtitle: ()=> {loadComponent('subtitle')},
-    txtCompare: (callback)=> {loadComponent('text_compare', callback)}
+    txtCompare: (callback)=> {loadComponent('text_compare', callback)},
+    pattern: ()=> {loadComponent('pattern', ()=>{$('.show_my_popup').popup({html: true, variation: 'wide'});})},
+    calendar: ()=> {loadComponent('calendar_excel')}
 }
 
 
@@ -50,11 +52,6 @@ function loadDataForTextCompare(){
 
     $('head').append(`<link rel="stylesheet" href="library/codemirror/css/merge.css">`)
     $('head').append(`<link rel="stylesheet" href="library/codemirror/css/neat-theme.css">`)
-    
-
-    $('head').append(`<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/css/css.min.js"></script>`)
-    $('head').append(`<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/sql/sql.min.js"></script>`)
-    $('head').append(`<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/python/python.min.js"></script>`)
     
     $('head').append(`<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/htmlmixed/htmlmixed.min.js"></script>`)
     $('head').append(`<script src="library/codemirror/js/diff.js"></script>`)
@@ -65,6 +62,4 @@ function loadDataForTextCompare(){
     $('head').append(`<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/dialog/dialog.min.js"></script>`)
     $('head').append(`<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/search/jump-to-line.min.js"></script>`)
     $('head').append(`<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/search/matchesonscrollbar.min.js"></script>`)
-    $('head').append(``)
-    $('head').append(``)
 }

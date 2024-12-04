@@ -86,3 +86,37 @@
     background-color: var(--light-gray);
 }
 
+
+
+/* navbare */
+
+#main-content .my_navbar .main_menu .item:hover {
+    border-radius: 5px !important;
+    cursor: pointer !important;
+}
+
+
+.light1 #main-content .my_navbar .dropdown.item:hover,
+.light1 #main-content .my_navbar .my_navbar_sub_active {
+    color: unset !important;
+    background: #ebebeb !important;
+}
+.dark2 #main-content .my_navbar .item:hover,
+.dark2 #main-content .my_navbar .my_navbar_sub_active{
+    background: #ffffff34 !important;
+    color: orange !important;
+}
+
+.theme-light.theme-blue #main-content .my_navbar  .main_menu .item:hover,
+.theme-light.theme-green #main-content .my_navbar .main_menu .item:hover,
+.theme-light.theme-teal #main-content .my_navbar .main_menu .item:hover,
+.theme-light.theme-red #main-content .my_navbar .main_menu .item:hover,
+.dark1 #main-content .my_navbar .main_menu .item:hover,
+.dark3 #main-content .my_navbar .main_menu .item:hover,
+.dark4 #main-content .my_navbar .main_menu .item:hover {
+    background: #ffffff34 !important;
+}
+
+.my_navbar_sub_active {
+    background: #ffffff34 !important;
+}

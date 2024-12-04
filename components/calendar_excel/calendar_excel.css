@@ -1,0 +1,139 @@
+.editor_top_menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+#calendar_excel .CodeMirror.cm-s-material {
+    border-radius: 5px;
+    padding-top: 10px;
+    border: 1px solid rgba(34,36,38,.15);
+}
+
+/* editor */
+/* --------------------------------------------------------------------------- */
+#calendar_excel .CodeMirror{
+    height: calc(100vh - 250px);
+}
+
+
+#calendar_excel .btn_color_light{
+    box-shadow: none !important;
+}
+
+#calendar_excel #calendar_table{
+    height: calc(100vh - 250px);
+    overflow: auto;
+}
+
+
+
+/* theme */
+.theme-light.theme-blue .btn_color_light .button{
+    background-color: var(--light-light-blue);
+    color: var(--blue);
+}
+.theme-light.theme-blue .btn_color_light .button:hover,.theme-light.theme-blue .btn_color_light.active {
+    background-color: var(--blue);
+    color: var(--white);
+}
+.theme-light.theme-blue .btn_color_light .button:hover i {
+    color: var(--white) !important;
+}
+
+
+/* green */
+.theme-light.theme-green .btn_color_light .button {
+    background-color: var(--light-light-green);
+    color: var(--green);
+}
+
+.theme-light.theme-green .btn_color_light .button:hover, .theme-light.theme-green .btn_color_light.active {
+    background-color: var(--green);
+    color: var(--white);
+}
+
+.theme-light.theme-green .btn_color_light .button:hover i {
+    color: var(--white) !important;
+}
+
+/* teal */
+.theme-light.theme-teal .btn_color_light .button:hover i {
+    color: var(--white) !important;
+}
+.theme-light.theme-teal .btn_color_light .button{
+    background-color: var(--light-light-teal);
+    color: var(--teal);
+}
+
+.theme-light.theme-teal .btn_color_light .button:hover, .theme-light.theme-teal .btn_color_light.active {
+    background-color: var(--teal);
+    color: var(--white);
+}
+
+/* red */
+.theme-light.theme-red .btn_color_light .button:hover i {
+    color: var(--white) !important;
+}
+.theme-light.theme-red .btn_color_light .button{
+    background-color: var(--light-light-red);
+    color: var(--red);
+}
+.theme-light.theme-red .btn_color_light .button:hover, .theme-light.theme-red .btn_color_light.active{
+    background-color: var(--red);
+    color: var(--white);
+}
+
+
+/* dark1 */
+.dark1 .btn_color_light .button{
+    background-color: var(--light-black);
+    color: var(--gray);
+}
+
+.dark1 .btn_color_light .button:hover, .dark1 .btn_color_light.active {
+    background-color: var(--b-mm-black);
+}
+
+/* dark2 */
+.dark2 .btn_color_light .button{
+    background-color: var(--light-black);
+    color: orange;
+}
+
+.dark2 .btn_color_light .button:hover, .dark2 .btn_color_light.active {
+    background-color: var(--b-mm-black);
+}
+
+/* dark3 */
+.dark3 .btn_color_light .button{
+    background-image: linear-gradient(43deg, #7a5ff1  51%, #7d45b2  100%);
+    color: white;
+}
+
+.dark3 .btn_color_light .button:hover, .dark3 .btn_color_light.active {
+    background-color: #8BC6EC !important;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%) !important;
+}
+
+/* dark4 */
+.dark4 .btn_color_light .button {
+    background: #00000034 !important;
+    color: #ffffffc0 !important;
+}
+
+.dark4 .btn_color_light .button:hover, .dark4 .btn_color_light.active {
+    background-image: linear-gradient(43deg, #7a5ff1  51%, #7d45b2  100%) !important;
+}
+
+
+/* light1 */
+.light1 .btn_color_light .button {
+    background: #ffffffdc !important;
+    color: #000000c0 !important;
+}
+
+.light1 .btn_color_light .button:hover, .light1 .btn_color_light.active {
+    background-image: linear-gradient(43deg, #d1c7ff  51%, #e2c4ff  100%) !important;
+}

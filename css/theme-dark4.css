@@ -35,13 +35,14 @@
     background-image: linear-gradient(43deg, #7a5ff1  51%, #7d45b2  100%) !important;
 }
 
-.dark4 .btn_color_light {
-    background: #00000034 !important;
-    color: #ffffffc0 !important;
-}
 .dark4 .ui.label.button.icon {
     background: #00000033 !important;
     color: #ffffffc0;
+}
+
+.dark4 .btn_color_light {
+    background: #00000034 !important;
+    color: #ffffffc0 !important;
 }
 
 .dark4 .btn_color_light:hover {
@@ -190,3 +191,4 @@
 .dark4 .ui.menu .item {
     color: white;
 }
+

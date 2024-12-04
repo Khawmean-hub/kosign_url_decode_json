@@ -1,0 +1,127 @@
+#page_pattern #layout04 {
+    display: flex;
+}
+#page_pattern #layout04>div{
+    overflow-x: hidden;
+}
+#page_pattern #left_part04 {
+    min-width: 295px;
+    width: 50%;
+}
+#page_pattern #left_part04 .body {
+    border-radius: 10px;
+    width: calc(100% - 15px);
+    padding: 20px;
+    background: #ffffff;
+}
+#page_pattern #left_part04 .ui-resizable-e:after {
+    position: absolute;
+    content: "||";
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 30px 0;
+    justify-content: center;
+    align-items: center;
+    color: var(--gray);
+}
+#page_pattern #left_part04 .ui-resizable-e {
+    cursor: e-resize;
+    width: 15px;
+    right: 0;
+    top: 5%;
+    height: 90%;
+    color: white;
+    border-radius: 10px;
+}
+
+
+#page_pattern #right_part04 {
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 295px;
+    background: #ffffff;
+    width: 50%;
+}
+
+#page_pattern {
+    padding: 17px 17px 5px 17px;
+}
+
+.display_flex{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+
+/* set hegiht to codemiror */
+
+#page_pattern #layout04 #left_part04 .field:nth-child(1) .CodeMirror {
+    height: 20vh;
+    font-size: 16px;
+    line-height: 26px;
+}
+
+#page_pattern #layout04 #left_part04 .field:nth-child(2) .CodeMirror {
+    height: calc(80vh - 248px);
+    font-size: 16px;
+    line-height: 26px;
+}
+
+#page_pattern #layout04 #right_part04 .CodeMirror{
+    height: calc(100vh - 143px);
+    font-size: 16px;
+    line-height: 26px;
+}
+
+
+
+
+
+#page_pattern #layout04 .CodeMirror.cm-s-material {
+    border-radius: 5px;
+    padding-top: 10px;
+    border: 1px solid rgba(34,36,38,.15);
+}
+
+.theme-light.theme-blue #page_pattern #layout04 .CodeMirror-focused {
+    border: 1px solid var(--light-blue) !important;
+}
+.theme-light.theme-teal #page_pattern #layout04 .CodeMirror-focused {
+    border: 1px solid var(--light-teal) !important;
+}
+.theme-light.theme-green #page_pattern #layout04 .CodeMirror-focused {
+    border: 1px solid var(--light-green) !important;
+}
+.theme-light.theme-red #page_pattern #layout04 .CodeMirror-focused {
+    border: 1px solid var(--light-red) !important;
+}
+.dark1 #page_pattern #layout04 .CodeMirror-focused {
+    border: 1px solid rgb(167, 167, 167) !important;
+}
+.dark2 #page_pattern #layout04 .CodeMirror-focused {
+    border: 1px solid orange !important;
+}
+
+.dark1 #right_part04, .dark2 #right_part04{
+    background: var(--b-white) !important;
+}
+
+.dark3 #right_part04{
+    background-color: #4158D0 !important;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #ffa470 100%) !important;
+}
+
+.dark4 #right_part04{
+    background-color: #00000090 !important;
+}
+.light1 #right_part04 {
+    background-color: #ffffffdc !important;
+}
+
+.txt_main_color {
+    color: rgb(236, 19, 19);
+    font-weight: bold;
+}

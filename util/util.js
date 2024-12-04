@@ -106,6 +106,18 @@ function applyEditorJs(id, isReadOnly = false, line = true){
       });
 }
 
+function applyEditorSQL(id, isReadOnly = false, line = true){
+    let themeName = 'material';
+    if(getThemeName().includes('dark')){
+        themeName='material-ocean'
+    }
+    return CodeMirror.fromTextArea(document.getElementById(id), {
+        lineNumbers: true,
+        mode: "text/x-sql",
+        theme: themeName
+      });
+}
+
 
 var myModeSpec = {
     name: "htmlmixed",

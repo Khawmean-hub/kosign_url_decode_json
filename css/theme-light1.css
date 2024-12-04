@@ -43,13 +43,15 @@
     background-image: linear-gradient(43deg, #c2b4ff  51%, #ca91ff  100%) !important;
 }
 
-.light1 .btn_color_light {
-    background: #ffffffdc !important;
-    color: #000000c0 !important;
-}
+
 .light1 .ui.label.button.icon {
     background: #ffffffe0 !important;
     color: #000000c0;
+}
+
+.light1 .btn_color_light {
+    background: #ffffffdc !important;
+    color: #000000c0 !important;
 }
 
 .light1 .btn_color_light:hover {

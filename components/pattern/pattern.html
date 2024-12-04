@@ -1,0 +1,54 @@
+<div id="page_pattern">
+    <div id="layout04">
+        <div id="left_part04">
+            <div class="body">
+                <h3 class="txt_color">Pattern</h3>
+                <div class="ui form small">
+                    <div class="field required">
+                        <label class="text_fixed_color">Input JSON or Keys ( $key )</label>
+                        <textarea rows="5" name="" id="top_editor04"></textarea>
+                    </div>
+    
+                    <div class="field required">
+                        <div style="display: flex;">
+                            <label class="text_fixed_color">Pattern</label>
+                            <div class="show_my_popup" data-offset="-2" data-position="top left" data-html="<spand class='txt_main_color'>$key: </spand>replace with Key.<br><spand class='txt_main_color'>$tab: </spand>replace with tab." style="margin-left: 5px;"><i class="question circle icon"></i></div> 
+                        </div>
+                        <div style="margin-bottom:10px;" class="two fields">
+                            <div class="field">
+                                <div class="ui action input">
+                                    <input type="text" placeholder="Pattern name" id="pattern_save_input" value="New Pattern">
+                                    <button class="ui button btn_color disabled" id="btn_pattern_save">Save</button>
+                                </div>
+                            </div>
+                            <div class="field" style="display: grid; grid-template-columns: auto 50px;">
+                                <div>
+                                    <select class="ui fluid  search dropdown" id="pattern_selection">
+                                        <option value="New">Select Pattern</option>
+                                        <option value="01">Empty String</option>
+                                        <option value="02">Null to void</option>
+                                        <option value="03">SQL empty</option>
+                                    </select>
+                                </div>
+                                <button class="ui icon button btn_color_light disabled" id="btn_pattern_delete"><i class="trash icon red"></i></button>
+                            </div>
+                        </div>
+                        <textarea rows="10" id="bottom_editor04"></textarea>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="right_part04">
+            <div class="ui form small">
+                <div class="field">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px">
+                        <label>Result</label>
+                        <button type="button" class="ui button btn_color_light tiny" id="btn_copy_patter_text">Copy</button>
+                    </div>
+                    <textarea rows="25" id="right_editor04"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -18,6 +18,8 @@ $(document).on('click', '#btn_focus_mode', onFocusMode)
 $(document).on('input', '.input_have_clear', onShowBtnClearOrNot)
 $(document).on('click', '.btn_clear_its_input', onClearItsInput)
 $(document).on('change', '#showGuidLine', onSetGuildLine)
+$(document).on('click', '#other_menu div.item', onClickOtherMenu)
+$(document).on('click', '.my_navbar .main_menu .item', onRemoveActiveOther)
 
 //============================================ functions ============================================
 /**
@@ -38,6 +40,7 @@ function onChangeThemeColor() {
 
         editroDark()
         setThemeName(themeText);
+        semanticDarkTheme();
     } else {
         const theme = 'theme-light ' + themeText;
         $('#theme').removeAttr('class').addClass(theme)
@@ -45,6 +48,7 @@ function onChangeThemeColor() {
         $('#save_data_rec [style="background: #151515"]').attr('style', 'background: #f5f5f5')
         editroLight()
         setThemeName(theme);
+        semanticLightTheme();
     }
 
 }
@@ -56,11 +60,12 @@ function onLoadTheme() {
     const savedTheme = getThemeName();
     if (savedTheme) {
         if (savedTheme.includes('dark')) {
-            $('.ui.input, .ui.checkbox, .ui.modal, .ui.form, .ui.table').addClass('inverted')
-            editroDark()
+            editroDark();
+            semanticDarkTheme();
         } else {
             // $('.ui.input, .ui.checkbox, .ui.modal, .ui.form, .ui.table').removeClass('inverted')
             // editroLight()
+            semanticLightTheme();
         }
         $('#theme').removeAttr('class').addClass(savedTheme)
     }
@@ -79,12 +84,10 @@ function editroDark() {
         saveBoxResult.setOption('theme', 'material-ocean')
     }
 
-    try{
-        if(leftEditor){
-            leftEditor.setOption('theme', 'material-ocean')
-            rightEditor.setOption('theme', 'material-ocean')
-        }
-    }catch(e){}
+    if(window.calendarDark){
+        window.calendarDark()
+    }
+
 }
 
 function editroLight() {
@@ -92,6 +95,11 @@ function editroLight() {
         decodeResultEditor.setOption('theme', 'material')
         saveBoxResult.setOption('theme', 'material')
     }
+
+    if(window.calendarLight){
+        window.calendarLight()
+    }
+
     // if(leftEditor != undefined){
     //     leftEditor.setOption('theme', 'material')
     //     rightEditor.setOption('theme', 'material')
@@ -203,4 +211,34 @@ function onSetGuildLine(){
     if(!guildLine){
         $('.ui.topup').remove();
     }
+}
+
+function onClickOtherMenu(){
+    $('.my_navbar .main_menu .item').removeClass('active');
+    $('.my_navbar .main_menu').next().addClass('my_navbar_sub_active')
+}
+
+function onRemoveActiveOther(){
+    $('.my_navbar .main_menu').next().removeClass('my_navbar_sub_active')
+}
+
+
+
+function semanticLightTheme(){
+    // $('[data-html]').attr('data-variation', 'tiny')
+    // $('.ui.input, .ui.checkbox, .ui.modal, .ui.form, .ui.table').removeClass('inverted');
+}
+
+function semanticDarkTheme(){
+    //tooltip
+    // $('[data-html]').attr('data-variation', 'inverted tiny');
+    $('.ui.input, .ui.checkbox, .ui.modal, .ui.form, .ui.table').addClass('inverted');
+}
+
+function loadSemacticUi(){
+    //semantic ui
+    
+    $('.menu .item').tab();
+    $('.ui.dropdown').dropdown();
+    $('.show_my_popup').popup({html: true, variation: 'wide'});
 }

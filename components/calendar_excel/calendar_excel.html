@@ -1,0 +1,57 @@
+<div class="bg_color_light" style="margin: 15px 20px 0px 20px; padding: 20px; border-radius: 10px;">
+    <h3 class="txt_color">Extract Excel to SQL</h3>
+    <div class="ui form">
+        <div class="fields">
+            <div class="four wide field required">
+                <label>Please upload excel file</label>
+                <div class="ui labeled input" id="box_file">
+                    <label class="ui label button icon" for="txt_input"><i class="file excel icon"></i></label>
+                    <input type="text" id="txt_input" placeholder="Click here to upload" readonly>
+                </div>
+                <input type="file" id="excel_file" style="display: none;" accept=".xls,.xlsx">
+            </div>
+            <div class="three wide field">
+                <label>Excel sheet</label>
+                <select class="ui dropdown" id="excel_sheet" disabled>
+                    <option value="">Select sheet</option>
+                    <!-- Options will be dynamically loaded from excel file -->
+                </select>
+            </div>
+            <div class="ten wide field required">
+                <label>Pattern <span class="show_my_popup" data-html="$year will replace obj.year"><i class="question circle icon"></i></span></label>
+                <input placeholder="pattern" spellcheck="false" type="text" name="" id="pattern_input"
+                    value="insert into txaf_schd(year, dt, srno, cntn) values('$year', '$dt', '$srno', '$cntn');">
+            </div>
+        </div>
+        <div class="field">
+            <div class="editor_top_menu">
+                <label>Result</label>
+                <div>
+                    <button
+                        class="ui left attached button tiny btn_color_light active btn_show_calendar_editor">Editor</button>
+                    <button class="right attached ui button tiny btn_color_light btn_show_calendar_table" disabled>Table</button>
+                    <!-- divider -->
+                    <label style="padding-left: 10px"></label>
+
+                    <!-- button copy -->
+                    <div class="ui btn_color_light buttons tiny" style="border-radius: 5px;">
+                        <div class="ui button btn_copy_result">Copy</div>
+                        <div class="ui floating dropdown icon button">
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <div class="item btn_copy_result">Copy result</div>
+                                <div class="item btn_copy_json_excel">Copy JSON</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="calendar_editor">
+                <textarea name="" id="calendar_excel_editor" rows="5"></textarea>
+            </div>
+            <div id="calendar_table" style="display: none;">
+                <div class="table_view_excel"></div>
+            </div>
+        </div>
+    </div>
+</div>

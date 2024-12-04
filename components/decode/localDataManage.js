@@ -80,7 +80,7 @@ function buildJsonMenuList() {
     $.each(data, function (i, v) {
         html += `
             <div class="box ${activeJsonId === v['id'] ? 'active_select' : ''}" id="${v['id']}" style="background: ${v['color'] ? v['color'] : jsonMenuDefaultColor}">
-                <div class="book_mark_contain">${v['isFavorite'] ? bookmarkActive : bookmarkOut}</div>
+                <div class="book_mark_contain show_my_popup" data-position="top right" data-offset="-4" data-variation="inverted tiny" data-html="Bookmark">${v['isFavorite'] ? bookmarkActive : bookmarkOut}</div>
                 ${v['dupName'] ? duplicateDat(v['dupName'], i===data.length-1) : ''}
                 ${jsonMenuSetting}
                 <div class="btn_box" data-val="${encodeURIComponent(JSON.stringify(v))}">
@@ -104,6 +104,7 @@ function buildJsonMenuList() {
     $jsonMenuContain.empty().append(html);
     if(!html){$jsonMenuContain.empty().append(jsonMenuNoData);}  
     $('.btn_box_close').dropdown();
+    $('.show_my_popup').popup({html: true, variation: 'wide'});
 
     if(getThemeName().includes('dark')){
         if(getThemeName().includes('dark3')){
