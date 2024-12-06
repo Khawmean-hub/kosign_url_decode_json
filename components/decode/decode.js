@@ -136,7 +136,7 @@ function tryToDecode(str){
 function onKeyToJson(){
     if(decodeResultEditor.getValue()){
         //decodeResultEditor.setValue(jsonFormat(onlyKeyToJson(decodeResultEditor.getValue())))
-        decodeResultEditor.setValue(jsonFormat(JSON.stringify(transformStringToObject(decodeResultEditor.getValue()))))
+        decodeResultEditor.setValue(jsonFormat(JSON.stringify(transformStringToJSON(decodeResultEditor.getValue()))))
     }else{
         toastr.error(MSG.NO_TEXT_TO_CONVERT)
     }

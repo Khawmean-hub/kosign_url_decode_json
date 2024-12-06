@@ -86,9 +86,11 @@ function onActiveButtonSavePattern(){
  */
 function onApplyPattern(){
     var replaceKey = '$key';
+    var replaceVal = '$val';
     var replaceTab = '$tab';
     // var replaceKeyInd = 
-    var keys = getKeysInput();
+    var json = getJsonInput();
+    var keys = Object.keys(json);
     var patternTxt = leftEditorBottom04.getValue().trim();
 
     var resutl = ''
@@ -101,11 +103,23 @@ function onApplyPattern(){
             }
         })
     }
+
+    var valInd = patternTxt.match(/\$val\d+/gm);
+    if(valInd){
+        valInd.forEach(v=>{
+            var kInd = v.replace(replaceVal, '');
+            if(kInd < keys.length){
+                patternTxt = patternTxt.replace(v, json[keys[kInd]])
+            }
+        })
+    }
+
     //... apply pattern...
     if(keys && patternTxt){
         keys.forEach(v=>{
             var tab = getDefAutoTab(keys, v);
-            resutl += patternTxt.replaceAll(replaceKey, v).replaceAll(replaceTab, tab) + '\n'
+            var val = json[v];
+            resutl += patternTxt.replaceAll(replaceKey, v).replaceAll(replaceTab, tab).replaceAll(replaceVal, val) + '\n'
         })
     }
     rightEditor04.setValue(resutl)
@@ -113,22 +127,18 @@ function onApplyPattern(){
 
 
 //get keys
-function getKeysInput(){
-    var keys;
-    var val = leftEditorTop04.getValue();
+function getJsonInput(){
+    var json;
+    var val = leftEditorTop04.getValue().trim();
     if(val){
         //try if json input
-        try{ if(val){ keys = Object.keys(JSON.parse(val)) } }catch(e){}
+        try{ if(val){ json = JSON.parse(val) } }catch(e){}
 
         // if not json
-        try{ if(!keys){ keys = Object.keys(transformStringToObject(val))} }catch(e){}
+        try{ if(!json){ json = transformStringToJSON(val)} }catch(e){}
     }
 
-    if(keys){
-        keys = keys.filter(v=> v != '')
-    }
-
-    return keys;
+    return json || {};
 }
 
 //get auto space
@@ -228,6 +238,8 @@ function onDeletePattern(){
 function onCopyPatterText(){
     copyToClipboard(rightEditor04.getValue().trim())
 }
+
+
 
 
 //-------------------------------------------------------------------------------------------------------------

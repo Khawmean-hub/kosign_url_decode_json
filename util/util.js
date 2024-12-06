@@ -351,3 +351,37 @@ function transformStringToObject(input) {
 
     return result;
 }
+
+
+
+function transformStringToJSON(str) {
+    const result = {};
+    
+    // Regular expression to match key-value pairs or standalone keys
+    const regex = /(\w+)-"([^"]*)"|(\w+)-(\S+)|(\w+)/g;
+    let match;
+
+    // Iterate over all matches in the string
+    while ((match = regex.exec(str)) !== null) {
+        if (match[1]) {
+            // Matched key="value" format
+            result[match[1]] = match[2];
+        } else if (match[3]) {
+            // Matched key-value format
+            const key = match[3];
+            const value = match[4];
+            if (value === "true" || value === "false") {
+                result[key] = value === "true"; // Convert to boolean
+            } else if (!isNaN(value)) {
+                result[key] = Number(value); // Convert to number
+            } else {
+                result[key] = value; // Keep as string
+            }
+        } else if (match[5]) {
+            // Matched standalone key
+            result[match[5]] = "";
+        }
+    }
+
+    return result;
+}
