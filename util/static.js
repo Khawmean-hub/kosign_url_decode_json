@@ -39,5 +39,6 @@ const MSG = {
     NO_JSON_DATA_TO_CLEAR: "You don't have any data.",
     TRY_TO_DECODE_AGAIN: 'Try to decode again.',
     NOT_JSON3: "Not a json.",
-    NO_TEXT_TRANSFORM: "No text to transform."
+    NO_TEXT_TRANSFORM: "No text to transform.",
+    SUCCESS_TRANSFORM: "Transform success."
 }

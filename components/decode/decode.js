@@ -137,6 +137,7 @@ function onKeyToJson(){
     if(decodeResultEditor.getValue()){
         //decodeResultEditor.setValue(jsonFormat(onlyKeyToJson(decodeResultEditor.getValue())))
         decodeResultEditor.setValue(jsonFormat(JSON.stringify(transformStringToJSON(decodeResultEditor.getValue()))))
+        toastr.info('Transformed to JSON')
     }else{
         toastr.error(MSG.NO_TEXT_TO_CONVERT)
     }
@@ -174,6 +175,7 @@ function onlyKeyToJson(str) {
 function onChangeToSnakeCase(){
     if(decodeResultEditor.getValue()){
         decodeResultEditor.setValue(jsonFormat(replaceAllToSnakeCase(decodeResultEditor.getValue())))
+        toastr.info('Transformed to snake case')
     }else{
         toastr.error(MSG.NO_TEXT_TO_CONVERT)
     }
@@ -203,6 +205,7 @@ function replaceAllToSnakeCase(str) {
 function onChangeToCamelCase(){
     if(decodeResultEditor.getValue()){
         decodeResultEditor.setValue(jsonFormat(replaceAllToCamelCase(decodeResultEditor.getValue())))
+        toastr.info('Transformed to camel case')
     }else{
         toastr.error(MSG.NO_TEXT_TO_CONVERT)
     }
@@ -250,6 +253,7 @@ function onTransformToTS(){
     var res = jsonToTypeScriptInterface(getJSONFromLeftBoxEditor())
     if(res){
         decodeResultEditor.setValue(res)
+        toastr.info('Transformed to TypeScript interface')
     }
 }
 
@@ -270,6 +274,7 @@ function onTransformToSQL(){
     var res = jsonToPostgreSQLTable(getJSONFromLeftBoxEditor())
     if(res){
         decodeResultEditor.setValue(res)
+        toastr.info('Transformed to SQL table format')
     }
 }
 
@@ -277,6 +282,7 @@ function onTransformToSelect(){
     var res = jsonToPostgreSQLSelect(getJSONFromLeftBoxEditor())
     if(res){
         decodeResultEditor.setValue(res)
+        toastr.info('Transformed to SQL SELECT statement')
     }
 }
 
@@ -284,6 +290,7 @@ function onTransformToInsert(){
     var res = jsonToPostgreSQLInsert(getJSONFromLeftBoxEditor())
     if(res){
         decodeResultEditor.setValue(res)
+        toastr.info('Transformed to SQL INSERT statement')
     }
 }
 
@@ -291,6 +298,7 @@ function onTransformToUpdate(){
     var res = jsonToPostgreSQLUpdate(getJSONFromLeftBoxEditor())
     if(res){
         decodeResultEditor.setValue(res)
+        toastr.info('Transformed to SQL UPDATE statement')
     }
 }
 
@@ -298,5 +306,6 @@ function onTransformToEncode(){
     var res = encodeURIComponent(JSON.stringify(getJSONFromLeftBoxEditor()))
     if(res && res != 'undefined'){
         decodeResultEditor.setValue(res)
+        toastr.info('Encoded JSON to URL format')
     }
 }
