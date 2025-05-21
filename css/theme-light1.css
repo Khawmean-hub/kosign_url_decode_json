@@ -205,6 +205,9 @@
 } 
 
 .light1 .ui.menu .ui.dropdown .menu>.item:hover {
-    background: #ebebeb !important;
+    background: #ffffff !important;
 }
 
+.light1 .mini_setting {
+    background: #ffffff !important;
+}

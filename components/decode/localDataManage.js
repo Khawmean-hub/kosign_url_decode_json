@@ -90,7 +90,7 @@ function buildJsonMenuList() {
                     </div>
 
                     <div style="margin-top: 3px;"><small>${getDateFormat(v.date)}</small></div></div>
-                    <div class="mini_menu" style="display: none">
+                    <div class="mini_menu mini_setting" style="display: none">
                         <a class="item btn_done">
                             <i class="check circle outline icon"></i>
                         </a>
@@ -114,6 +114,8 @@ function buildJsonMenuList() {
         }else {
             $('#save_data_rec [style="background: #f5f5f5"]').attr('style', 'background: #151515')
         }
+    }else if(getThemeName().includes('light1')){
+        $('#save_data_rec .box').attr('style', 'background: #fff;')
     }
 }
 
@@ -121,6 +123,11 @@ function buildJsonMenuList() {
  * On click
  */
 function onClickJsonMenu(){
+    // Check if click was on an input element
+    if($(event.target).is('input')) {
+        return; // Don't do anything if click was on input
+    }
+
     if($(this).parent().hasClass('active_select')){
         $('.box').removeClass('active_select');
         $('#box_fixed_active_text').html('Result').attr('active-json-id', '')
@@ -191,11 +198,12 @@ function onRenameJsonMenu(){
     $(parent).find('.book_mark_contain').hide()
     $(parent).find('.btn_box p').hide()
     $(parent).find('.icon_mini').hide()
-    $(parent).find('.btn_box .input').show()
+    $(parent).find('.btn_box .input').show().css('margin-top', '6px')
     $(parent).find('.btn_box .input input').val($(parent).find('.btn_box p').text())
     $(parent).find('.btn_box .input input').focus()
     $(parent).find('.mini_menu').show();
-    $(parent).css('margin-right', '30px')    
+    $(parent).css('margin-right', '50px');
+    $(parent).find('small').hide();
 }
 
 
@@ -210,6 +218,7 @@ function onCancel(parent) {
     $(parent).find('.btn_box .input').hide()
     $(parent).find('.mini_menu').hide();
     $(parent).find('.book_mark_contain').show()
+    $(parent).find('small').show();
 }
 
 /**
@@ -251,6 +260,8 @@ function onRename(parent) {
         localData.rename(id, newName);
         $input.parent().removeClass('error')
         buildJsonMenuList()
+        //change active name
+        $('[active-json-id="'+id+'"]').html(newName)
     }else{
         $input.parent().addClass('error')
         toastr.error(MSG.NO_NAME)

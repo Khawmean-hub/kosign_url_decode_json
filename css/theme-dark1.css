@@ -151,3 +151,6 @@
     color: #c0c0c0;
 }
 
+.dark1 .mini_setting {
+    background: rgb(21, 21, 21) !important;
+}

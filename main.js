@@ -15,4 +15,10 @@ $(document).ready(function(){
     // setTimeout(()=>{
     //     $('#other_menu .item:eq(3)').click()
     // }, 1000);
+    //if window show button download exe if other hide
+    if(isWindow()){
+        $('.download_file_ext').show()
+    }else{
+        $('.download_file_ext').hide()
+    }
 })

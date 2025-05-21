@@ -385,3 +385,13 @@ function transformStringToJSON(str) {
 
     return result;
 }
+
+//is window
+function isWindow(){
+    return navigator.userAgent.includes('Win')
+}
+
+//is mac
+function isMac(){
+    return navigator.userAgent.includes('Mac')
+}

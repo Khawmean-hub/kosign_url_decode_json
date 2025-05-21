@@ -133,3 +133,10 @@
     color: orange;
 }
 
+.dark2 .mini_setting {
+    background: var(--light-black) !important;
+}
+
+.dark2 .mini_setting .item{
+    color: orange !important;
+}
