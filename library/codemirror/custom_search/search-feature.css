@@ -1,0 +1,267 @@
+/* for matchonscrollbar */
+.CodeMirror-search-match{background:gold;border-top:1px solid orange;border-bottom:1px solid orange;-moz-box-sizing:border-box;box-sizing:border-box;opacity:.5}
+/* for matchonscrollbar */
+
+.editors-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.editor-wrapper {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #252526;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.editor-wrapper h3 {
+    margin: 0;
+    padding: 10px;
+    color: #d4d4d4;
+    background-color: #333333;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.search-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* background-color: #252526;
+    border: 1px solid #3c3c3c; */
+    border-radius: 5px;
+    margin: 10px;
+    display: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    line-height: 0;
+}
+
+.toggle-replace {
+    /* background: none;
+    border: none;
+    color: #d4d4d4;
+    padding: 4px 8px;
+    border-radius: 2px; */
+    cursor: pointer;
+    /* font-size: 13px; */
+    transition: background-color 0.2s;
+    /* margin-right: 8px;
+    margin-top: 4px; */
+}
+
+/* .toggle-replace:hover {
+    background-color: #4c4c4c;
+} */
+
+.search-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.search-row, .replace-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-input, .replace-input {
+    height: 30.84px !important;
+    font-size: 14px !important;
+}
+
+.search-container .toggle-replace {
+    font-size: initial;      /* Resets to browser default or root settings */
+    line-height: initial;
+}
+/* .search-input, .replace-input {
+    background-color: #3c3c3c;
+    border: 1px solid #3c3c3c;
+    color: #d4d4d4;
+    padding: 4px 8px;
+    border-radius: 2px;
+    font-size: 13px;
+    width: 200px;
+} */
+
+/* .search-input:focus, .replace-input:focus {
+    outline: none;
+    border-color: #007acc;
+} */
+
+.search-buttons, .replace-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+.search-buttons button, .replace-buttons button {
+    background-color: #3c3c3c;
+    border: 1px solid #3c3c3c;
+    color: #d4d4d4;
+    padding: 4px 8px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.2s;
+    min-width: 28px;
+    text-align: center;
+}
+
+.search-buttons button:hover, .replace-buttons button:hover {
+    background-color: #4c4c4c;
+}
+
+.search-buttons button:active, .replace-buttons button:active {
+    background-color: #2c2c2c;
+}
+
+/* .search-options {
+    display: flex;
+    gap: 4px;
+    margin-right: 4px;
+} */
+
+/* .option-button {
+    background-color: #3c3c3c;
+    border: 1px solid #3c3c3c;
+    color: #d4d4d4;
+    padding: 4px 8px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+    min-width: 24px;
+    text-align: center;
+} */
+
+/* .option-button:hover {
+    background-color: #4c4c4c;
+}
+
+.option-button.active {
+    background-color: #007acc;
+    border-color: #007acc;
+    color: #ffffff;
+}
+
+.option-button.active:hover {
+    background-color: #0098ff;
+} */
+
+.match-case {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: bold;
+}
+
+.match-word {
+    font-family: monospace;
+}
+
+.use-regex {
+    font-family: monospace;
+}
+
+.replace, .replace-all {
+    font-size: 16px;
+    padding: 2px 8px;
+    line-height: 1;
+}
+
+/* Search highlight styles */
+/* .cm-searching {
+    background-color: #ffdbb6c1 !important;
+    color: #ffffff !important;
+    border-radius: 2px;
+    padding: 0 2px;
+} */
+
+/* Scrollbar annotation styles */
+.CodeMirror-simplescroll-horizontal div,
+.CodeMirror-simplescroll-vertical div {
+    background-color: #3c3c3c;
+}
+
+.CodeMirror-simplescroll-horizontal,
+.CodeMirror-simplescroll-vertical {
+    background-color: #252526;
+}
+
+/* Selected match style */
+/* .CodeMirror-selected {
+    background-color: #264f78 !important;
+}
+
+.CodeMirror-focused .CodeMirror-selected {
+    background-color: #264f78 !important;
+} */
+
+/* Match count styles */
+.match-count {
+    color: #d4d4d4;
+    font-size: 12px;
+    min-width: 40px;
+    text-align: center;
+}
+
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+
+/* dark-theme-search */
+.dark-theme-search {
+    background-color: #252526;
+    color: #d4d4d4;
+}
+
+.light1 .btn_color_light.active {
+    background-image: linear-gradient(43deg, #d1c7ff  51%, #e2c4ff  100%) !important;
+}
+
+.dark4 .btn_color_light.active {
+    background-image: linear-gradient(43deg, #7a5ff1  51%, #7d45b2  100%) !important;
+}
+
+.dark3 .btn_color_light.active {
+    background-color: #8BC6EC !important;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%) !important;
+}
+
+.dark2 .btn_color_light.active {
+    background-color: var(--b-mm-black);
+}
+
+.dark1 .btn_color_light.active {
+    background-color: var(--b-mm-black);
+}
+
+.theme-light.theme-red .btn_color_light.active{
+    background-color: var(--red);
+    color: var(--white);
+}
+.theme-light.theme-teal .btn_color_light.active {
+    background-color: var(--teal);
+    color: var(--white);
+}
+.theme-light.theme-green .btn_color_light.active {
+    background-color: var(--green);
+    color: var(--white);
+}
+.theme-light.theme-blue .btn_color_light.active {
+    background-color: var(--blue);
+    color: var(--white);
+}

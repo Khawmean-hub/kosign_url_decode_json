@@ -84,6 +84,9 @@ function makeDecodeEditor(){
         onDisableBtnComparae()
     });
 
+    applySearchFeatureOnEditor(decodeResultEditor);
+    applySearchFeatureOnEditor(saveBoxResult);
+
     makeZoomInOut()
 }
 

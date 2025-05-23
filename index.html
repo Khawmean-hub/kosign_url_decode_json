@@ -29,6 +29,7 @@
 
     <link rel="stylesheet" href="library/semantic/semantic.min.css">
     <link rel="stylesheet" href="library/jquery/jquery-ui.css">
+    <link rel="stylesheet" href="library/codemirror/custom_search/search-feature.css">
     <link rel="stylesheet" href="library/codemirror/css/codemirror.css">
     <link rel="stylesheet" href="library/codemirror/css/material-theme.css">
     <link rel="stylesheet" href="library/codemirror/css/neat-theme.css">
@@ -71,6 +72,8 @@
     <script src="library/codemirror/js/codemirrorjs.js"></script>
     <script src="library/codemirror/js/codemirror-mod.js"></script>
     <script src="library/codemirror/js/other_lang.js"></script>
+    <script src="library/codemirror/custom_search/search-codemirror.js"></script>
+    <script src="library/codemirror/custom_search/search-feature.js"></script>
     <script src="library/html-beauti.js"></script>
 
 
@@ -86,7 +89,7 @@
             <!-- ------------------------------------------------------------------------------------------------------ -->
             <!-- Setting version                                                                                        -->
             <!-- ------------------------------------------------------------------------------------------------------ -->
-            <div class="header item"><p>Web Version 2.3.2</p></div>
+            <div class="header item"><p>Web Version 2.4.2</p></div>
             <div class="header item">Theme</div>
             <div class="item btn_theme_color" theme="theme-blue">
                 <a class="ui blue empty circular label tiny"></a> Blue
@@ -285,30 +288,29 @@
                             id="btn_text_compare_page">Text Compare</div>
                     </div>
                     <div class="ui dropdown item">
-                        Other <div class="ui yellow empty circular label mini"></div>
+                        Others 
+                        <!-- <div class="ui yellow empty circular label mini"></div> -->
                         <i class="dropdown icon"></i>
                         <div class="menu" id="other_menu">
                             <div class="item" data-tab="subtitle_maker" onclick="navi.subtitle();">Subtitle maker
-                                <div class="ui mini label">
-                                Moved
-                              </div></div>
+                                <!-- <div class="ui mini label">Moved</div> -->
+                            </div>
                             <div class="item" data-tab="second" onclick="navi.jex();">Jex Convert 
-                                <div class="ui mini label">
-                                Moved
-                              </div></div>
+                                <!-- <div class="ui mini label">Moved</div> -->
+                            </div>
                             <div class="item" data-tab="pattern" onclick="navi.pattern();">Pattern 
-                                <div class="ui mini label yellow">New</div>
+                                <!-- <div class="ui mini label yellow">New</div> -->
                             </div>
                             <div class="item" data-tab="calendar_excel01" onclick="navi.calendar();">Calendar Excel
                                 <div class="ui mini pink label">B2B</div>
                             </div>
-                            <a href="https://json-diff.com/" target="_blank" class="item">JSON Diff</a>
+                            <a href="https://json-diff.com/" target="_blank" class="item"><i class="external square alternate icon"></i>JSON Diff</a>
                             <a href="https://transform.tools/json-to-typescript" target="_blank"
-                                class="item">Transform</a>
+                                class="item"><i class="external square alternate icon"></i>Transform</a>
                             <a href="https://dbdiagram.io/d?utm_referrer=https%3A%2F%2Fwww.google.com%2F"
-                                target="_blank" class="item">DB Diagram</a>
+                                target="_blank" class="item"><i class="external square alternate icon"></i>DB Diagram</a>
                             <a href="https://khawmean-hub.github.io/tinynoted/" target="_blank"
-                                class="item">TinyNoted</a>
+                                class="item"><i class="external square alternate icon"></i>TinyNoted</a>
                         </div>
                     </div>
                     <div class="right menu">
