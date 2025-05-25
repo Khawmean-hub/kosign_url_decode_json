@@ -194,11 +194,14 @@ function applySearchFeatureOnEditor(editor) {
 
         totalMatches = searchMarks.length;
         
-        searchCursor = editor.getSearchCursor(regex);
-        if (searchCursor.findNext()) {
-            editor.setSelection(searchCursor.from(), searchCursor.to());
-            editor.scrollIntoView(searchCursor.from(), 50);
-            currentMatchIndex = 0;
+        // Only set selection and scroll if this is not from editor change
+        if (!editorChangeTimeout) {
+            searchCursor = editor.getSearchCursor(regex);
+            if (searchCursor.findNext()) {
+                editor.setSelection(searchCursor.from(), searchCursor.to());
+                editor.scrollIntoView(searchCursor.from(), 50);
+                currentMatchIndex = 0;
+            }
         }
         
         updateMatchCount();
