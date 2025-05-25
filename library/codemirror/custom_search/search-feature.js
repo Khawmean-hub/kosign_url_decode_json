@@ -65,6 +65,15 @@ function applySearchFeatureOnEditor(editor) {
     const $matchWordButton = $searchPanel.find('.match-word');
     const $useRegexButton = $searchPanel.find('.use-regex');
 
+    // Handle Escape key on editor
+    editor.on('keydown', function(cm, e) {
+        if (e.key === 'Escape' && $searchPanel.is(':visible')) {
+            hideSearchPanel();
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    });
+
     // Handle Escape key on search panel
     $searchPanel.on('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -315,6 +324,8 @@ function applySearchFeatureOnEditor(editor) {
             return true;
         }
     });
+
+    
 
     $searchInput.on('keydown', function(e) {
         if (e.key === 'Enter') {
