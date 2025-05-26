@@ -58,12 +58,20 @@ $(document).on('click', '.btn_2table2', onToogleRightBox)
 $(document).on('click', '.btn_copy2', onCopyRightBoxJson)
 $(document).on('click', '#btn_make_drag_box', onMakeNewDrage)
 $(document).on('click', '#btn_compare_json', onCompare2Editor)
+$(document).on('input', '#json_storage_search', onJSONSearch);
 
 
 //======================================= Funtions =======================================
-function buildJsonMenuList() {
+function buildJsonMenuList(srchText = '') {
+    // Check if local data is available
+    var allData = localData.findAll()
+    if(srchText){
+        // Filter data based on search text
+        allData = allData.filter(v => v.name.toLowerCase().includes(srchText.toLowerCase()));
+    }
+
     // Get local data
-    const data = getWithCheckkDuplicateData(localData.findAll());
+    const data = getWithCheckkDuplicateData(allData);
 
     //sort by date
     data.sort(function (a, b) {
@@ -303,6 +311,13 @@ function onToogleRightBox(){
 
 function onCopyRightBoxJson(){
     copyToClipboard(saveBoxResult.getValue())
+}
+
+//search json
+function onJSONSearch() {
+    const searchText = $('#json_storage_search').val().trim();
+    buildJsonMenuList(searchText);
+    $('#save_data_rec').scrollTop(0); // Reset scroll position to top
 }
 
 // Drage box 

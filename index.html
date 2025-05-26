@@ -89,7 +89,7 @@
             <!-- ------------------------------------------------------------------------------------------------------ -->
             <!-- Setting version                                                                                        -->
             <!-- ------------------------------------------------------------------------------------------------------ -->
-            <div class="header item"><p>Web Version 2.4.2</p></div>
+            <div class="header item"><p>Web Version 2.4.3</p></div>
             <div class="header item">Theme</div>
             <div class="item btn_theme_color" theme="theme-blue">
                 <a class="ui blue empty circular label tiny"></a> Blue
@@ -439,16 +439,22 @@
                                         <div>
                                             <h4 class="text_fixed_color">JSON Storage</h4>
                                         </div>
-                                        <div>
-                                            <button class="ui button mini btn_clear_data btn_color_light">Clear
-                                                Data</button>
-                                            <!--                                <div class="ui label btn_zoom2">-->
-                                            <!--                                    <i class="zoom icon"></i> Zoom In-->
-                                            <!--                                </div>-->
+                                        <div style="display: flex; justify-content: flex-end; gap: 10px;" class="ui form small">
+                                            <div class="ui input small icon actions">
+                                                <input type="text" name="" id="json_storage_search" class="input_have_clear" placeholder="Search.." style="height: 30.84px;">
+                                                <i class="close link icon btn_clear_its_input" style="display: none;"></i>
+                                            </div>
+                                            <!--icon button setting -->
+                                            <button class="ui icon button btn_color_light mini dropdown" style="height: 30.84px; width: 30.84px; padding-top: 10px">
+                                                <i class="ui icon setting"></i>
+                                                 <div class="menu">
+                                                    <div class="item btn_clear_data"><i class="ui trash icon"></i> Clear All Data</div>
+                                                </div>
+                                            </button>
                                         </div>
 
                                     </div>
-                                    <div style="height: 67px; margin-top: 5px;">
+                                    <div style="height: 67px; margin-top: 12px;">
                                         <div>
                                             <div style="display: flex; overflow-x: auto; height: 83px"
                                                 id="save_data_rec">
@@ -495,7 +501,7 @@
 
                                     </div>
 
-                                    <div class="save1" style="margin-top: 10px">
+                                    <div class="save1" style="margin-top: 3px">
                                         <!-- <pre contenteditable="true" style="margin: 0" spellcheck="false"></pre> -->
                                         <textarea name="" id="right_editor_box"></textarea>
                                     </div>

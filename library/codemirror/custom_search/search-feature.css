@@ -265,3 +265,8 @@
     background-color: var(--blue);
     color: var(--white);
 }
+
+#main-content .cm-searching::selection {
+  background: orange;
+  color: white;
+}
