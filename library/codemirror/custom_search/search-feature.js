@@ -240,6 +240,7 @@ function applySearchFeatureOnEditor(editor) {
     }
 
     function replaceCurrent() {
+        alert('Replace current match');
         if (!searchCursor || !searchCursor.from()) return;
         
         const replaceText = $replaceInput.val();
@@ -272,13 +273,6 @@ function applySearchFeatureOnEditor(editor) {
         debouncedHighlight(searchText);
     }
 
-    // Add change event listener to editor
-    editor.on('change', function() {
-        if ($searchPanel.is(':visible') && $searchInput.val()) {
-            debouncedHighlight($searchInput.val());
-        }
-    });
-
     // Add paste event listener to editor
     editor.on('paste', function() {
         if ($searchPanel.is(':visible') && $searchInput.val()) {
@@ -292,6 +286,21 @@ function applySearchFeatureOnEditor(editor) {
     // Event listeners
     $searchInput.on('input', function() {
         debouncedHighlight($(this).val());
+    });
+
+    // Add change event listener to editor
+    let editorChangeTimeout = null;
+    editor.on('change', function() {
+        if ($searchPanel.is(':visible') && $searchInput.val()) {
+            // Clear any existing timeout
+            if (editorChangeTimeout) {
+                clearTimeout(editorChangeTimeout);
+            }
+            // Debounce the search to avoid too frequent updates
+            editorChangeTimeout = setTimeout(() => {
+                debouncedHighlight($searchInput.val());
+            }, 150);
+        }
     });
 
     $matchCaseButton.on('click', toggleMatchCase);
