@@ -240,7 +240,6 @@ function applySearchFeatureOnEditor(editor) {
     }
 
     function replaceCurrent() {
-        alert('Replace current match');
         if (!searchCursor || !searchCursor.from()) return;
         
         const replaceText = $replaceInput.val();
