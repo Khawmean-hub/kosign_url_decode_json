@@ -21,4 +21,23 @@ $(document).ready(function(){
     }else{
         $('.download_file_ext').hide()
     }
+
+    function isWithinOneMonth(dateString) {
+        const givenDate = new Date(dateString);
+        const currentDate = new Date();
+        
+        // Calculate the difference in months
+        const monthDifference = (currentDate.getFullYear() - givenDate.getFullYear()) * 12 + (currentDate.getMonth() - givenDate.getMonth());
+        
+        // Check if the difference is less than or equal to 1 month
+        return monthDifference < 1 || (monthDifference === 1 && currentDate.getDate() < givenDate.getDate());
+    }
+
+    var updateDt = $('#exe_update').attr('modifydate')
+    //if udateDt within 1month show new
+    if(isWithinOneMonth(updateDt)){
+        $('#exe_update').show()
+    }else{
+        $('#exe_update').hide()
+    }
 })
