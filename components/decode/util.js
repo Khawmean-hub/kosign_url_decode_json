@@ -99,10 +99,66 @@ function jsonFormat(str){
 }
 
 function getObjectStr(str){
+
+    //check if str in this pattern {..}{..} it's missing , between object and []
+    if(isJsonisMissingComma(str)){
+        str = fixJsonisMissingComma(str);
+    }
+    
+    //check if array is missing []
+    if(isJsonisMissingArrayBracket(str)){
+        str = fixeJsonisMissingArrayBracket(str);
+    }
+
+    // try to fix single quote to double quote and add double quote to keys
+
     str = str.replace(/'/g, '"');
     // str = str.replace(/(\w+):/g, '"$1":');
     str = str.replace(/([{,]\s*)(\w+)\s*:/g, '$1"$2":');
     return str;
+}
+
+//check is json is missing , between objects
+function isJsonisMissingComma(str) {
+    const regex = /}\s*{/g;
+    return regex.test(str);
+}
+
+//check is {..},{..} is missing [] if there are more than 1 object
+function isJsonisMissingArrayBracket(str) {
+    // Trim whitespace from the string
+    str = str.trim();
+
+    // Check if the string starts with '{' and ends with '}'
+    if (str.startsWith('{') && str.endsWith('}')) {
+        // Count the number of top-level objects
+        let braceCount = 0;
+        let objectCount = 0;
+        for (let i = 0; i < str.length; i++) {
+            if (str[i] === '{') {
+                if (braceCount === 0) {
+                    objectCount++;
+                }
+                braceCount++;
+            } else if (str[i] === '}') {
+                braceCount--;
+            }
+        }
+        // If there are multiple top-level objects, it's likely missing array brackets
+        return objectCount > 1;
+    }
+    return false;
+}
+
+
+
+function fixeJsonisMissingArrayBracket(str) {
+    return '[' + str + ']';
+}
+
+function fixJsonisMissingComma(str) {
+    const regex = /}\s*{/g;
+    return str.replace(regex, '},{');
 }
 
 function findKey(jsonString) {
@@ -131,7 +187,6 @@ function onFormatOn(editor){
         toastr.error(MSG.NOT_AN_EDITOR)
     }
 }
-
 
 /**
  * Sort
