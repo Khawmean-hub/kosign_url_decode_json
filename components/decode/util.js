@@ -106,6 +106,12 @@ function getObjectStr(str){
     // normalize white space
     str = String(str).trim();
 
+    // If it's already valid JSON, don't try to modify it.
+    // This keeps saved / well-formed JSON working correctly.
+    if (isJson(str)) {
+        return str;
+    }
+
     // If it looks like a single object without surrounding braces (e.g. avatar: "https://"...)
     // wrap it so that it can be treated as JSON.
     if (!str.startsWith('{') && !str.startsWith('[') && /[A-Za-z0-9_]+\s*:/.test(str)) {
