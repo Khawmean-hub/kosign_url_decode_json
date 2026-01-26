@@ -99,18 +99,6 @@ function jsonFormat(str){
 }
 
 function getObjectStr(str){
-    if(!str){
-        return str;
-    }
-
-    // normalize white space
-    str = String(str).trim();
-
-    // If it looks like a single object without surrounding braces (e.g. avatar: "https://"...)
-    // wrap it so that it can be treated as JSON.
-    if (!str.startsWith('{') && !str.startsWith('[') && /[A-Za-z0-9_]+\s*:/.test(str)) {
-        str = '{' + str + '}';
-    }
 
     //check if str in this pattern {..}{..} it's missing , between object and []
     if(isJsonisMissingComma(str)){
@@ -125,13 +113,8 @@ function getObjectStr(str){
     // try to fix single quote to double quote and add double quote to keys
 
     str = str.replace(/'/g, '"');
-    // Add quotes to unquoted keys after { or ,  -> {avatar: ...} => {"avatar": ...}
-    str = str.replace(/([{,]\s*)([A-Za-z0-9_]+)\s*:/g, '$1"$2":');
-
-    // Fix common pattern where URL values are not wrapped in quotes:
-    // { avatar: https://myprofile.png } -> { "avatar": "https://myprofile.png" }
-    str = str.replace(/:\s*(https?:\/\/[^\s,"'}]+)/g, ':"$1"');
-
+    // str = str.replace(/(\w+):/g, '"$1":');
+    str = str.replace(/([{,]\s*)(\w+)\s*:/g, '$1"$2":');
     return str;
 }
 
