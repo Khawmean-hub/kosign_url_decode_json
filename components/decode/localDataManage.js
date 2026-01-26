@@ -383,18 +383,13 @@ function onDisableBtnComparae(){
 function saveJsonOnLocal() {
     let text = decodeResultEditor.getValue();
     if(text){
-        // If it's already valid JSON, keep it as-is.
-        if(!isJson(text)){
-            // Try to normalize / fix common patterns (missing quotes, etc.)
-            text = getObjectStr(text);
-        }
-
+        text = getObjectStr(text)
         if(isJson(text)){
-            localData.save(text);
-            buildJsonMenuList();
+            localData.save(text)
+            buildJsonMenuList()
             toastr.success(MSG.SAVE);
         }else{
-            toastr.error(MSG.NOT_JSON);
+            toastr.error(MSG.NOT_JSON)
         }
     }else{
         toastr.error(MSG.NO_DATA)
