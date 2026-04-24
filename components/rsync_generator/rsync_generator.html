@@ -165,6 +165,7 @@
   #output .cmd-host   { color: rgb(240 171 252); }                     /* fuchsia-300 */
   #output .cmd-path   { color: rgb(190 242 100); }                     /* lime-300 */
   #output .cmd-sep    { color: rgb(148 163 184); }                     /* slate-400 */
+  #output .cmd-comment { color: rgb(100 116 139); font-style: italic; } /* slate-500 */
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
@@ -189,6 +190,7 @@
       <button id="langBtn" class="w-9 h-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition font-bold text-xs" data-i18n-title="lang_toggle" title="Change language">EN</button>
       <button id="guideBtn" class="w-9 h-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition font-semibold" data-i18n-title="guide_replay" title="Replay the guided tour">?</button>
       <button id="themeToggle" class="w-9 h-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition" data-i18n-title="theme_toggle" title="Toggle theme">🌙</button>
+      <button id="resetDraftBtn" class="w-9 h-9 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-500 dark:text-slate-400 hover:text-rose-500 transition text-base" data-i18n-title="reset_draft_title" title="Reset current working draft">↺</button>
       <button id="openSettings" class="px-3.5 py-2 rounded-lg text-sm font-medium bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition inline-flex items-center gap-1.5 shadow-sm">
         <span>⚙</span><span data-i18n="settings">Settings</span>
       </button>
@@ -312,7 +314,13 @@
   <!-- Output -->
   <div class="rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-sm">
     <div class="flex items-center justify-between mb-4 gap-2 flex-wrap">
-      <h2 class="text-[11px] uppercase tracking-[0.08em] font-semibold text-slate-500 dark:text-slate-400" data-i18n="generated_command">Generated command</h2>
+      <div class="flex items-center gap-3 flex-wrap">
+        <h2 class="text-[11px] uppercase tracking-[0.08em] font-semibold text-slate-500 dark:text-slate-400" data-i18n="generated_command">Generated command</h2>
+        <div id="outputMode" class="inline-flex gap-0.5 p-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <button data-mode="rsync" class="seg-btn active px-2.5 py-1 rounded-md text-[11px] font-semibold transition">rsync</button>
+          <button data-mode="scp" class="seg-btn px-2.5 py-1 rounded-md text-[11px] font-semibold transition">scp</button>
+        </div>
+      </div>
       <div class="inline-flex items-center gap-2 text-xs">
         <span id="envDot" class="w-1.5 h-1.5 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20"></span>
         <span id="envLabel" class="text-slate-500 dark:text-slate-400">dry-run mode</span>
@@ -356,6 +364,12 @@
         <div class="text-xs text-slate-400 dark:text-slate-500 mt-0.5" data-i18n="deployments_desc">Snapshots you can reload later to recheck a deploy.</div>
       </div>
       <div class="flex gap-2 flex-wrap items-center">
+        <div class="relative">
+          <input id="deployTask" type="text" list="taskSuggest" autocomplete="off" data-i18n-ph="save_task_placeholder" placeholder="Task (group) — optional" maxlength="120" class="pl-7 pr-3 py-1.5 rounded-md text-xs bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition min-w-[180px]">
+          <span class="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-[11px]">🗂</span>
+          <datalist id="taskSuggest"></datalist>
+        </div>
+        <input id="deployName" type="text" data-i18n-ph="save_name_placeholder" placeholder="Name" maxlength="140" class="px-3 py-1.5 rounded-md text-xs bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition min-w-[220px]">
         <input id="deployDesc" type="text" data-i18n-ph="save_desc_placeholder" placeholder="optional description" maxlength="140" class="px-3 py-1.5 rounded-md text-xs bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition min-w-[220px]">
         <button id="saveDeploy" class="px-3 py-1.5 rounded-md text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white shadow-sm transition" data-i18n="save_deploy">💾 Save deployment</button>
       </div>
@@ -384,9 +398,16 @@
     <div id="diffBar" class="hidden mb-2 flex items-center gap-2 text-xs p-2 rounded-md bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-300">
       <span id="diffBarText">Select 2 deployments to compare.</span>
       <button id="diffClearSel" class="ml-auto px-2 py-1 rounded-md text-[11px] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600" data-i18n="clear">Clear</button>
+      <button id="groupSelBtn" disabled class="px-3 py-1 rounded-md text-[11px] font-semibold bg-violet-500 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-violet-600 transition" data-i18n="group_selected">🗂 Create group</button>
+      <div class="relative">
+        <button id="moveToBtn" disabled class="px-3 py-1 rounded-md text-[11px] font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-400 text-slate-700 dark:text-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition" data-i18n="move_to_group">↗ Move to group</button>
+        <div id="moveToMenu" class="hidden absolute right-0 top-full mt-1 z-30 w-64 max-h-72 overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl p-1 text-xs text-slate-700 dark:text-slate-200"></div>
+      </div>
+      <button id="removeFromGroupBtn" disabled class="px-3 py-1 rounded-md text-[11px] font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-rose-400 hover:text-rose-500 text-slate-700 dark:text-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition" data-i18n="remove_from_group">✕ Remove from group</button>
       <button id="diffRunBtn" disabled class="px-3 py-1 rounded-md text-[11px] font-semibold bg-blue-500 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-600 transition" data-i18n="compare">Compare</button>
     </div>
     <div id="deployList" class="space-y-2"></div>
+    <div id="itemMenu" class="hidden fixed z-40 w-64 max-h-80 overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl p-1 text-xs text-slate-700 dark:text-slate-200"></div>
     <div id="deployEmpty" class="text-center py-8 text-xs text-slate-500 dark:text-slate-400 rounded-lg border border-dashed border-slate-200 dark:border-slate-800">
       No saved deployments yet. Draft is auto-saved as you work; click Save to keep a named snapshot.
     </div>
@@ -400,6 +421,30 @@
         <button id="closeDiff" class="w-8 h-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 text-xl">×</button>
       </div>
       <div id="diffBody" class="p-5 overflow-y-auto max-h-[75vh] bg-slate-50 dark:bg-slate-950/40"></div>
+    </div>
+  </div>
+
+  <!-- Task edit modal -->
+  <div id="taskEditModal" style="display:none;" class="fixed inset-0 z-50 bg-slate-900/60 dark:bg-black/70 backdrop-blur-sm items-start justify-center px-5 py-10 overflow-y-auto">
+    <div class="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden flex flex-col">
+      <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800">
+        <h2 id="taskEditTitle" class="text-[15px] font-semibold" data-i18n="task_edit_title">Edit task</h2>
+        <button id="closeTaskEdit" class="w-8 h-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 text-xl">×</button>
+      </div>
+      <div class="p-5 space-y-3">
+        <div>
+          <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="task_name_label">Name</label>
+          <input id="taskEditName" type="text" maxlength="120" class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition">
+        </div>
+        <div>
+          <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="task_desc_label">Description</label>
+          <textarea id="taskEditDesc" maxlength="400" rows="3" class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition"></textarea>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-2 px-5 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40">
+        <button id="cancelTaskEdit" class="px-3 py-1.5 rounded-md text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition" data-i18n="cancel">Cancel</button>
+        <button id="saveTaskEdit" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white shadow-sm transition" data-i18n="save">Save</button>
+      </div>
     </div>
   </div>
 
@@ -577,6 +622,9 @@
       app_title: "Rsync Generator", app_sub: "rsync command generator",
       settings: "Settings", target_placeholder: "Select a project & server",
       theme_toggle: "Toggle theme", lang_toggle: "Change language", guide_replay: "Replay the guided tour",
+      reset_draft_title: "Reset current working draft (keeps settings and saved deployments)",
+      reset_draft_confirm: "Clear the current draft? This resets the \"What to sync\" area, path override, verify log and the save row. Your saved deployments and settings are not affected.",
+      toast_draft_reset: "Draft cleared",
       direction: "Direction", project: "Project", server: "Server", uat_server: "UAT server",
       pick_project: "— pick a project —", no_servers: "no servers",
       from_uat: "From (on UAT)", to_prod: "To (on production)",
@@ -593,7 +641,10 @@
       files_auto_add: "Auto-adds <code class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px]\">--include='*/'</code> and <code class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px]\">--exclude='*'</code>.",
       generated_command: "Generated command",
       dry_run_mode: "dry-run mode", live_mode: "live — no --dry-run",
+      scp_mode: "scp — no dry-run",
+      copy: "Copy",
       copy_dry: "Copy (dry-run)", copy_live: "Copy live (no --dry-run)",
+      toast_copied: "Copied command",
       verify_title: "Verify dry-run",
       verify_desc: "Paste rsync dry-run output to catch duplicate filenames at different paths.",
       verify_placeholder: "Paste the full rsync --dry-run output here…\n(lines like 'sending incremental file list', 'sent … received …' are ignored)",
@@ -601,8 +652,42 @@
       deployments: "Deployments",
       deployments_desc: "Snapshots you can reload later to recheck a deploy.",
       save_desc_placeholder: "optional description",
+      save_name_placeholder: "Name",
+      save_task_placeholder: "Task (group) — optional",
       save_deploy: "💾 Save deployment",
-      search_deployments: "Search name, description, project, server…",
+      search_deployments: "Search name, description, task, project, server…",
+      task_ungrouped: "Ungrouped",
+      task_items: "{n} item{s}",
+      task_edit_title: "Edit task",
+      task_create_title: "Create group",
+      create: "Create",
+      task_delete_title: "Delete task (removes all its deployments)",
+      task_delete_confirm: "Delete task \"{name}\" and its {n} deployment(s)?",
+      task_edit_item_title: "Move to task…",
+      task_move_prompt: "Move \"{name}\" to task (leave empty to ungroup):",
+      task_name_label: "Name",
+      task_desc_label: "Description",
+      task_name_required: "Task name can't be empty.",
+      cancel: "Cancel",
+      save: "Save",
+      group_selected: "🗂 Create group",
+      group_selected_prompt: "Group {n} selected deployment(s) under task name:",
+      toast_grouped: "Grouped {n} deployment(s) under \"{name}\"",
+      toast_ungrouped: "Removed {n} deployment(s) from their group",
+      selection_single: "{n} selected — Create group needs 2+.",
+      selection_ready: "{n} selected — Compare, Move to / Remove from group, or Create group.",
+      selection_many: "{n} selected — Create group, Move to / Remove from group (Compare needs exactly 2).",
+      move_to_group: "↗ Move to group",
+      move_new_task: "Create new task…",
+      move_ungroup: "Ungroup",
+      remove_from_group: "✕ Remove from group",
+      item_menu_title: "More actions",
+      item_copy_dry: "Copy (dry-run)",
+      item_copy_live: "Copy (live, no --dry-run)",
+      item_load: "Load",
+      item_delete: "Delete",
+      back: "Back",
+      current: "(current)",
       sort_default: "Failed first · newest", sort_newest: "Newest first",
       sort_oldest: "Oldest first", sort_name: "Name A→Z", sort_status: "Status group",
       filter_all: "All",
@@ -672,6 +757,9 @@
       app_title: "Rsync 생성기", app_sub: "rsync 명령어 생성기",
       settings: "설정", target_placeholder: "프로젝트와 서버를 선택하세요",
       theme_toggle: "테마 전환", lang_toggle: "언어 변경", guide_replay: "가이드 다시 보기",
+      reset_draft_title: "현재 작업 초기화 (설정 및 저장된 배포는 유지됨)",
+      reset_draft_confirm: "현재 초안을 지우시겠습니까? \"무엇을 동기화\" 영역, 경로 재정의, 검증 로그 및 저장 입력란이 초기화됩니다. 저장된 배포와 설정은 유지됩니다.",
+      toast_draft_reset: "초안이 초기화되었습니다",
       direction: "방향", project: "프로젝트", server: "서버", uat_server: "UAT 서버",
       pick_project: "— 프로젝트 선택 —", no_servers: "서버 없음",
       from_uat: "보내는 곳 (UAT)", to_prod: "받는 곳 (운영)",
@@ -687,6 +775,9 @@
       legend_dup: "중복 파일명", legend_orphan: ".class 없는 .java",
       files_auto_add: "<code class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px]\">--include='*/'</code> 와 <code class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px]\">--exclude='*'</code> 가 자동 추가됩니다.",
       generated_command: "생성된 명령어",
+      scp_mode: "scp — 드라이런 없음",
+      copy: "복사",
+      toast_copied: "명령어 복사됨",
       dry_run_mode: "드라이런 모드", live_mode: "실행 모드 — --dry-run 없음",
       copy_dry: "복사 (드라이런)", copy_live: "실행 복사 (--dry-run 없음)",
       verify_title: "드라이런 검증",
@@ -696,8 +787,42 @@
       deployments: "배포 기록",
       deployments_desc: "배포를 다시 확인할 수 있는 스냅샷입니다.",
       save_desc_placeholder: "설명 (선택)",
+      save_name_placeholder: "이름",
+      save_task_placeholder: "작업 (그룹) — 선택",
       save_deploy: "💾 배포 저장",
-      search_deployments: "이름, 설명, 프로젝트, 서버 검색…",
+      search_deployments: "이름, 설명, 작업, 프로젝트, 서버 검색…",
+      task_ungrouped: "그룹 없음",
+      task_items: "{n}개 항목",
+      task_edit_title: "작업 편집",
+      task_create_title: "그룹 만들기",
+      create: "만들기",
+      task_delete_title: "작업 삭제 (포함된 모든 배포 삭제)",
+      task_delete_confirm: "\"{name}\" 작업과 포함된 {n}개 배포를 삭제하시겠습니까?",
+      task_edit_item_title: "작업으로 이동…",
+      task_move_prompt: "\"{name}\" 을(를) 이동할 작업 이름을 입력하세요 (비우면 그룹 해제):",
+      task_name_label: "이름",
+      task_desc_label: "설명",
+      task_name_required: "작업 이름은 비울 수 없습니다.",
+      cancel: "취소",
+      save: "저장",
+      group_selected: "🗂 그룹 만들기",
+      group_selected_prompt: "선택한 {n}개 배포를 묶을 작업 이름을 입력하세요:",
+      toast_grouped: "{n}개 배포를 \"{name}\" 작업으로 묶었습니다",
+      toast_ungrouped: "{n}개 배포를 그룹에서 제거했습니다",
+      selection_single: "{n}개 선택됨 — 그룹 만들기는 2개 이상 필요합니다.",
+      selection_ready: "{n}개 선택됨 — 비교, 그룹 이동/해제, 또는 그룹 만들기 가능.",
+      selection_many: "{n}개 선택됨 — 그룹 만들기, 그룹 이동/해제 가능 (비교는 정확히 2개 필요).",
+      move_to_group: "↗ 그룹으로 이동",
+      move_new_task: "새 작업 만들기…",
+      move_ungroup: "그룹 해제",
+      remove_from_group: "✕ 그룹에서 제거",
+      item_menu_title: "추가 작업",
+      item_copy_dry: "복사 (드라이런)",
+      item_copy_live: "복사 (실행 — --dry-run 제외)",
+      item_load: "불러오기",
+      item_delete: "삭제",
+      back: "뒤로",
+      current: "(현재)",
       sort_default: "실패 먼저 · 최신", sort_newest: "최신순",
       sort_oldest: "오래된순", sort_name: "이름 A→Z", sort_status: "상태 그룹",
       filter_all: "전체",
@@ -857,6 +982,44 @@
 
   // Language toggle
   $("langBtn").addEventListener("click", () => setLang(lang === "en" ? "ko" : "en"));
+
+  // Reset current working draft — clears the "what to sync" area, path override,
+  // verify log, and the save-row inputs. Keeps project/server/direction, all settings,
+  // and all saved deployments.
+  function draftHasContent() {
+    return Boolean(
+      ($("specificFiles").value || "").trim() ||
+      ($("filetypes").value || "").trim() ||
+      ($("extraInclude").value || "").trim() ||
+      ($("extraExclude").value || "").trim() ||
+      ($("dryrunLog").value || "").trim() ||
+      ($("deployDesc").value || "").trim() ||
+      ($("deployTask").value || "").trim() ||
+      (pathOverride && (pathOverride.from !== null || pathOverride.to !== null))
+    );
+  }
+  $("resetDraftBtn").addEventListener("click", () => {
+    if (draftHasContent() && !confirm(t("reset_draft_confirm"))) return;
+    $("specificFiles").value = "";
+    $("filetypes").value     = "";
+    $("extraInclude").value  = "";
+    $("extraExclude").value  = "";
+    $("dryrunLog").value     = "";
+    $("deployDesc").value    = "";
+    $("deployTask").value    = "";
+    pathOverride = { from: null, to: null };
+    $("pathOverride").hidden = true;
+    $("fromPath").value = "";
+    $("toPath").value   = "";
+    deployNameLastDefault = "";
+    refreshDefaultDeployName();
+    localStorage.removeItem(LS_DRAFT);
+    rehighlight();
+    if (typeof analyzeLog === "function") analyzeLog();
+    render();
+    updateSaveDeployEnabled();
+    toast(t("toast_draft_reset"), "info", 2000);
+  });
 
   // ---------- Storage ----------
   function loadProjects() {
@@ -1562,10 +1725,104 @@
   });
 
   // ---------- Command build ----------
+  const LS_OUTPUT_MODE = "rsyncgen.outputMode.v1";
+  let outputMode = (localStorage.getItem(LS_OUTPUT_MODE) === "scp") ? "scp" : "rsync";
+
   function splitLines(s) { return s.split(/\r?\n/).map(x => x.trim()).filter(Boolean); }
   function shq(s) { return `'${String(s).replace(/'/g, `'\\''`)}'`; }
   function needsQuote(s) { return /[\s"'$`\\!*?()\[\]{}|&;<>]/.test(s); }
   function maybeQuote(s) { return s === "" ? `''` : (needsQuote(s) ? shq(s) : s); }
+
+  function buildActiveCommand(includeDryRun = true) {
+    return outputMode === "scp" ? buildScpCommand() : buildCommand(includeDryRun);
+  }
+
+  function buildScpCommand() {
+    const warnings = [];
+    const flags = [];
+    // Map rsync-style options to closest scp equivalents
+    if ($("optArchive").checked) flags.push("-r", "-p");
+    else                          flags.push("-r");
+    if ($("optVerbose").checked)  flags.push("-v");
+    if ($("optCompress").checked) flags.push("-C");
+
+    const s = currentServer();
+    const port = s?.port || "22";
+    if (port && port !== "22") flags.push("-P", port);
+
+    const p = currentProject();
+    if (!p) warnings.push("No project selected.");
+    if (!s) warnings.push(direction === "dev-uat" ? "No UAT server selected." : "No server selected.");
+    else if (!s.host) warnings.push(`Server "${s.name}" has no host configured${direction === "dev-uat" ? " — open Settings › Environments" : ""}.`);
+
+    // Surface flags that scp doesn't support
+    if ($("optDryRun").checked) warnings.push("scp has no <code>--dry-run</code>. Switch to rsync to preview first.");
+    if ($("optDelete").checked) warnings.push("scp does not support <code>--delete</code>.");
+    if ($("optPartial").checked || $("optStats").checked || $("optProgress").checked || $("optHuman").checked) {
+      warnings.push("scp ignores <code>--partial</code>, <code>--stats</code>, <code>-P progress</code> and <code>-h human</code>.");
+    }
+    if ($("extraInclude").value.trim() || $("extraExclude").value.trim()) {
+      warnings.push("scp does not support <code>--include</code> / <code>--exclude</code> — those fields are ignored.");
+    }
+
+    const extraFlagsRaw = $("extraFlags").value.trim();
+    const host = s?.host || "HOST";
+    const user = s?.user || "web";
+    const { from, to } = effectivePaths();
+    const fromPrefix = (from || "./").replace(/\/$/, "");
+    const toPrefix   = (to   || "/").replace(/\/$/, "");
+
+    const gen = getGenType();
+    const specificFiles = splitLines($("specificFiles").value);
+    const filetypes     = splitLines($("filetypes").value);
+
+    function buildOne(src, dst) {
+      const arr = ["scp", ...flags];
+      if (extraFlagsRaw) arr.push(extraFlagsRaw);
+      arr.push(maybeQuote(src), maybeQuote(dst));
+      return arr.join(" ");
+    }
+
+    if (gen === "dir") {
+      const src = fromPrefix + "/";
+      const dst = `${user}@${host}:${toPrefix}/`;
+      return { cmd: buildOne(src, dst), warnings };
+    }
+
+    if (gen === "file") {
+      if (!specificFiles.length) { warnings.push("No files listed — nothing will transfer."); return { cmd: "# (no files)", warnings }; }
+      const lines = [];
+      const dirs = [...new Set(specificFiles
+        .filter(f => f.includes("/"))
+        .map(f => f.slice(0, f.lastIndexOf("/"))))]
+        .sort();
+      if (dirs.length) {
+        const sshFlag = (port && port !== "22") ? `-p ${port} ` : "";
+        const dirArgs = dirs.map(d => `${toPrefix}/${d}`).join(" ");
+        lines.push(`# Pre-create destination directories:`);
+        lines.push(`ssh ${sshFlag}${user}@${host} ${shq("mkdir -p " + dirArgs)}`);
+      }
+      for (const f of specificFiles) {
+        const relDir = f.includes("/") ? f.slice(0, f.lastIndexOf("/")) : "";
+        const src = `${fromPrefix}/${f}`;
+        const dstDir = relDir ? `${toPrefix}/${relDir}/` : `${toPrefix}/`;
+        const dst = `${user}@${host}:${dstDir}`;
+        lines.push(buildOne(src, dst));
+      }
+      return { cmd: lines.join("\n"), warnings };
+    }
+
+    // filetype mode
+    if (!filetypes.length) { warnings.push("No patterns listed — nothing will transfer."); return { cmd: "# (no patterns)", warnings }; }
+    warnings.push("scp doesn't natively filter by file type — using bash globstar. Run inside a bash shell after <code>shopt -s globstar</code>.");
+    const lines = [`# Run this once first so **/ glob matches recursively:`, `shopt -s globstar nullglob`];
+    const dst = `${user}@${host}:${toPrefix}/`;
+    for (const pat of filetypes) {
+      const src = `${fromPrefix}/**/${pat}`;
+      lines.push(buildOne(src, dst));
+    }
+    return { cmd: lines.join("\n"), warnings };
+  }
 
   function buildCommand(includeDryRun = true) {
     const parts = ["rsync"];
@@ -1710,10 +1967,10 @@
       `<span class="text-slate-400 dark:text-slate-500">→</span> ` +
       `${escHtml(destUser)}@${escHtml(destHost)}:${escHtml(to)}`;
 
-    const { cmd, warnings } = buildCommand(true);
+    const { cmd, warnings } = buildActiveCommand(true);
     const outputEl = $("output");
     outputEl.innerHTML = highlightRsyncCmd(cmd);
-    const dangerous = $("optDelete").checked;
+    const dangerous = outputMode === "rsync" && $("optDelete").checked;
     outputEl.classList.toggle("ring-2", dangerous);
     outputEl.classList.toggle("ring-rose-500/60", dangerous);
     outputEl.classList.toggle("border-rose-500/60", dangerous);
@@ -1729,15 +1986,32 @@
       }).join("");
     } else warnEl.classList.add("hidden");
 
-    const isDry = $("optDryRun").checked;
+    // Output-mode segment control & env label / copy button visibility
+    document.querySelectorAll("#outputMode button[data-mode]").forEach(b => {
+      b.classList.toggle("active", b.dataset.mode === outputMode);
+    });
     const dot = $("envDot");
-    dot.className = "w-1.5 h-1.5 rounded-full " + (isDry
-      ? "bg-emerald-500 ring-4 ring-emerald-500/20"
-      : "bg-amber-500 ring-4 ring-amber-500/20");
-    $("envLabel").textContent = isDry ? t("dry_run_mode") : t("live_mode");
-    $("envLabel").className = isDry
-      ? "text-slate-500 dark:text-slate-400"
-      : "text-amber-600 dark:text-amber-400 font-medium";
+    const copyDryBtn = $("copyBtn"), copyLiveBtn = $("copyNoDry");
+    if (outputMode === "scp") {
+      dot.className = "w-1.5 h-1.5 rounded-full bg-sky-500 ring-4 ring-sky-500/20";
+      $("envLabel").textContent = t("scp_mode");
+      $("envLabel").className = "text-sky-600 dark:text-sky-400 font-medium";
+      if (copyLiveBtn) copyLiveBtn.classList.add("hidden");
+      if (copyDryBtn) copyDryBtn.textContent = t("copy");
+    } else {
+      const isDry = $("optDryRun").checked;
+      dot.className = "w-1.5 h-1.5 rounded-full " + (isDry
+        ? "bg-emerald-500 ring-4 ring-emerald-500/20"
+        : "bg-amber-500 ring-4 ring-amber-500/20");
+      $("envLabel").textContent = isDry ? t("dry_run_mode") : t("live_mode");
+      $("envLabel").className = isDry
+        ? "text-slate-500 dark:text-slate-400"
+        : "text-amber-600 dark:text-amber-400 font-medium";
+      if (copyLiveBtn) copyLiveBtn.classList.remove("hidden");
+      if (copyDryBtn) copyDryBtn.textContent = t("copy_dry");
+    }
+
+    if (typeof refreshDefaultDeployName === "function") refreshDefaultDeployName();
   }
 
   function escHtml(s) {
@@ -1747,7 +2021,12 @@
 
   function highlightRsyncCmd(cmd) {
     if (!cmd) return "";
-    const s = String(cmd);
+    return String(cmd).split("\n").map(line => {
+      if (/^\s*#/.test(line)) return `<span class="cmd-comment">${escHtml(line)}</span>`;
+      return highlightShellLine(line);
+    }).join("\n");
+  }
+  function highlightShellLine(s) {
     let out = "", i = 0, n = s.length, seenBin = false;
     while (i < n) {
       const ch = s[i];
@@ -1776,7 +2055,7 @@
       let j = i;
       while (j < n && !/\s/.test(s[j])) j++;
       const word = s.slice(i, j);
-      if (!seenBin && /^rsync$/i.test(word)) {
+      if (!seenBin && /^(rsync|scp|ssh|shopt)$/i.test(word)) {
         out += `<span class="cmd-bin">${escHtml(word)}</span>`;
         seenBin = true;
       } else {
@@ -1930,17 +2209,27 @@
   });
 
   $("copyBtn").addEventListener("click", async () => {
-    await copy(buildCommand(true).cmd);
+    await copy(buildActiveCommand(true).cmd);
     flash($("copyBtn"), "✓ Copied");
-    toast(t("toast_copied_dry"), "success", 2000);
+    toast(outputMode === "scp" ? t("toast_copied") : t("toast_copied_dry"), "success", 2000);
   });
   $("copyNoDry").addEventListener("click", async () => {
-    if ($("optDelete").checked) {
+    if (outputMode === "rsync" && $("optDelete").checked) {
       if (!confirm(t("confirm_live_delete"))) return;
     }
-    await copy(buildCommand(false).cmd);
+    await copy(buildActiveCommand(false).cmd);
     flash($("copyNoDry"), "✓ Copied live");
     toast($("optDelete").checked ? t("toast_copied_live_delete") : t("toast_copied_live"), $("optDelete").checked ? "warn" : "success", 2500);
+  });
+
+  // Output-mode toggle (rsync | scp)
+  $("outputMode").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-mode]");
+    if (!btn) return;
+    if (btn.dataset.mode === outputMode) return;
+    outputMode = btn.dataset.mode;
+    localStorage.setItem(LS_OUTPUT_MODE, outputMode);
+    render();
   });
 
   // ---------- Auto-save draft + deployments ----------
@@ -1952,6 +2241,7 @@
       direction,
       project: selProject,
       server:  selServer,
+      outputMode,
       pathOverride: { ...pathOverride },
       fromPath: $("fromPath").value,
       toPath:   $("toPath").value,
@@ -1985,6 +2275,11 @@
       if (s.server != null) selServer = s.server || null;
       refreshServerSelect();
       if (selServer) $("serverSelect").value = selServer;
+
+      if (s.outputMode === "rsync" || s.outputMode === "scp") {
+        outputMode = s.outputMode;
+        localStorage.setItem(LS_OUTPUT_MODE, outputMode);
+      }
 
       pathOverride = s.pathOverride ? { from: s.pathOverride.from ?? null, to: s.pathOverride.to ?? null } : { from: null, to: null };
       const hasOverride = pathOverride.from !== null || pathOverride.to !== null;
@@ -2020,20 +2315,57 @@
 
   // Capture every edit anywhere in the document (deployment UI excluded below)
   document.addEventListener("input", e => {
-    if (e.target.closest("#deployDesc, #deployList, #projectsList, #envCards, #wasExts, #fromTemplate, #toTemplate, #jsonImport")) return;
+    if (e.target.closest("#deployDesc, #deployName, #deployTask, #deployList, #projectsList, #envCards, #wasExts, #fromTemplate, #toTemplate, #jsonImport")) return;
     scheduleSaveDraft();
   });
   document.addEventListener("change", e => {
-    if (e.target.closest("#deployDesc, #deployList, #projectsList, #envCards, #wasExts, #fromTemplate, #toTemplate")) return;
+    if (e.target.closest("#deployDesc, #deployName, #deployTask, #deployList, #projectsList, #envCards, #wasExts, #fromTemplate, #toTemplate")) return;
     scheduleSaveDraft();
   });
 
   // ---------- Deployment list ----------
+  const LS_TASKS = "rsyncgen.tasks.v1";
   function loadDeploys() {
     try { return JSON.parse(localStorage.getItem(LS_DEPLOYS)) || []; }
     catch { return []; }
   }
   function saveDeploysList(list) { localStorage.setItem(LS_DEPLOYS, JSON.stringify(list)); }
+  function loadTaskMeta() {
+    try { return JSON.parse(localStorage.getItem(LS_TASKS)) || {}; }
+    catch { return {}; }
+  }
+  function saveTaskMeta(meta) { localStorage.setItem(LS_TASKS, JSON.stringify(meta)); }
+  function getTaskDesc(name) { return (loadTaskMeta()[name] || {}).description || ""; }
+  function setTaskMeta(name, patch) {
+    const meta = loadTaskMeta();
+    meta[name] = { ...(meta[name] || {}), ...patch };
+    saveTaskMeta(meta);
+  }
+  function renameTaskMeta(oldName, newName) {
+    if (oldName === newName) return;
+    const meta = loadTaskMeta();
+    if (meta[oldName]) {
+      meta[newName] = { ...(meta[newName] || {}), ...meta[oldName] };
+      delete meta[oldName];
+      saveTaskMeta(meta);
+    }
+  }
+  function deleteTaskMeta(name) {
+    const meta = loadTaskMeta();
+    if (meta[name]) { delete meta[name]; saveTaskMeta(meta); }
+  }
+  function pruneTaskMeta() {
+    // Remove meta for tasks with no deployments
+    const meta = loadTaskMeta();
+    const live = new Set(loadDeploys().map(d => (d.taskName || "").trim()).filter(Boolean));
+    let changed = false;
+    for (const k of Object.keys(meta)) if (!live.has(k)) { delete meta[k]; changed = true; }
+    if (changed) saveTaskMeta(meta);
+  }
+  function listTaskNames() {
+    const live = new Set(loadDeploys().map(d => (d.taskName || "").trim()).filter(Boolean));
+    return [...live].sort((a, b) => a.localeCompare(b));
+  }
 
   function fmtDate(iso) {
     const d = new Date(iso);
@@ -2061,7 +2393,7 @@
     if (q) {
       list = list.filter(d => {
         const parts = [
-          d.name, d.description,
+          d.name, d.description, d.taskName,
           d.data?.project, d.data?.server, d.data?.direction,
           d.status,
         ].filter(Boolean).join(" ").toLowerCase();
@@ -2090,12 +2422,61 @@
     return list;
   }
 
+  const openTasks = new Set();   // task names currently expanded; "" = ungrouped (always open)
+  let openTasksInitialized = false;
+
+  function renderDeployItem(item) {
+    const d = item.data || {};
+    const dirLabel = d.direction === "dev-uat" ? "DEV → UAT" : "UAT → REAL";
+    const status = item.status || "planned";
+    const options = DEPLOY_STATUSES.map(s =>
+      `<option value="${s.value}"${s.value === status ? " selected" : ""}>${escHtml(t(s.labelKey))}</option>`
+    ).join("");
+    const checked = diffSel.has(item.id) ? "checked" : "";
+    return `
+      <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-3 flex items-start gap-3 bg-slate-50/50 dark:bg-slate-900/30">
+        <input type="checkbox" ${checked} data-action="diffPick" data-id="${escAttr(item.id)}" title="Select to compare" class="mt-1 tw-check shrink-0">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <select data-action="setStatus" data-id="${escAttr(item.id)}" title="Change status"
+              class="text-[11px] rounded-full px-2 py-0.5 font-semibold border cursor-pointer outline-none focus:ring-2 focus:ring-blue-500/30 ${statusCls(status)}">
+              ${options}
+            </select>
+            <div class="font-semibold text-sm truncate">${escHtml(item.name)}</div>
+          </div>
+          ${item.description ? `<div class="text-xs text-slate-600 dark:text-slate-300 mt-1 break-words">${escHtml(item.description)}</div>` : ""}
+          <div class="text-[11px] text-slate-400 dark:text-slate-500 mt-1 flex flex-wrap gap-x-2 gap-y-0.5">
+            <span>${escHtml(fmtDate(item.savedAt))}</span>
+            ${item.statusAt && item.status && item.status !== "planned" ? `<span>·</span><span>${escHtml(item.status)} ${escHtml(fmtDate(item.statusAt))}</span>` : ""}
+            <span>·</span>
+            <span>${escHtml(dirLabel)}</span>
+            ${d.project ? `<span>·</span><span class="truncate">${escHtml(d.project)}${d.server ? " / " + escHtml(d.server) : ""}</span>` : ""}
+          </div>
+        </div>
+        <div class="shrink-0">
+          <button data-action="itemMenu" data-id="${escAttr(item.id)}" class="w-7 h-7 rounded-md text-slate-500 hover:text-blue-500 hover:bg-white dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 inline-flex items-center justify-center transition font-bold text-base" title="${escAttr(t("item_menu_title"))}">⋯</button>
+        </div>
+      </div>`;
+  }
+
+  function groupStatusBadges(items) {
+    const counts = { planned: 0, "in-progress": 0, success: 0, failed: 0 };
+    for (const it of items) counts[it.status || "planned"]++;
+    const chips = [];
+    if (counts.failed)        chips.push(`<span class="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-300 border border-rose-200 dark:border-rose-500/30">✗ ${counts.failed}</span>`);
+    if (counts["in-progress"]) chips.push(`<span class="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300 border border-amber-200 dark:border-amber-500/30">⚙ ${counts["in-progress"]}</span>`);
+    if (counts.success)       chips.push(`<span class="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30">✓ ${counts.success}</span>`);
+    if (counts.planned)       chips.push(`<span class="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700">📋 ${counts.planned}</span>`);
+    return chips.join(" ");
+  }
+
   function renderDeployList() {
     const all = loadDeploys();
     const list = applyDeployFilter(all);
     const root = $("deployList");
     const empty = $("deployEmpty");
     const countEl = $("deployCount");
+    refreshTaskSuggest();
 
     // Count line
     if (all.length) {
@@ -2115,40 +2496,54 @@
       return;
     }
     empty.hidden = true;
-    root.innerHTML = list.map(item => {
-      const d = item.data || {};
-      const dirLabel = d.direction === "dev-uat" ? "DEV → UAT" : "UAT → REAL";
-      const status = item.status || "planned";
-      const options = DEPLOY_STATUSES.map(s =>
-        `<option value="${s.value}"${s.value === status ? " selected" : ""}>${escHtml(t(s.labelKey))}</option>`
-      ).join("");
-      const checked = diffSel.has(item.id) ? "checked" : "";
-      return `
-        <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-3 flex items-start gap-3 bg-slate-50/50 dark:bg-slate-900/30">
-          <input type="checkbox" ${checked} data-action="diffPick" data-id="${escAttr(item.id)}" title="Select to compare" class="mt-1 tw-check shrink-0">
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 flex-wrap">
-              <select data-action="setStatus" data-id="${escAttr(item.id)}" title="Change status"
-                class="text-[11px] rounded-full px-2 py-0.5 font-semibold border cursor-pointer outline-none focus:ring-2 focus:ring-blue-500/30 ${statusCls(status)}">
-                ${options}
-              </select>
-              <div class="font-semibold text-sm truncate">${escHtml(item.name)}</div>
+
+    // Group by taskName (preserve ordering: task's order = first-appearance order from sorted list)
+    const groups = new Map();
+    for (const item of list) {
+      const key = (item.taskName || "").trim();
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(item);
+    }
+
+    // First render: open all task groups by default
+    if (!openTasksInitialized) {
+      for (const key of groups.keys()) if (key) openTasks.add(key);
+      openTasksInitialized = true;
+    }
+
+    const parts = [];
+    for (const [taskName, items] of groups) {
+      if (!taskName) {
+        // Ungrouped — render items directly
+        parts.push(items.map(renderDeployItem).join(""));
+        continue;
+      }
+      const isOpen = openTasks.has(taskName);
+      const itemsLabel = t("task_items", { n: items.length, s: items.length === 1 ? "" : "s" });
+      const desc = getTaskDesc(taskName);
+      parts.push(`
+        <details class="rounded-xl border border-blue-200 dark:border-blue-500/30 bg-blue-50/40 dark:bg-blue-500/5"${isOpen ? " open" : ""} data-task="${escHtml(taskName)}">
+          <summary class="cursor-pointer select-none px-3 py-2 flex items-start gap-2 flex-wrap">
+            <span class="text-blue-500 dark:text-blue-300 text-xs mt-0.5">▸</span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="font-semibold text-sm text-blue-900 dark:text-blue-100 truncate">🗂 ${escHtml(taskName)}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">${escHtml(itemsLabel)}</span>
+                <span class="flex items-center gap-1 flex-wrap">${groupStatusBadges(items)}</span>
+              </div>
+              ${desc ? `<div class="text-xs text-slate-600 dark:text-slate-300 mt-1 break-words">${escHtml(desc)}</div>` : ""}
             </div>
-            ${item.description ? `<div class="text-xs text-slate-600 dark:text-slate-300 mt-1 break-words">${escHtml(item.description)}</div>` : ""}
-            <div class="text-[11px] text-slate-400 dark:text-slate-500 mt-1 flex flex-wrap gap-x-2 gap-y-0.5">
-              <span>${escHtml(fmtDate(item.savedAt))}</span>
-              ${item.statusAt && item.status && item.status !== "planned" ? `<span>·</span><span>${escHtml(item.status)} ${escHtml(fmtDate(item.statusAt))}</span>` : ""}
-              <span>·</span>
-              <span>${escHtml(dirLabel)}</span>
-              ${d.project ? `<span>·</span><span class="truncate">${escHtml(d.project)}${d.server ? " / " + escHtml(d.server) : ""}</span>` : ""}
-            </div>
+            <span class="flex items-center gap-1 shrink-0">
+              <button data-action="editTask" data-task="${escHtml(taskName)}" class="w-7 h-7 rounded-md text-slate-500 hover:text-blue-500 hover:bg-white dark:hover:bg-slate-800 inline-flex items-center justify-center transition" title="${escHtml(t("task_edit_title"))}">✎</button>
+              <button data-action="deleteTask" data-task="${escHtml(taskName)}" class="w-7 h-7 rounded-md text-rose-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 inline-flex items-center justify-center transition" title="${escHtml(t("task_delete_title"))}">🗑</button>
+            </span>
+          </summary>
+          <div class="px-3 pb-3 pt-1 space-y-2">
+            ${items.map(renderDeployItem).join("")}
           </div>
-          <div class="flex gap-1 shrink-0">
-            <button data-action="loadDeploy" data-id="${escAttr(item.id)}" class="px-2.5 py-1 rounded-md text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-400 hover:text-blue-500 transition">${escHtml(t("load"))}</button>
-            <button data-action="deleteDeploy" data-id="${escAttr(item.id)}" class="w-7 h-7 rounded-md text-rose-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 inline-flex items-center justify-center transition" title="${escAttr(t("delete_btn"))}">×</button>
-          </div>
-        </div>`;
-    }).join("");
+        </details>`);
+    }
+    root.innerHTML = parts.join("");
   }
 
   function updateSaveDeployEnabled() {
@@ -2169,17 +2564,48 @@
   });
   updateSaveDeployEnabled();
 
+  function buildDefaultDeployName() {
+    const projPart = selProject ? selProject : "no-project";
+    const srvPart  = selServer  ? " / " + selServer : "";
+    const dirPart  = direction === "dev-uat" ? "DEV→UAT" : "UAT→REAL";
+    return `${projPart}${srvPart} · ${dirPart}`;
+  }
+  let deployNameLastDefault = "";
+  function refreshDefaultDeployName() {
+    const input = $("deployName");
+    if (!input) return;
+    const next = buildDefaultDeployName();
+    // Repopulate only if user hasn't typed a custom value (pristine or still matches last default)
+    if (!input.value.trim() || input.value === deployNameLastDefault) {
+      input.value = next;
+    }
+    deployNameLastDefault = next;
+  }
+  function refreshTaskSuggest() {
+    const dl = $("taskSuggest");
+    if (!dl) return;
+    const names = new Set();
+    for (const d of loadDeploys()) {
+      const tn = (d.taskName || "").trim();
+      if (tn) names.add(tn);
+    }
+    dl.innerHTML = [...names].sort((a, b) => a.localeCompare(b))
+      .map(n => `<option value="${escAttr(n)}"></option>`).join("");
+  }
+  refreshDefaultDeployName();
+  refreshTaskSuggest();
+
   $("saveDeploy").addEventListener("click", () => {
     if ($("saveDeploy").disabled) return;
     const now = new Date();
     const p = n => String(n).padStart(2, "0");
     const dateStr = `${now.getFullYear()}-${p(now.getMonth()+1)}-${p(now.getDate())} ${p(now.getHours())}:${p(now.getMinutes())}`;
-    const projPart = selProject ? selProject : "no-project";
-    const srvPart  = selServer  ? " / " + selServer : "";
-    const dirPart  = direction === "dev-uat" ? "DEV→UAT" : "UAT→REAL";
+    const typedName = $("deployName").value.trim();
+    const finalName = typedName || `${buildDefaultDeployName()} · ${dateStr}`;
     const item = {
       id: "d_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-      name: `${projPart}${srvPart} · ${dirPart} · ${dateStr}`,
+      name: finalName,
+      taskName: $("deployTask").value.trim(),
       description: $("deployDesc").value.trim(),
       savedAt: now.toISOString(),
       status: "planned",
@@ -2188,7 +2614,13 @@
     const list = loadDeploys();
     list.push(item);
     saveDeploysList(list);
+    if (item.taskName) openTasks.add(item.taskName);
+    // Clear description but keep task sticky (often multiple deploys share one task)
     $("deployDesc").value = "";
+    // Reset name to default for next save
+    deployNameLastDefault = "";
+    refreshDefaultDeployName();
+    refreshTaskSuggest();
     renderDeployList();
     flash($("saveDeploy"), "✓ Saved");
     toast(t("toast_saved", { name: item.name }), "success");
@@ -2228,18 +2660,53 @@
   function refreshDiffBar() {
     const bar = $("diffBar");
     const run = $("diffRunBtn");
+    const grp = $("groupSelBtn");
+    const rm  = $("removeFromGroupBtn");
+    const mv  = $("moveToBtn");
     const n = diffSel.size;
-    if (n === 0) { bar.classList.add("hidden"); return; }
+    if (n === 0) { bar.classList.add("hidden"); hideMoveMenu(); return; }
     bar.classList.remove("hidden");
-    if (n === 1) $("diffBarText").textContent = t("diff_pick_one_more");
-    else if (n === 2) $("diffBarText").textContent = t("diff_ready");
-    else $("diffBarText").textContent = t("diff_too_many", { n });
+    if (n === 1) $("diffBarText").textContent = t("selection_single", { n });
+    else if (n === 2) $("diffBarText").textContent = t("selection_ready", { n });
+    else $("diffBarText").textContent = t("selection_many", { n });
     run.disabled = n !== 2;
+    if (grp) grp.disabled = n < 2;
+    const list = loadDeploys();
+    const picked = list.filter(x => diffSel.has(x.id));
+    const anyGrouped = picked.some(x => (x.taskName || "").trim());
+    if (rm) rm.disabled = n < 1 || !anyGrouped;
+    const tasks = listTaskNames();
+    if (mv) mv.disabled = n < 1;
+    // Keep move menu current if open
+    if ($("moveToMenu") && !$("moveToMenu").classList.contains("hidden")) renderMoveToMenu(tasks);
   }
   $("diffClearSel").addEventListener("click", () => {
     diffSel.clear();
     renderDeployList();
     refreshDiffBar();
+  });
+  $("groupSelBtn").addEventListener("click", () => {
+    if (diffSel.size < 2) return;
+    const picked = loadDeploys().filter(x => diffSel.has(x.id));
+    if (picked.length < 2) return;
+    const existing = [...new Set(picked.map(x => (x.taskName || "").trim()).filter(Boolean))];
+    const suggested = existing.length === 1 ? existing[0] : (picked[0].name || "");
+    openTaskModalCreate({
+      suggestedName: suggested,
+      titleKey: "task_create_title",
+      onCreate: (taskName) => {
+        const list = loadDeploys();
+        const ids = new Set(picked.map(x => x.id));
+        for (const x of list) if (ids.has(x.id)) x.taskName = taskName;
+        saveDeploysList(list);
+        const n = picked.length;
+        diffSel.clear();
+        refreshTaskSuggest();
+        renderDeployList();
+        refreshDiffBar();
+        toast(t("toast_grouped", { n, name: taskName }), "success");
+      },
+    });
   });
   $("diffRunBtn").addEventListener("click", () => {
     if (diffSel.size !== 2) return;
@@ -2252,6 +2719,289 @@
     const [left, right] = a.savedAt <= b.savedAt ? [a, b] : [b, a];
     openDiffModal(left, right);
   });
+
+  // Remove selected from their group(s)
+  $("removeFromGroupBtn").addEventListener("click", () => {
+    if (diffSel.size < 1) return;
+    const list = loadDeploys();
+    let affected = 0;
+    for (const x of list) if (diffSel.has(x.id) && (x.taskName || "").trim()) { x.taskName = ""; affected++; }
+    if (!affected) return;
+    saveDeploysList(list);
+    pruneTaskMeta();
+    refreshTaskSuggest();
+    renderDeployList();
+    refreshDiffBar();
+    toast(t("toast_ungrouped", { n: affected }), "info", 2500);
+  });
+
+  // Move-to-group popup
+  function hideMoveMenu() { $("moveToMenu") && $("moveToMenu").classList.add("hidden"); }
+  function renderMoveToMenu(tasks) {
+    const menu = $("moveToMenu");
+    const rowCls = "w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center gap-2 truncate";
+    const parts = [];
+    parts.push(`<button data-move="__new__" class="${rowCls} text-blue-600 dark:text-blue-300 font-semibold">+ ${escHtml(t("move_new_task"))}</button>`);
+    parts.push(`<button data-move="" class="${rowCls} text-slate-500 dark:text-slate-400">— ${escHtml(t("move_ungroup"))} —</button>`);
+    if (tasks.length) {
+      parts.push(`<div class="my-1 h-px bg-slate-200 dark:bg-slate-700"></div>`);
+      for (const name of tasks) parts.push(`<button data-move="${escHtml(name)}" class="${rowCls}" title="${escHtml(name)}"><span class="text-blue-500">🗂</span><span class="truncate">${escHtml(name)}</span></button>`);
+    }
+    menu.innerHTML = parts.join("");
+  }
+  $("moveToBtn").addEventListener("click", e => {
+    e.stopPropagation();
+    const menu = $("moveToMenu");
+    if (!menu.classList.contains("hidden")) { hideMoveMenu(); return; }
+    renderMoveToMenu(listTaskNames());
+    menu.classList.remove("hidden");
+  });
+  function applyMoveSelectionToTask(taskName) {
+    if (diffSel.size < 1) return;
+    const list = loadDeploys();
+    const picked = list.filter(x => diffSel.has(x.id));
+    if (!picked.length) return;
+    for (const x of list) if (diffSel.has(x.id)) x.taskName = taskName;
+    saveDeploysList(list);
+    pruneTaskMeta();
+    if (taskName) openTasks.add(taskName);
+    refreshTaskSuggest();
+    renderDeployList();
+    refreshDiffBar();
+    toast(taskName
+      ? t("toast_grouped", { n: picked.length, name: taskName })
+      : t("toast_ungrouped", { n: picked.length }), "success");
+  }
+  $("moveToMenu").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-move]");
+    if (!btn) return;
+    e.stopPropagation();
+    const target = btn.dataset.move;
+    hideMoveMenu();
+    if (diffSel.size < 1) return;
+    if (target === "__new__") {
+      const picked = loadDeploys().filter(x => diffSel.has(x.id));
+      const existing = [...new Set(picked.map(x => (x.taskName || "").trim()).filter(Boolean))];
+      const suggested = existing.length === 1 ? existing[0] : (picked[0]?.name || "");
+      openTaskModalCreate({
+        suggestedName: suggested,
+        titleKey: "task_create_title",
+        onCreate: (taskName) => applyMoveSelectionToTask(taskName),
+      });
+      return;
+    }
+    applyMoveSelectionToTask(target);
+  });
+  document.addEventListener("click", e => {
+    const menu = $("moveToMenu");
+    if (!menu || menu.classList.contains("hidden")) return;
+    if (e.target.closest("#moveToMenu, #moveToBtn")) return;
+    hideMoveMenu();
+  });
+
+  // ---------- Task editor / creator modal ----------
+  // State carries either "edit" (with original name) or "create" (with onCreate callback)
+  let taskModalState = null;
+  function openTaskModalEdit(taskName) {
+    taskModalState = { mode: "edit", original: taskName };
+    $("taskEditTitle").textContent = t("task_edit_title");
+    $("saveTaskEdit").textContent = t("save");
+    $("taskEditName").value = taskName;
+    $("taskEditDesc").value = getTaskDesc(taskName);
+    $("taskEditModal").style.display = "flex";
+    setTimeout(() => { $("taskEditName").focus(); $("taskEditName").select(); }, 0);
+  }
+  function openTaskModalCreate({ suggestedName = "", titleKey = "task_create_title", onCreate }) {
+    taskModalState = { mode: "create", onCreate };
+    $("taskEditTitle").textContent = t(titleKey);
+    $("saveTaskEdit").textContent = t("create");
+    $("taskEditName").value = suggestedName;
+    $("taskEditDesc").value = "";
+    $("taskEditModal").style.display = "flex";
+    setTimeout(() => { $("taskEditName").focus(); $("taskEditName").select(); }, 0);
+  }
+  function openTaskEditor(taskName) { openTaskModalEdit(taskName); } // back-compat for task header ✎
+  function closeTaskEditor() { $("taskEditModal").style.display = "none"; taskModalState = null; }
+  $("closeTaskEdit").addEventListener("click", closeTaskEditor);
+  $("cancelTaskEdit").addEventListener("click", closeTaskEditor);
+  $("taskEditModal").addEventListener("click", e => {
+    if (e.target === $("taskEditModal")) closeTaskEditor();
+  });
+  $("saveTaskEdit").addEventListener("click", () => {
+    if (!taskModalState) return;
+    const newName = $("taskEditName").value.trim();
+    const newDesc = $("taskEditDesc").value.trim();
+    if (!newName) { toast(t("task_name_required"), "warn"); return; }
+    if (taskModalState.mode === "edit") {
+      const original = taskModalState.original;
+      const list = loadDeploys();
+      if (newName !== original) {
+        for (const x of list) if ((x.taskName || "") === original) x.taskName = newName;
+        saveDeploysList(list);
+        renameTaskMeta(original, newName);
+        if (openTasks.has(original)) { openTasks.delete(original); openTasks.add(newName); }
+      }
+      setTaskMeta(newName, { description: newDesc });
+      closeTaskEditor();
+      refreshTaskSuggest();
+      renderDeployList();
+    } else {
+      const cb = taskModalState.onCreate;
+      // Persist description first so render picks it up after the callback saves list
+      setTaskMeta(newName, { description: newDesc });
+      openTasks.add(newName);
+      closeTaskEditor();
+      if (typeof cb === "function") cb(newName);
+    }
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && $("taskEditModal").style.display === "flex") closeTaskEditor();
+  });
+
+  // ---------- Per-item ⋯ dropdown ----------
+  let itemMenuCtx = null; // { item, view: "main" | "moveTo" }
+  function hideItemMenu() {
+    const m = $("itemMenu");
+    if (!m) return;
+    m.classList.add("hidden");
+    itemMenuCtx = null;
+  }
+  function positionItemMenu(anchorEl) {
+    const m = $("itemMenu");
+    m.style.top = "-9999px"; m.style.left = "-9999px";
+    m.classList.remove("hidden");
+    const r = anchorEl.getBoundingClientRect();
+    const mw = m.offsetWidth, mh = m.offsetHeight;
+    const vh = window.innerHeight;
+    let top = r.bottom + 4, left = r.right - mw;
+    if (left < 8) left = 8;
+    if (top + mh > vh - 8) top = Math.max(8, r.top - mh - 4);
+    m.style.top = `${top}px`;
+    m.style.left = `${left}px`;
+  }
+  function renderItemMenu() {
+    const m = $("itemMenu");
+    if (!itemMenuCtx) { m.innerHTML = ""; return; }
+    const rowCls = "w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center gap-2 truncate";
+    const dangerCls = rowCls + " text-rose-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40";
+    if (itemMenuCtx.view === "main") {
+      m.innerHTML = [
+        `<button data-imact="copyDry" class="${rowCls}"><span>📋</span>${escHtml(t("item_copy_dry"))}</button>`,
+        `<button data-imact="copyLive" class="${rowCls}"><span>📋</span>${escHtml(t("item_copy_live"))}</button>`,
+        `<div class="my-1 h-px bg-slate-200 dark:bg-slate-700"></div>`,
+        `<button data-imact="load" class="${rowCls}"><span>⬇</span>${escHtml(t("item_load"))}</button>`,
+        `<button data-imact="moveToView" class="${rowCls}"><span>🗂</span>${escHtml(t("move_to_group"))}<span class="ml-auto text-slate-400">▸</span></button>`,
+        `<div class="my-1 h-px bg-slate-200 dark:bg-slate-700"></div>`,
+        `<button data-imact="delete" class="${dangerCls}"><span>🗑</span>${escHtml(t("item_delete"))}</button>`,
+      ].join("");
+    } else {
+      const tasks = listTaskNames();
+      const current = (itemMenuCtx.item.taskName || "").trim();
+      const parts = [
+        `<button data-imact="moveBack" class="${rowCls} text-slate-500 dark:text-slate-400"><span>←</span>${escHtml(t("back"))}</button>`,
+        `<div class="my-1 h-px bg-slate-200 dark:bg-slate-700"></div>`,
+        `<button data-imact="moveNew" class="${rowCls} text-blue-600 dark:text-blue-300 font-semibold">+ ${escHtml(t("move_new_task"))}</button>`,
+      ];
+      if (current) parts.push(`<button data-imact="moveUngroup" class="${rowCls} text-slate-500 dark:text-slate-400">— ${escHtml(t("move_ungroup"))} —</button>`);
+      if (tasks.length) parts.push(`<div class="my-1 h-px bg-slate-200 dark:bg-slate-700"></div>`);
+      for (const name of tasks) {
+        const isCur = name === current;
+        parts.push(`<button data-imact="moveTo" data-move="${escHtml(name)}" class="${rowCls}${isCur ? " text-blue-600 dark:text-blue-300 font-semibold" : ""}" title="${escHtml(name)}"><span class="text-blue-500">🗂</span><span class="truncate">${escHtml(name)}</span>${isCur ? `<span class="ml-auto text-[10px]">${escHtml(t("current"))}</span>` : ""}</button>`);
+      }
+      m.innerHTML = parts.join("");
+    }
+  }
+  function openItemMenu(anchorEl, item) {
+    itemMenuCtx = { item, view: "main", anchor: anchorEl };
+    renderItemMenu();
+    positionItemMenu(anchorEl);
+  }
+  function stripDryRun(cmd) {
+    return String(cmd || "").replace(/\s--dry-run\b/g, "").replace(/^\s*--dry-run\s+/, "");
+  }
+  $("itemMenu").addEventListener("click", async e => {
+    const btn = e.target.closest("button[data-imact]");
+    if (!btn || !itemMenuCtx) return;
+    e.stopPropagation();
+    const act = btn.dataset.imact;
+    const item = itemMenuCtx.item;
+    const anchor = itemMenuCtx.anchor;
+    // View switches
+    if (act === "moveToView") {
+      itemMenuCtx.view = "moveTo";
+      renderItemMenu();
+      positionItemMenu(anchor);
+      return;
+    }
+    if (act === "moveBack") {
+      itemMenuCtx.view = "main";
+      renderItemMenu();
+      positionItemMenu(anchor);
+      return;
+    }
+    // Final actions below — close menu first
+    hideItemMenu();
+    if (act === "copyDry") {
+      await copy(item.data?.command || "");
+      toast(t("toast_copied_dry"), "success", 2000);
+    } else if (act === "copyLive") {
+      await copy(stripDryRun(item.data?.command || ""));
+      toast(t("toast_copied_live"), "success", 2000);
+    } else if (act === "load") {
+      restoreSnapshot(item.data);
+      $("deployTask").value = item.taskName || "";
+      $("deployName").value = item.name || "";
+      deployNameLastDefault = "";
+      $("deployDesc").value = item.description || "";
+      scheduleSaveDraft();
+      toast(t("toast_loaded", { name: item.name }), "info", 2500);
+    } else if (act === "delete") {
+      if (!confirm(t("confirm_delete_deploy", { name: item.name }))) return;
+      const list = loadDeploys();
+      saveDeploysList(list.filter(x => x.id !== item.id));
+      diffSel.delete(item.id);
+      pruneTaskMeta();
+      refreshDiffBar();
+      renderDeployList();
+      toast(t("toast_deleted", { name: item.name }), "info", 2500);
+    } else if (act === "moveNew") {
+      openTaskModalCreate({
+        suggestedName: item.taskName || item.name || "",
+        titleKey: "task_create_title",
+        onCreate: (taskName) => applyItemTaskChange(item.id, taskName),
+      });
+    } else if (act === "moveUngroup") {
+      applyItemTaskChange(item.id, "");
+    } else if (act === "moveTo") {
+      applyItemTaskChange(item.id, btn.dataset.move || "");
+    }
+  });
+  function applyItemTaskChange(itemId, taskName) {
+    const list = loadDeploys();
+    const it = list.find(x => x.id === itemId);
+    if (!it) return;
+    it.taskName = taskName;
+    saveDeploysList(list);
+    pruneTaskMeta();
+    if (taskName) openTasks.add(taskName);
+    refreshTaskSuggest();
+    renderDeployList();
+    toast(taskName
+      ? t("toast_grouped", { n: 1, name: taskName })
+      : t("toast_ungrouped", { n: 1 }), "success", 2000);
+  }
+  // Close on outside click or scroll/resize
+  document.addEventListener("click", e => {
+    const m = $("itemMenu");
+    if (!m || m.classList.contains("hidden")) return;
+    if (e.target.closest("#itemMenu") || e.target.closest("button[data-action='itemMenu']")) return;
+    hideItemMenu();
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && !$("itemMenu").classList.contains("hidden")) hideItemMenu();
+  });
+  window.addEventListener("scroll", hideItemMenu, true);
+  window.addEventListener("resize", hideItemMenu);
 
   function openDiffModal(a, b) {
     $("diffBody").innerHTML = renderDiff(a, b);
@@ -2381,25 +3131,49 @@
   $("deployList").addEventListener("click", e => {
     const btn = e.target.closest("button[data-action]");
     if (!btn) return;
-    const id  = btn.dataset.id;
     const act = btn.dataset.action;
     const list = loadDeploys();
+
+    // Task-level actions
+    if (act === "editTask" || act === "deleteTask") {
+      e.preventDefault();
+      const taskName = btn.dataset.task;
+      const members = list.filter(x => (x.taskName || "") === taskName);
+      if (!members.length) return;
+      if (act === "editTask") {
+        openTaskEditor(taskName);
+      } else {
+        if (!confirm(t("task_delete_confirm", { name: taskName, n: members.length }))) return;
+        const ids = new Set(members.map(x => x.id));
+        saveDeploysList(list.filter(x => !ids.has(x.id)));
+        ids.forEach(i => diffSel.delete(i));
+        openTasks.delete(taskName);
+        deleteTaskMeta(taskName);
+        refreshDiffBar();
+        renderDeployList();
+        toast(t("toast_deleted", { name: taskName }), "info", 2500);
+      }
+      return;
+    }
+
+    // Item-level actions
+    const id  = btn.dataset.id;
     const item = list.find(x => x.id === id);
     if (!item) return;
-    if (act === "loadDeploy") {
-      restoreSnapshot(item.data);
-      scheduleSaveDraft();
-      flash(btn, "✓ Loaded");
-      toast(t("toast_loaded", { name: item.name }), "info", 2500);
-    } else if (act === "deleteDeploy") {
-      if (!confirm(t("confirm_delete_deploy", { name: item.name }))) return;
-      saveDeploysList(list.filter(x => x.id !== id));
-      diffSel.delete(id);
-      refreshDiffBar();
-      renderDeployList();
-      toast(t("toast_deleted", { name: item.name }), "info", 2500);
+    if (act === "itemMenu") {
+      e.preventDefault();
+      e.stopPropagation();
+      openItemMenu(btn, item);
     }
   });
+
+  // Track task-group expand/collapse state
+  $("deployList").addEventListener("toggle", e => {
+    const d = e.target;
+    if (!(d instanceof HTMLDetailsElement) || !d.hasAttribute("data-task")) return;
+    const name = d.getAttribute("data-task");
+    if (d.open) openTasks.add(name); else openTasks.delete(name);
+  }, true);
 
   // ---------- Dry-run verifier ----------
   function parseRsyncLog(log) {
