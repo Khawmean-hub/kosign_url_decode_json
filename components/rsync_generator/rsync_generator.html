@@ -853,7 +853,7 @@
   $("themeToggle").addEventListener("click", () => {
     applyTheme(document.documentElement.classList.contains('dark') ? "light" : "dark");
   });
-  applyTheme(localStorage.getItem(LS_THEME) || "dark");
+  applyTheme(localStorage.getItem(LS_THEME) || "light");
 
   // Language toggle
   $("langBtn").addEventListener("click", () => setLang(lang === "en" ? "ko" : "en"));
