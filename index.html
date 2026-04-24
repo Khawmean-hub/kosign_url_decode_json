@@ -282,23 +282,26 @@
                 <div class="ui secondary menu inverted fixed small bg_color my_navbar">
                     <div style="display: flex; overflow-x: auto" class="main_menu">
                         <div class="active item" data-tab="first">Decode</div>
-                        <div class="item" data-tab="jshtml" onclick="navi.html2js()">HTML 2 Js</div>
                         <!-- <div class="item" data-tab="sortEx">Sort File Name</div> -->
                         <div class="item" data-tab="text_compare" onclick="navi.txtCompare()"
                             id="btn_text_compare_page">Text Compare</div>
+                        <div class="item" data-tab="rsync_generator" onclick="navi.rsyncGenerator();">Rsync Generator
+                            <div class="ui mini label yellow">New</div>
+                        </div>
                     </div>
                     <div class="ui dropdown item">
-                        Others 
+                        Others
                         <!-- <div class="ui yellow empty circular label mini"></div> -->
                         <i class="dropdown icon"></i>
                         <div class="menu" id="other_menu">
+                            <div class="item" data-tab="jshtml" onclick="navi.html2js()">HTML 2 Js</div>
                             <div class="item" data-tab="subtitle_maker" onclick="navi.subtitle();">Subtitle maker
                                 <!-- <div class="ui mini label">Moved</div> -->
                             </div>
-                            <div class="item" data-tab="second" onclick="navi.jex();">Jex Convert 
+                            <div class="item" data-tab="second" onclick="navi.jex();">Jex Convert
                                 <!-- <div class="ui mini label">Moved</div> -->
                             </div>
-                            <div class="item" data-tab="pattern" onclick="navi.pattern();">Pattern 
+                            <div class="item" data-tab="pattern" onclick="navi.pattern();">Pattern
                                 <!-- <div class="ui mini label yellow">New</div> -->
                             </div>
                             <div class="item" data-tab="calendar_excel01" onclick="navi.calendar();">Calendar Excel
@@ -554,6 +557,15 @@
                     <div class="ui bottom attached tab" data-tab="calendar_excel01">
                         <div class="pt_40">
                             <div id="calendar_excel"></div>
+                        </div>
+                    </div>
+
+                    <!-- Rsync Generator -->
+                    <!-- ================================================================= -->
+                    <div class="ui bottom attached tab" data-tab="rsync_generator">
+                        <div class="pt_40" style="margin: 0; padding-bottom: 0;">
+                            <iframe id="rsync_generator_frame" src="about:blank"
+                                style="width: 100%; height: calc(100vh - 40px); border: 0; margin: 0; padding: 0; background: transparent; display: block; vertical-align: top;"></iframe>
                         </div>
                     </div>
                 </div>

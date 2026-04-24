@@ -43,7 +43,13 @@ const navi = {
     subtitle: ()=> {loadComponent('subtitle')},
     txtCompare: (callback)=> {loadComponent('text_compare', callback)},
     pattern: ()=> {loadComponent('pattern', ()=>{$('.show_my_popup').popup({html: true, variation: 'wide'});})},
-    calendar: ()=> {loadComponent('calendar_excel')}
+    calendar: ()=> {loadComponent('calendar_excel')},
+    rsyncGenerator: ()=> {
+        const frame = document.getElementById('rsync_generator_frame');
+        if (frame && (!frame.src || frame.src === 'about:blank' || frame.getAttribute('src') === 'about:blank')) {
+            frame.src = 'components/rsync_generator/rsync_generator.html';
+        }
+    }
 }
 
 

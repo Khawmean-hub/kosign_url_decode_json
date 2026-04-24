@@ -1,0 +1,2762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>rsync generator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
+        },
+      },
+    },
+  };
+</script>
+<link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
+<style>
+  /* Subtle custom touches Tailwind doesn't cover cleanly */
+  html, body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+  input[type=checkbox].tw-check {
+    appearance: none; -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border: 1px solid rgb(209 213 219);
+    border-radius: 4px;
+    background: #fff;
+    display: grid; place-items: center; cursor: pointer;
+    transition: background .12s, border-color .12s;
+  }
+  .dark input[type=checkbox].tw-check {
+    background: rgb(30 41 59);
+    border-color: rgb(71 85 105);
+  }
+  input[type=checkbox].tw-check:hover { border-color: rgb(59 130 246); }
+  input[type=checkbox].tw-check:checked {
+    background: rgb(59 130 246); border-color: rgb(59 130 246);
+  }
+  input[type=checkbox].tw-check:checked::after {
+    content: ""; width: 8px; height: 4px;
+    border-left: 2px solid #fff; border-bottom: 2px solid #fff;
+    transform: translateY(-1px) rotate(-45deg);
+  }
+  select.tw-select {
+    appearance: none; -webkit-appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 18px) 53%, calc(100% - 13px) 53%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 32px;
+  }
+
+  /* ---------- Textarea highlight overlay ---------- */
+  .hl-wrap { overflow: hidden; }
+  .hl-layer, .hl-textarea {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 15px;
+    line-height: 1.75rem;      /* matches Tailwind leading-7 */
+    padding: 0.625rem 0.875rem 0.625rem 3.25rem; /* left = gutter width */
+    white-space: pre;
+    word-break: normal;
+    overflow-wrap: normal;
+    letter-spacing: normal;
+    tab-size: 4;
+  }
+  @media (min-width: 768px) {
+    .hl-layer, .hl-textarea { font-size: 16px; }
+  }
+  .hl-layer {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    pointer-events: none;
+    overflow: hidden;
+    color: rgb(51 65 85);         /* slate-700 default */
+  }
+  .dark .hl-layer { color: rgb(226 232 240); } /* slate-200 */
+  .hl-textarea {
+    position: relative;
+    width: 100%;
+    display: block;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: transparent;
+    caret-color: rgb(51 65 85);
+    resize: vertical;
+    box-sizing: border-box;
+    overflow: auto;
+  }
+  .hl-linenums {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 2.75rem;
+    padding: 0.625rem 0.5rem 0.625rem 0;
+    text-align: right;
+    color: rgb(148 163 184);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    line-height: 1.75rem;
+    background: transparent;
+    border-right: 1px solid rgba(148,163,184,0.18);
+    overflow: hidden;
+    pointer-events: none;
+    white-space: pre;
+    user-select: none;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+  .dark .hl-linenums {
+    color: rgb(100 116 139);
+    border-right-color: rgba(100,116,139,0.25);
+  }
+  .dark .hl-textarea { caret-color: rgb(226 232 240); }
+  .hl-textarea::selection { background: rgba(59, 130, 246, 0.3); color: transparent; }
+  .hl-textarea::placeholder { color: rgb(148 163 184); }
+
+  /* Highlight categories */
+  .hl-line-was    { color: rgb(37 99 235); }         /* blue-600 */
+  .dark .hl-line-was { color: rgb(147 197 253); }     /* blue-300 */
+  .hl-line-web    { color: rgb(5 150 105); }          /* emerald-600 */
+  .dark .hl-line-web { color: rgb(110 231 183); }     /* emerald-300 */
+  .hl-line-noext  { color: rgb(148 163 184); font-style: italic; }
+  .hl-line-pattern { color: rgb(124 58 237); }        /* violet-600 */
+  .dark .hl-line-pattern { color: rgb(196 181 253); } /* violet-300 */
+  .hl-dup         { background: rgba(245, 158, 11, 0.22); border-radius: 2px; }
+  .hl-orphan      { text-decoration: underline; text-decoration-color: rgb(245 158 11); text-decoration-thickness: 2px; text-underline-offset: 2px; }
+
+  /* Filter pills (deployment search) */
+  .filter-pill {
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 500;
+    background: rgb(248 250 252);
+    border: 1px solid rgb(226 232 240);
+    color: rgb(100 116 139);
+    transition: border-color .12s, color .12s, background .12s;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .dark .filter-pill { background: rgb(30 41 59); border-color: rgb(51 65 85); color: rgb(148 163 184); }
+  .filter-pill:hover { border-color: rgb(59 130 246); color: rgb(59 130 246); }
+  .filter-pill[data-active="true"] {
+    background: rgb(59 130 246); color: #fff; border-color: rgb(59 130 246);
+  }
+  .dark .filter-pill[data-active="true"] { background: rgb(37 99 235); border-color: rgb(37 99 235); }
+
+  /* Legend dots */
+  .hl-dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+  .hl-dot.hl-was { background: rgb(37 99 235); }
+  .hl-dot.hl-web { background: rgb(5 150 105); }
+  .hl-dot.hl-dup { background: rgba(245, 158, 11, 0.5); }
+  .hl-dot.hl-orphan { background: transparent; border-bottom: 2px solid rgb(245 158 11); border-radius: 0; height: 10px; }
+</style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
+
+<div class="max-w-6xl mx-auto px-6 py-4 md:py-4">
+
+  <!-- Top bar with centered target -->
+  <div class="grid grid-cols-1 md:grid-cols-[auto,1fr,auto] items-center gap-4 mb-8">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 grid place-items-center text-white font-bold text-sm shadow-sm">⇄</div>
+      <div>
+        <div class="text-sm font-semibold tracking-tight" data-i18n="app_title">Rsync Generator</div>
+        <div class="text-[11px] text-slate-500 dark:text-slate-400" data-i18n="app_sub">rsync command generator</div>
+      </div>
+    </div>
+    <div class="text-center min-w-0">
+      <h1 id="heroTarget" class="text-xl md:text-2xl font-semibold tracking-tight leading-tight truncate">
+        <span class="text-slate-400 dark:text-slate-500 font-normal"></span>
+      </h1>
+    </div>
+    <div class="flex items-center gap-1.5 md:justify-end">
+      <button id="langBtn" class="w-9 h-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition font-bold text-xs" data-i18n-title="lang_toggle" title="Change language">EN</button>
+      <button id="guideBtn" class="w-9 h-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition font-semibold" data-i18n-title="guide_replay" title="Replay the guided tour">?</button>
+      <button id="themeToggle" class="w-9 h-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition" data-i18n-title="theme_toggle" title="Toggle theme">🌙</button>
+      <button id="openSettings" class="px-3.5 py-2 rounded-lg text-sm font-medium bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition inline-flex items-center gap-1.5 shadow-sm">
+        <span>⚙</span><span data-i18n="settings">Settings</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+  <!-- Pickers card (full width) -->
+  <div class="lg:col-span-12">
+
+  <!-- Pickers card -->
+  <div class="rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-sm">
+    <div class="flex items-center gap-2 mb-4 flex-wrap">
+      <span class="text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold" data-i18n="direction">Direction</span>
+      <div id="direction" class="inline-flex gap-0.5 p-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <button data-dir="dev-uat" class="seg-btn px-3 py-1.5 rounded-md text-xs md:text-sm font-medium transition">DEV → UAT</button>
+        <button data-dir="uat-real" class="seg-btn active px-3 py-1.5 rounded-md text-xs md:text-sm font-medium transition">UAT → REAL</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+      <div>
+        <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="project">Project</label>
+        <select id="projectSelect" class="tw-select w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition">
+          <option value="">— pick a project —</option>
+        </select>
+      </div>
+      <div>
+        <label id="serverLabel" class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="server">Server</label>
+        <select id="serverSelect" disabled class="tw-select w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition disabled:opacity-50">
+          <option value="">—</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 font-mono text-xs md:text-[13px] text-slate-600 dark:text-slate-300 break-all flex-wrap">
+      <span id="pathPreview" class="text-slate-400 dark:text-slate-500">—</span>
+      <button id="togglePathEdit" class="w-7 h-7 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 dark:text-slate-500 hover:text-blue-500 transition inline-flex items-center justify-center" title="Override paths for this session">✎</button>
+    </div>
+
+    <div id="pathOverride" hidden class="mt-3.5 pt-3.5 border-t border-dashed border-slate-200 dark:border-slate-700">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="from_uat">From (on UAT)</label>
+          <input type="text" id="fromPath" class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition" />
+        </div>
+        <div>
+          <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="to_prod">To (on production)</label>
+          <input type="text" id="toPath" class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition" />
+        </div>
+      </div>
+      <div class="flex items-center justify-between gap-2 mt-2">
+        <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="override_hint">Session-only override — not saved to the project.</div>
+        <button id="resetPaths" class="px-2.5 py-1.5 rounded-md text-xs bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600" data-i18n="reset_template">Reset to template</button>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /pickers full-width -->
+
+  <div class="lg:col-span-7 space-y-3.5">
+
+  <!-- What to sync -->
+  <div class="rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-sm">
+    <h2 class="text-[11px] uppercase tracking-[0.08em] font-semibold text-slate-500 dark:text-slate-400 mb-4" data-i18n="what_to_sync">What to sync</h2>
+
+    <div class="mb-4 flex items-center gap-2 flex-wrap">
+      <div id="genType" class="inline-flex gap-0.5 p-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <button data-val="file" data-i18n="mode_specific" class="seg-btn active px-3 py-1.5 rounded-md text-xs md:text-sm font-medium transition">Specific files</button>
+        <button data-val="filetype" data-i18n="mode_filetype" class="seg-btn px-3 py-1.5 rounded-md text-xs md:text-sm font-medium transition">File type</button>
+        <button data-val="dir" data-i18n="mode_dir" class="seg-btn px-3 py-1.5 rounded-md text-xs md:text-sm font-medium transition">Full directory</button>
+      </div>
+      <div class="flex items-center gap-1.5 ml-auto">
+        <span class="text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold" data-i18n="preset">Preset:</span>
+        <button id="presetWas" class="px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 dark:bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-500/30 hover:bg-violet-100 dark:hover:bg-violet-500/20 transition" data-i18n="only_was" title="only .java .class .xml .jsp">only WAS</button>
+        <button id="presetWeb" class="px-2.5 py-1 rounded-md text-xs font-medium bg-teal-50 dark:bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-500/30 hover:bg-teal-100 dark:hover:bg-teal-500/20 transition" data-i18n="only_web" title="everything except WAS file types">only WEB</button>
+      </div>
+    </div>
+
+    <div id="filesField">
+      <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="files_to_include" data-i18n-html>Files to include (one per line, relative to <em>From</em>)</label>
+      <div class="hl-wrap relative rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/20 transition">
+        <div id="specificFilesLN" aria-hidden="true" class="hl-linenums"></div>
+        <pre id="specificFilesHL" aria-hidden="true" class="hl-layer"></pre>
+        <textarea id="specificFiles" wrap="off" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="app/config.yml&#10;public/index.php" class="hl-textarea min-h-[200px] lg:min-h-[260px]"></textarea>
+      </div>
+      <div class="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
+        <span class="inline-flex items-center gap-1 mr-3"><span class="hl-dot hl-was"></span><span data-i18n="legend_was">WAS ext</span></span>
+        <span class="inline-flex items-center gap-1 mr-3"><span class="hl-dot hl-web"></span><span data-i18n="legend_web">WEB ext</span></span>
+        <span class="inline-flex items-center gap-1 mr-3"><span class="hl-dot hl-dup"></span><span data-i18n="legend_dup">duplicate basename</span></span>
+        <span class="inline-flex items-center gap-1"><span class="hl-dot hl-orphan"></span><span data-i18n="legend_orphan">.java without .class</span></span>
+      </div>
+      <div class="mt-1.5 text-xs text-slate-500 dark:text-slate-400" data-i18n="files_auto_add" data-i18n-html>Auto-adds <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px]">--include='*/'</code> and <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px]">--exclude='*'</code>.</div>
+    </div>
+
+    <div id="filetypeField" class="hidden">
+      <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="patterns_header">Patterns (one per line)</label>
+      <div class="hl-wrap relative rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/20 transition">
+        <div id="filetypesLN" aria-hidden="true" class="hl-linenums"></div>
+        <pre id="filetypesHL" aria-hidden="true" class="hl-layer"></pre>
+        <textarea id="filetypes" wrap="off" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="*.java&#10;*.class&#10;*.xml&#10;*.jsp" class="hl-textarea min-h-[200px] lg:min-h-[260px]"></textarea>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+      <div>
+        <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="extra_include">Extra --include</label>
+        <textarea id="extraInclude" spellcheck="false" autocorrect="off" autocapitalize="off" class="w-full font-mono text-xs md:text-[13px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition min-h-[100px]"></textarea>
+      </div>
+      <div>
+        <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="extra_exclude">Extra --exclude</label>
+        <textarea id="extraExclude" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder=".git&#10;node_modules" class="w-full font-mono text-xs md:text-[13px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition min-h-[100px]"></textarea>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /left column -->
+
+  <div class="lg:col-span-5">
+  <div class="lg:sticky lg:top-6">
+  <!-- Output -->
+  <div class="rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-sm">
+    <div class="flex items-center justify-between mb-4 gap-2 flex-wrap">
+      <h2 class="text-[11px] uppercase tracking-[0.08em] font-semibold text-slate-500 dark:text-slate-400" data-i18n="generated_command">Generated command</h2>
+      <div class="inline-flex items-center gap-2 text-xs">
+        <span id="envDot" class="w-1.5 h-1.5 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20"></span>
+        <span id="envLabel" class="text-slate-500 dark:text-slate-400">dry-run mode</span>
+      </div>
+    </div>
+    <pre id="output" class="font-mono text-[12.5px] leading-[1.7] whitespace-pre-wrap break-all bg-slate-950 border border-slate-200 dark:border-slate-800 text-lime-200 rounded-xl px-4 py-3.5 min-h-[70px] max-h-[50vh] overflow-auto">rsync --dry-run ...</pre>
+    <div class="flex gap-2 flex-wrap mt-3.5">
+      <button id="copyBtn" class="px-3.5 py-2 rounded-lg text-sm font-semibold bg-blue-500 hover:bg-blue-600 text-white shadow-sm transition" data-i18n="copy_dry">Copy (dry-run)</button>
+      <button id="copyNoDry" class="px-3.5 py-2 rounded-lg text-sm font-medium bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition" data-i18n="copy_live">Copy live (no --dry-run)</button>
+    </div>
+    <div id="cmdWarn" class="hidden mt-3 text-xs text-amber-600 dark:text-amber-400"></div>
+  </div>
+  </div>
+  </div><!-- /right column -->
+
+  </div><!-- /grid -->
+
+  <!-- Verify dry-run -->
+  <div class="rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-sm mt-3.5">
+    <div class="flex items-center justify-between gap-2 flex-wrap mb-3">
+      <h2 class="text-[11px] uppercase tracking-[0.08em] font-semibold text-slate-500 dark:text-slate-400" data-i18n="verify_title">Verify dry-run</h2>
+      <span class="text-xs text-slate-400 dark:text-slate-500" data-i18n="verify_desc">Paste rsync dry-run output to catch duplicate filenames at different paths.</span>
+    </div>
+    <textarea id="dryrunLog" spellcheck="false" autocorrect="off" autocapitalize="off"
+      data-i18n-ph="verify_placeholder"
+      placeholder="Paste the full rsync --dry-run output here…&#10;(lines like 'sending incremental file list', 'sent … received …' are ignored)"
+      class="w-full font-mono text-[13px] leading-6 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2.5 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition min-h-[160px]"></textarea>
+    <div class="flex items-center gap-2 mt-3 flex-wrap">
+      <button id="removeFolders" class="px-3 py-1.5 rounded-md text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition" data-i18n="remove_folders" title="Strip lines ending with /">Remove folder lines</button>
+      <button id="clearLog" class="px-3 py-1.5 rounded-md text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition" data-i18n="clear">Clear</button>
+      <span id="logSummary" class="text-xs text-slate-500 dark:text-slate-400"></span>
+    </div>
+    <div id="logResults" class="mt-4"></div>
+  </div>
+
+  <!-- Deployments -->
+  <div class="rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-sm mt-3.5">
+    <div class="flex items-center justify-between gap-2 flex-wrap mb-3">
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.08em] font-semibold text-slate-500 dark:text-slate-400" data-i18n="deployments">Deployments</h2>
+        <div class="text-xs text-slate-400 dark:text-slate-500 mt-0.5" data-i18n="deployments_desc">Snapshots you can reload later to recheck a deploy.</div>
+      </div>
+      <div class="flex gap-2 flex-wrap items-center">
+        <input id="deployDesc" type="text" data-i18n-ph="save_desc_placeholder" placeholder="optional description" maxlength="140" class="px-3 py-1.5 rounded-md text-xs bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition min-w-[220px]">
+        <button id="saveDeploy" class="px-3 py-1.5 rounded-md text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white shadow-sm transition" data-i18n="save_deploy">💾 Save deployment</button>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap mb-3 mt-1">
+      <div class="relative flex-1 min-w-[180px]">
+        <input id="deploySearch" type="text" data-i18n-ph="search_deployments" placeholder="Search name, description, project, server…" class="w-full pl-7 pr-3 py-1.5 rounded-md text-xs bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+        <span class="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-[11px]">🔍</span>
+      </div>
+      <div id="deployStatusFilter" class="flex gap-1 flex-wrap">
+        <button data-status="" data-active="true" class="filter-pill" data-i18n="filter_all">All</button>
+        <button data-status="planned" class="filter-pill" data-i18n-title="status_planned" title="Planned">📋</button>
+        <button data-status="in-progress" class="filter-pill" data-i18n-title="status_in_progress" title="In progress">⚙</button>
+        <button data-status="success" class="filter-pill" data-i18n-title="status_success" title="Success">✓</button>
+        <button data-status="failed" class="filter-pill" data-i18n-title="status_failed" title="Failed">✗</button>
+      </div>
+      <select id="deploySort" class="tw-select text-xs rounded-md bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 px-3 py-1.5 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+        <option value="default" data-i18n="sort_default">Failed first · newest</option>
+        <option value="newest" data-i18n="sort_newest">Newest first</option>
+        <option value="oldest" data-i18n="sort_oldest">Oldest first</option>
+        <option value="name" data-i18n="sort_name">Name A→Z</option>
+        <option value="status" data-i18n="sort_status">Status group</option>
+      </select>
+    </div>
+    <div id="deployCount" class="text-[11px] text-slate-400 dark:text-slate-500 mb-2 hidden"></div>
+    <div id="diffBar" class="hidden mb-2 flex items-center gap-2 text-xs p-2 rounded-md bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-300">
+      <span id="diffBarText">Select 2 deployments to compare.</span>
+      <button id="diffClearSel" class="ml-auto px-2 py-1 rounded-md text-[11px] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600" data-i18n="clear">Clear</button>
+      <button id="diffRunBtn" disabled class="px-3 py-1 rounded-md text-[11px] font-semibold bg-blue-500 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-600 transition" data-i18n="compare">Compare</button>
+    </div>
+    <div id="deployList" class="space-y-2"></div>
+    <div id="deployEmpty" class="text-center py-8 text-xs text-slate-500 dark:text-slate-400 rounded-lg border border-dashed border-slate-200 dark:border-slate-800">
+      No saved deployments yet. Draft is auto-saved as you work; click Save to keep a named snapshot.
+    </div>
+  </div>
+
+  <!-- Diff modal -->
+  <div id="diffModal" style="display:none;" class="fixed inset-0 z-50 bg-slate-900/60 dark:bg-black/70 backdrop-blur-sm items-start justify-center px-5 py-10 overflow-y-auto">
+    <div class="w-full max-w-5xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden flex flex-col">
+      <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800">
+        <h2 class="text-[15px] font-semibold" data-i18n="compare_deployments">Compare deployments</h2>
+        <button id="closeDiff" class="w-8 h-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 text-xl">×</button>
+      </div>
+      <div id="diffBody" class="p-5 overflow-y-auto max-h-[75vh] bg-slate-50 dark:bg-slate-950/40"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Settings modal -->
+<div id="settingsModal" style="display:none;" class="fixed inset-0 z-50 bg-slate-900/60 dark:bg-black/70 backdrop-blur-sm items-start justify-center px-5 py-10 overflow-y-auto">
+  <div class="w-full max-w-4xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden flex flex-col">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800">
+      <h2 class="text-[15px] font-semibold" data-i18n="settings">Settings</h2>
+      <button id="closeSettings" class="w-8 h-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 text-xl">×</button>
+    </div>
+    <div id="settingsTabs" class="flex px-4 border-b border-slate-200 dark:border-slate-800 gap-1">
+      <button data-tab="projects" class="tab-btn active px-3.5 py-3 text-sm font-medium transition -mb-px border-b-2 border-transparent" data-i18n="tab_projects">Projects</button>
+      <button data-tab="environments" class="tab-btn px-3.5 py-3 text-sm font-medium transition -mb-px border-b-2 border-transparent" data-i18n="tab_environments">Environments</button>
+      <button data-tab="paths"    class="tab-btn px-3.5 py-3 text-sm font-medium transition -mb-px border-b-2 border-transparent" data-i18n="tab_paths">Default paths</button>
+      <button data-tab="options"  class="tab-btn px-3.5 py-3 text-sm font-medium transition -mb-px border-b-2 border-transparent" data-i18n="tab_options">Options</button>
+      <button data-tab="backup"   class="tab-btn px-3.5 py-3 text-sm font-medium transition -mb-px border-b-2 border-transparent" data-i18n="tab_backup">Import / Export</button>
+    </div>
+    <div class="p-5 overflow-y-auto max-h-[70vh] bg-slate-50 dark:bg-slate-950/40">
+
+      <!-- Projects pane -->
+      <div class="modal-pane" data-pane="projects">
+        <div class="flex flex-wrap gap-2 items-center mb-4">
+          <button id="addProject" class="px-3 py-1.5 rounded-lg text-sm font-semibold bg-blue-500 hover:bg-blue-600 text-white shadow-sm transition" data-i18n="add_project">+ Add project</button>
+          <button id="foldAll" class="px-3 py-1.5 rounded-lg text-sm text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition" data-i18n="fold_all">Fold all</button>
+          <button id="unfoldAll" class="px-3 py-1.5 rounded-lg text-sm text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition" data-i18n="unfold_all">Unfold all</button>
+        </div>
+
+        <div id="projectsList"></div>
+        <div id="projectsEmpty" hidden class="text-center py-9 text-sm text-slate-500 dark:text-slate-400 rounded-xl bg-white dark:bg-slate-900/40 border border-dashed border-slate-300 dark:border-slate-700" data-i18n="projects_empty" data-i18n-html>
+          No projects yet — click <strong class="text-slate-700 dark:text-slate-200">+ Add project</strong>, or go to the <strong class="text-slate-700 dark:text-slate-200">Import / Export</strong> tab to load a backup.
+        </div>
+
+      </div>
+
+      <!-- Environments pane -->
+      <div class="modal-pane hidden" data-pane="environments">
+        <div class="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-6" data-i18n="env_intro" data-i18n-html>
+          Each environment has a <strong class="text-slate-700 dark:text-slate-200">was</strong> and a <strong class="text-slate-700 dark:text-slate-200">web</strong> server, shared across all projects.
+          <br><strong class="text-slate-700 dark:text-slate-200">DEV → UAT</strong> pushes to the selected UAT server. <strong class="text-slate-700 dark:text-slate-200">UAT → REAL</strong> pushes to the project's selected server.
+        </div>
+
+        <div id="envCards" class="space-y-3"></div>
+      </div>
+
+      <!-- Default paths pane -->
+      <div class="modal-pane hidden" data-pane="paths">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="path_from_template">UAT source template (From)</label>
+            <input type="text" id="fromTemplate" class="w-full bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition font-mono" />
+          </div>
+          <div>
+            <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="path_to_template">Production target template (To)</label>
+            <input type="text" id="toTemplate" class="w-full bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition font-mono" />
+          </div>
+        </div>
+        <div class="mt-2.5 text-xs text-slate-500 dark:text-slate-400" data-i18n="path_placeholder_hint" data-i18n-html>
+          Placeholder <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-mono text-[11px]">{project}</code> is replaced with the project's <strong class="text-slate-700 dark:text-slate-200">Folder</strong> (or name if Folder is empty).
+        </div>
+      </div>
+
+      <!-- Options pane -->
+      <div class="modal-pane hidden" data-pane="options">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="optDryRun" class="tw-check" checked />--dry-run</label>
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="optArchive" class="tw-check" checked />-a archive</label>
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="optVerbose" class="tw-check" checked />-v verbose</label>
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="optCompress" class="tw-check" checked />-z compress</label>
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="optProgress" class="tw-check" />-P progress</label>
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="optHuman" class="tw-check" />-h human</label>
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="optDelete" class="tw-check" />--delete</label>
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="optPartial" class="tw-check" />--partial</label>
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="optStats" class="tw-check" />--stats</label>
+        </div>
+        <div class="mt-4">
+          <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium" data-i18n="extra_flags">Extra raw flags</label>
+          <input type="text" id="extraFlags" placeholder="--max-size=100M --chmod=D755,F644" class="w-full bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition font-mono" />
+        </div>
+        <div class="mt-2.5 text-xs text-slate-500 dark:text-slate-400" data-i18n="options_hint">Changes apply immediately to the generated command.</div>
+
+        <div class="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <label class="block text-xs text-slate-500 dark:text-slate-400 font-medium" data-i18n="was_ext_label">WAS file extensions</label>
+            <button id="resetWasExts" class="text-[11px] text-slate-400 hover:text-blue-500 transition" data-i18n="reset_defaults">Reset to defaults</button>
+          </div>
+          <textarea id="wasExts" spellcheck="false" autocorrect="off" autocapitalize="off"
+            placeholder="java&#10;class&#10;xml&#10;jsp"
+            class="w-full font-mono text-sm bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition min-h-[100px]"></textarea>
+          <div class="mt-1.5 text-xs text-slate-500 dark:text-slate-400" data-i18n="was_ext_hint" data-i18n-html>
+            One extension per line (no dot, no star). Anything <strong class="text-slate-700 dark:text-slate-200">not</strong> in this list is treated as a WEB file. Used by <strong class="text-slate-700 dark:text-slate-200">only WAS</strong> / <strong class="text-slate-700 dark:text-slate-200">only WEB</strong> presets and the WAS/WEB mismatch warning.
+          </div>
+        </div>
+      </div>
+
+      <!-- Import / Export pane -->
+      <div class="modal-pane hidden" data-pane="backup">
+        <div class="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-6" data-i18n="backup_intro" data-i18n-html>
+          Move your configuration between machines, or keep a local backup. The file includes
+          <strong class="text-slate-700 dark:text-slate-200">projects</strong>,
+          <strong class="text-slate-700 dark:text-slate-200">environments</strong>,
+          <strong class="text-slate-700 dark:text-slate-200">default paths</strong>,
+          <strong class="text-slate-700 dark:text-slate-200">options</strong>, and
+          <strong class="text-slate-700 dark:text-slate-200">WAS extensions</strong>.
+          Import merges projects and replaces other sections.
+        </div>
+
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4 mb-3 bg-white dark:bg-slate-900/60">
+          <div class="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <div class="text-sm font-semibold" data-i18n="backup_export">Export</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" data-i18n="backup_export_desc">Download a JSON snapshot of all your settings.</div>
+            </div>
+            <button id="exportProjects" class="px-3.5 py-2 rounded-lg text-sm font-semibold bg-blue-500 hover:bg-blue-600 text-white shadow-sm transition" data-i18n="backup_export_btn">💾 Export JSON</button>
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4 bg-white dark:bg-slate-900/60">
+          <div class="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <div class="text-sm font-semibold" data-i18n="backup_import">Import</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" data-i18n="backup_import_desc">Load a previously exported settings JSON.</div>
+            </div>
+            <label class="px-3.5 py-2 rounded-lg text-sm font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition cursor-pointer">
+              <span data-i18n="backup_import_btn">📥 Choose JSON file</span>
+              <input type="file" id="jsonImport" accept=".json,application/json" class="hidden" />
+            </label>
+          </div>
+          <div id="importHint" class="text-xs text-slate-500 dark:text-slate-400 mt-3"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Segment / tab button styles applied via JS after load -->
+<style>
+  .seg-btn { color: rgb(100 116 139); }
+  .dark .seg-btn { color: rgb(148 163 184); }
+  .seg-btn:hover { color: rgb(15 23 42); }
+  .dark .seg-btn:hover { color: rgb(241 245 249); }
+  .seg-btn.active {
+    background: rgb(255 255 255);
+    color: rgb(15 23 42);
+    box-shadow: 0 1px 2px rgba(0,0,0,.08);
+  }
+  .dark .seg-btn.active {
+    background: rgb(15 23 42);
+    color: rgb(241 245 249);
+  }
+  .tab-btn { color: rgb(100 116 139); }
+  .dark .tab-btn { color: rgb(148 163 184); }
+  .tab-btn:hover { color: rgb(15 23 42); }
+  .dark .tab-btn:hover { color: rgb(241 245 249); }
+  .tab-btn.active { color: rgb(37 99 235); border-bottom-color: rgb(37 99 235); }
+  .dark .tab-btn.active { color: rgb(96 165 250); border-bottom-color: rgb(96 165 250); }
+</style>
+
+<script>
+(() => {
+  const LS_PROJECTS = "rsyncgen.projects.v4";
+  const LS_THEME = "rsyncgen.theme";
+  const LS_TEMPLATES = "rsyncgen.templates.v4";
+  const LS_UNFOLDED = "rsyncgen.unfolded.v4";
+  const LS_ENVS = "rsyncgen.envs.v4";
+  const LS_DIRECTION = "rsyncgen.direction.v4";
+  const LS_OPTIONS = "rsyncgen.options.v4";
+  const LS_LANG = "rsyncgen.lang";
+
+  // ---------- i18n ----------
+  const I18N = {
+    en: {
+      app_title: "Rsync Generator", app_sub: "rsync command generator",
+      settings: "Settings", target_placeholder: "Select a project & server",
+      theme_toggle: "Toggle theme", lang_toggle: "Change language", guide_replay: "Replay the guided tour",
+      direction: "Direction", project: "Project", server: "Server", uat_server: "UAT server",
+      pick_project: "— pick a project —", no_servers: "no servers",
+      from_uat: "From (on UAT)", to_prod: "To (on production)",
+      override_hint: "Session-only override — not saved to the project.",
+      reset_template: "Reset to template", override_title: "Override paths for this session",
+      what_to_sync: "What to sync",
+      mode_specific: "Specific files", mode_filetype: "File type", mode_dir: "Full directory",
+      files_to_include: "Files to include (one per line, relative to <em>From</em>)",
+      patterns_header: "Patterns (one per line)",
+      extra_include: "Extra --include", extra_exclude: "Extra --exclude",
+      preset: "Preset:", only_was: "only WAS", only_web: "only WEB",
+      legend_was: "WAS ext", legend_web: "WEB ext",
+      legend_dup: "duplicate basename", legend_orphan: ".java without .class",
+      files_auto_add: "Auto-adds <code class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px]\">--include='*/'</code> and <code class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px]\">--exclude='*'</code>.",
+      generated_command: "Generated command",
+      dry_run_mode: "dry-run mode", live_mode: "live — no --dry-run",
+      copy_dry: "Copy (dry-run)", copy_live: "Copy live (no --dry-run)",
+      verify_title: "Verify dry-run",
+      verify_desc: "Paste rsync dry-run output to catch duplicate filenames at different paths.",
+      verify_placeholder: "Paste the full rsync --dry-run output here…\n(lines like 'sending incremental file list', 'sent … received …' are ignored)",
+      remove_folders: "Remove folder lines", clear: "Clear",
+      deployments: "Deployments",
+      deployments_desc: "Snapshots you can reload later to recheck a deploy.",
+      save_desc_placeholder: "optional description",
+      save_deploy: "💾 Save deployment",
+      search_deployments: "Search name, description, project, server…",
+      sort_default: "Failed first · newest", sort_newest: "Newest first",
+      sort_oldest: "Oldest first", sort_name: "Name A→Z", sort_status: "Status group",
+      filter_all: "All",
+      deploy_empty: "No saved deployments yet. Draft is auto-saved as you work; click Save to keep a named snapshot.",
+      deploy_empty_filtered: "No deployments match the current filter.",
+      saved_count: "{n} saved", saved_count_filtered: "{n} of {total} match",
+      load: "Load", delete_btn: "Delete",
+      status_planned: "📋 Planned", status_in_progress: "⚙ In progress",
+      status_success: "✓ Success", status_failed: "✗ Failed",
+      diff_pick: "Select 2 deployments to compare.",
+      diff_pick_one_more: "Pick one more deployment to compare.",
+      diff_ready: "Ready. Click Compare to see the diff.",
+      diff_too_many: "{n} selected — pick exactly 2 to compare.",
+      compare: "Compare", compare_deployments: "Compare deployments",
+      tab_projects: "Projects", tab_environments: "Environments",
+      tab_paths: "Default paths", tab_options: "Options", tab_backup: "Import / Export",
+      add_project: "+ Add project", fold_all: "Fold all", unfold_all: "Unfold all",
+      add_server: "+ Server",
+      projects_empty: "No projects yet — click <strong class=\"text-slate-700 dark:text-slate-200\">+ Add project</strong>, or go to the <strong class=\"text-slate-700 dark:text-slate-200\">Import / Export</strong> tab to load a backup.",
+      col_name: "Project name", col_folder: "Folder (path)",
+      col_server: "Server", col_host: "Host / IP", col_user: "User", col_port: "Port",
+      env_intro: "Each environment has a <strong class=\"text-slate-700 dark:text-slate-200\">was</strong> and a <strong class=\"text-slate-700 dark:text-slate-200\">web</strong> server, shared across all projects.<br><strong class=\"text-slate-700 dark:text-slate-200\">DEV → UAT</strong> pushes to the selected UAT server. <strong class=\"text-slate-700 dark:text-slate-200\">UAT → REAL</strong> pushes to the project's selected server.",
+      env_dev: "DEV environment", env_uat: "UAT environment",
+      path_from_template: "UAT source template (From)",
+      path_to_template: "Production target template (To)",
+      path_placeholder_hint: "Placeholder <code>{project}</code> is replaced with the project's <strong class=\"text-slate-700 dark:text-slate-200\">Folder</strong> (or name if Folder is empty).",
+      was_ext_label: "WAS file extensions",
+      was_ext_hint: "One extension per line (no dot, no star). Anything <strong class=\"text-slate-700 dark:text-slate-200\">not</strong> in this list is treated as a WEB file. Used by <strong class=\"text-slate-700 dark:text-slate-200\">only WAS</strong> / <strong class=\"text-slate-700 dark:text-slate-200\">only WEB</strong> presets and the WAS/WEB mismatch warning.",
+      reset_defaults: "Reset to defaults",
+      extra_flags: "Extra raw flags",
+      options_hint: "Changes apply immediately to the generated command.",
+      backup_intro: "Move your configuration between machines, or keep a local backup. The file includes <strong class=\"text-slate-700 dark:text-slate-200\">projects</strong>, <strong class=\"text-slate-700 dark:text-slate-200\">environments</strong>, <strong class=\"text-slate-700 dark:text-slate-200\">default paths</strong>, <strong class=\"text-slate-700 dark:text-slate-200\">options</strong>, and <strong class=\"text-slate-700 dark:text-slate-200\">WAS extensions</strong>. Import merges projects and replaces other sections.",
+      backup_export: "Export", backup_export_desc: "Download a JSON snapshot of all your settings.",
+      backup_export_btn: "💾 Export JSON",
+      backup_import: "Import", backup_import_desc: "Load a previously exported settings JSON.",
+      backup_import_btn: "📥 Choose JSON file",
+      toast_exported: "Settings exported",
+      toast_saved: 'Saved "{name}"',
+      toast_loaded: 'Loaded "{name}"',
+      toast_deleted: 'Deleted "{name}"',
+      toast_copied_dry: "Dry-run command copied",
+      toast_copied_live: "Live command copied",
+      toast_copied_live_delete: "⚠ LIVE command copied (--delete ON)",
+      toast_project_exists: 'Project "{name}" already exists',
+      toast_project_empty: "Project name cannot be empty",
+      toast_server_empty: "Server name required",
+      toast_server_exists: '{env} server "{name}" already exists',
+      toast_import_failed: "JSON import failed: {msg}",
+      toast_import_nothing: "File contained no recognized sections",
+      toast_import_success: "Imported: {parts}",
+      save_disabled_hint: "Add at least one entry to Files to include, Patterns, Extra --include, or Extra --exclude before saving.",
+      confirm_delete_project: 'Delete project "{name}" and all its servers?',
+      confirm_delete_server: 'Delete server "{name}"?',
+      confirm_delete_env_server: 'Delete {env} server "{name}"?',
+      confirm_delete_deploy: 'Delete "{name}"?',
+      confirm_live_delete: "⚠ Copying LIVE command with --delete ON.\n\nFiles on the destination that aren't in the transfer list will be REMOVED. Proceed?",
+      defaults_to_name: "defaults to name", servers_count: "{n} servers", servers_count_one: "1 server",
+      no_servers_msg: "No servers — add one or import JSON.",
+      earlier: "Earlier (−)", later: "Later (+)",
+      diff_same: "same", diff_changed: "changed", diff_no_changes: "no changes ({n})",
+      empty: "(empty)", defaults_empty: "defaults to name",
+      time_just_now: "just now", time_d_ago: "{n}d ago", time_h_ago: "{n}h ago", time_m_ago: "{n}m ago",
+      all_n_files: "All {n} files in log",
+      gen_cmd_default: "rsync --dry-run ...",
+    },
+    ko: {
+      app_title: "Rsync 생성기", app_sub: "rsync 명령어 생성기",
+      settings: "설정", target_placeholder: "프로젝트와 서버를 선택하세요",
+      theme_toggle: "테마 전환", lang_toggle: "언어 변경", guide_replay: "가이드 다시 보기",
+      direction: "방향", project: "프로젝트", server: "서버", uat_server: "UAT 서버",
+      pick_project: "— 프로젝트 선택 —", no_servers: "서버 없음",
+      from_uat: "보내는 곳 (UAT)", to_prod: "받는 곳 (운영)",
+      override_hint: "이 세션에서만 적용 — 프로젝트에 저장되지 않습니다.",
+      reset_template: "템플릿으로 초기화", override_title: "이 세션에서만 경로 재정의",
+      what_to_sync: "동기화 항목",
+      mode_specific: "특정 파일", mode_filetype: "파일 타입", mode_dir: "전체 디렉토리",
+      files_to_include: "포함할 파일 (한 줄에 하나, <em>보내는 곳</em> 기준 상대 경로)",
+      patterns_header: "패턴 (한 줄에 하나)",
+      extra_include: "추가 --include", extra_exclude: "추가 --exclude",
+      preset: "프리셋:", only_was: "WAS만", only_web: "WEB만",
+      legend_was: "WAS 확장자", legend_web: "WEB 확장자",
+      legend_dup: "중복 파일명", legend_orphan: ".class 없는 .java",
+      files_auto_add: "<code class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px]\">--include='*/'</code> 와 <code class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px]\">--exclude='*'</code> 가 자동 추가됩니다.",
+      generated_command: "생성된 명령어",
+      dry_run_mode: "드라이런 모드", live_mode: "실행 모드 — --dry-run 없음",
+      copy_dry: "복사 (드라이런)", copy_live: "실행 복사 (--dry-run 없음)",
+      verify_title: "드라이런 검증",
+      verify_desc: "rsync 드라이런 출력을 붙여넣어 다른 경로의 동일 파일명을 확인하세요.",
+      verify_placeholder: "여기에 rsync --dry-run 출력 전체를 붙여넣으세요…\n('sending incremental file list', 'sent … received …' 같은 줄은 무시됩니다)",
+      remove_folders: "폴더 줄 제거", clear: "지우기",
+      deployments: "배포 기록",
+      deployments_desc: "배포를 다시 확인할 수 있는 스냅샷입니다.",
+      save_desc_placeholder: "설명 (선택)",
+      save_deploy: "💾 배포 저장",
+      search_deployments: "이름, 설명, 프로젝트, 서버 검색…",
+      sort_default: "실패 먼저 · 최신", sort_newest: "최신순",
+      sort_oldest: "오래된순", sort_name: "이름 A→Z", sort_status: "상태 그룹",
+      filter_all: "전체",
+      deploy_empty: "저장된 배포가 없습니다. 작업 내용은 자동 저장되며, 저장 버튼으로 이름 붙은 스냅샷을 남길 수 있습니다.",
+      deploy_empty_filtered: "필터에 일치하는 배포가 없습니다.",
+      saved_count: "{n}개 저장됨", saved_count_filtered: "{total}개 중 {n}개 일치",
+      load: "불러오기", delete_btn: "삭제",
+      status_planned: "📋 예정", status_in_progress: "⚙ 진행 중",
+      status_success: "✓ 성공", status_failed: "✗ 실패",
+      diff_pick: "비교할 배포 2개를 선택하세요.",
+      diff_pick_one_more: "한 개 더 선택하세요.",
+      diff_ready: "준비 완료. 비교 버튼을 누르세요.",
+      diff_too_many: "{n}개 선택됨 — 정확히 2개를 선택하세요.",
+      compare: "비교", compare_deployments: "배포 비교",
+      tab_projects: "프로젝트", tab_environments: "환경",
+      tab_paths: "기본 경로", tab_options: "옵션", tab_backup: "가져오기 / 내보내기",
+      add_project: "+ 프로젝트 추가", fold_all: "모두 접기", unfold_all: "모두 펼치기",
+      add_server: "+ 서버",
+      projects_empty: "프로젝트가 없습니다 — <strong class=\"text-slate-700 dark:text-slate-200\">+ 프로젝트 추가</strong>를 클릭하거나, <strong class=\"text-slate-700 dark:text-slate-200\">가져오기 / 내보내기</strong> 탭에서 백업을 불러오세요.",
+      col_name: "프로젝트 이름", col_folder: "폴더 (경로)",
+      col_server: "서버 이름", col_host: "호스트 / IP", col_user: "사용자", col_port: "포트",
+      env_intro: "각 환경은 <strong class=\"text-slate-700 dark:text-slate-200\">was</strong>와 <strong class=\"text-slate-700 dark:text-slate-200\">web</strong> 서버를 가지며, 모든 프로젝트에서 공유됩니다.<br><strong class=\"text-slate-700 dark:text-slate-200\">DEV → UAT</strong>는 선택한 UAT 서버로 전송합니다. <strong class=\"text-slate-700 dark:text-slate-200\">UAT → REAL</strong>는 프로젝트의 선택한 서버로 전송합니다.",
+      env_dev: "DEV 환경", env_uat: "UAT 환경",
+      path_from_template: "UAT 원본 템플릿 (From)",
+      path_to_template: "운영 대상 템플릿 (To)",
+      path_placeholder_hint: "<code>{project}</code> 자리 표시자는 프로젝트의 <strong class=\"text-slate-700 dark:text-slate-200\">Folder</strong> 값 (비어 있으면 Name)으로 치환됩니다.",
+      was_ext_label: "WAS 파일 확장자",
+      was_ext_hint: "한 줄에 하나씩 (점과 별표 제외). 이 목록에 <strong class=\"text-slate-700 dark:text-slate-200\">없는</strong> 확장자는 WEB 파일로 처리되며 <strong class=\"text-slate-700 dark:text-slate-200\">WAS만</strong> / <strong class=\"text-slate-700 dark:text-slate-200\">WEB만</strong> 프리셋과 불일치 경고에 사용됩니다.",
+      reset_defaults: "기본값으로 초기화",
+      extra_flags: "추가 옵션",
+      options_hint: "변경사항이 생성된 명령어에 즉시 반영됩니다.",
+      backup_intro: "설정을 다른 기기로 이동하거나 로컬 백업을 보관하세요. 파일에는 <strong class=\"text-slate-700 dark:text-slate-200\">프로젝트</strong>, <strong class=\"text-slate-700 dark:text-slate-200\">환경</strong>, <strong class=\"text-slate-700 dark:text-slate-200\">기본 경로</strong>, <strong class=\"text-slate-700 dark:text-slate-200\">옵션</strong>, <strong class=\"text-slate-700 dark:text-slate-200\">WAS 확장자</strong>가 포함됩니다. 가져오기는 프로젝트를 병합하고 다른 섹션은 덮어씁니다.",
+      backup_export: "내보내기", backup_export_desc: "모든 설정의 JSON 스냅샷을 다운로드합니다.",
+      backup_export_btn: "💾 JSON 내보내기",
+      backup_import: "가져오기", backup_import_desc: "이전에 내보낸 설정 JSON을 불러옵니다.",
+      backup_import_btn: "📥 JSON 파일 선택",
+      toast_exported: "설정을 내보냈습니다",
+      toast_saved: '저장됨: "{name}"',
+      toast_loaded: '불러옴: "{name}"',
+      toast_deleted: '삭제됨: "{name}"',
+      toast_copied_dry: "드라이런 명령어가 복사되었습니다",
+      toast_copied_live: "실행 명령어가 복사되었습니다",
+      toast_copied_live_delete: "⚠ 실행 명령어 복사됨 (--delete 활성)",
+      toast_project_exists: '프로젝트 "{name}"이(가) 이미 존재합니다',
+      toast_project_empty: "프로젝트 이름을 입력하세요",
+      toast_server_empty: "서버 이름을 입력하세요",
+      toast_server_exists: '{env} 서버 "{name}"이(가) 이미 존재합니다',
+      toast_import_failed: "JSON 가져오기 실패: {msg}",
+      toast_import_nothing: "인식 가능한 섹션이 없습니다",
+      toast_import_success: "가져옴: {parts}",
+      save_disabled_hint: "저장하려면 포함할 파일, 패턴, 추가 --include 또는 추가 --exclude 에 최소 하나를 추가하세요.",
+      confirm_delete_project: '프로젝트 "{name}"과(와) 모든 서버를 삭제할까요?',
+      confirm_delete_server: '서버 "{name}"을(를) 삭제할까요?',
+      confirm_delete_env_server: '{env} 서버 "{name}"을(를) 삭제할까요?',
+      confirm_delete_deploy: '"{name}"을(를) 삭제할까요?',
+      confirm_live_delete: "⚠ --delete 활성 상태로 실행 명령어를 복사합니다.\n\n대상에 있는 파일 중 전송 목록에 없는 파일은 삭제됩니다. 계속할까요?",
+      defaults_to_name: "이름과 동일", servers_count: "서버 {n}개", servers_count_one: "서버 1개",
+      no_servers_msg: "서버가 없습니다 — 추가하거나 JSON을 가져오세요.",
+      earlier: "이전 (−)", later: "이후 (+)",
+      diff_same: "동일", diff_changed: "변경됨", diff_no_changes: "변경 없음 ({n})",
+      empty: "(비어 있음)", defaults_empty: "이름과 동일",
+      time_just_now: "방금", time_d_ago: "{n}일 전", time_h_ago: "{n}시간 전", time_m_ago: "{n}분 전",
+      all_n_files: "로그의 모든 파일 {n}개",
+      gen_cmd_default: "rsync --dry-run ...",
+    },
+  };
+  let lang = localStorage.getItem(LS_LANG) || "en";
+  function t(key, vars) {
+    let s = (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
+    if (vars) for (const [k, v] of Object.entries(vars)) s = s.split("{" + k + "}").join(v);
+    return s;
+  }
+  function setLang(l) {
+    lang = I18N[l] ? l : "en";
+    localStorage.setItem(LS_LANG, lang);
+    applyLang();
+  }
+  function applyLang() {
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.dataset.i18n;
+      if (el.dataset.i18nHtml !== undefined) el.innerHTML = t(key);
+      else el.textContent = t(key);
+    });
+    document.querySelectorAll("[data-i18n-ph]").forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+    document.querySelectorAll("[data-i18n-title]").forEach(el => { el.title = t(el.dataset.i18nTitle); });
+    const btn = document.getElementById("langBtn");
+    if (btn) btn.textContent = lang === "ko" ? "한" : "EN";
+    // Re-render dynamic components
+    if (typeof render === "function") try { render(); } catch {}
+    if (typeof renderProjectsList === "function") try { renderProjectsList(); } catch {}
+    if (typeof renderEnvCards === "function") try { renderEnvCards(); } catch {}
+    if (typeof renderDeployList === "function") try { renderDeployList(); } catch {}
+    if (typeof refreshProjectSelect === "function") try { refreshProjectSelect(); const p = document.getElementById("projectSelect"); if (p && typeof selProject !== "undefined" && selProject) p.value = selProject; } catch {}
+    if (typeof refreshDiffBar === "function") try { refreshDiffBar(); } catch {}
+    if (typeof updateSaveDeployEnabled === "function") try { updateSaveDeployEnabled(); } catch {}
+  }
+  const $ = id => document.getElementById(id);
+
+  // Global DEV / UAT environments — each has a `was` and `web` server
+  function loadEnvsRaw() {
+    try { return JSON.parse(localStorage.getItem(LS_ENVS)) || {}; }
+    catch { return {}; }
+  }
+  function saveEnvs(e) { localStorage.setItem(LS_ENVS, JSON.stringify(e)); }
+  function migrateEnvs(raw) {
+    const out = { dev: { servers: {} }, uat: { servers: {} } };
+    for (const k of ["dev","uat"]) {
+      const old = raw[k] || {};
+      if (old.servers) out[k].servers = { ...old.servers };
+      else if (old.host) out[k].servers.web = { host: old.host, user: old.user || (k === "dev" ? "dev" : "web"), port: old.port || "22" };
+      if (!out[k].servers.was) out[k].servers.was = { host: "", user: "was", port: "22" };
+      if (!out[k].servers.web) out[k].servers.web = { host: "", user: "web", port: "22" };
+    }
+    return out;
+  }
+  let envs = migrateEnvs(loadEnvsRaw());
+  saveEnvs(envs);
+  let direction = localStorage.getItem(LS_DIRECTION) || "uat-real"; // 'dev-uat' | 'uat-real'
+
+  // Options (rsync flags) — persistable
+  const OPTION_IDS = ["optDryRun","optArchive","optVerbose","optCompress","optProgress","optHuman","optDelete","optPartial","optStats"];
+  function readOptions() {
+    const o = { extraFlags: $("extraFlags")?.value || "" };
+    for (const id of OPTION_IDS) o[id] = !!$(id)?.checked;
+    return o;
+  }
+  function writeOptions(o) {
+    if (!o || typeof o !== "object") return;
+    if (typeof o.extraFlags === "string" && $("extraFlags")) $("extraFlags").value = o.extraFlags;
+    for (const id of OPTION_IDS) if (typeof o[id] === "boolean" && $(id)) $(id).checked = o[id];
+  }
+  function saveOptions() { localStorage.setItem(LS_OPTIONS, JSON.stringify(readOptions())); }
+  function loadOptions() {
+    try { return JSON.parse(localStorage.getItem(LS_OPTIONS)) || null; }
+    catch { return null; }
+  }
+
+  function loadUnfolded() {
+    try { return new Set(JSON.parse(localStorage.getItem(LS_UNFOLDED)) || []); }
+    catch { return new Set(); }
+  }
+  function saveUnfolded() { localStorage.setItem(LS_UNFOLDED, JSON.stringify([...unfoldedProjects])); }
+  const unfoldedProjects = loadUnfolded();
+  const isFolded = name => !unfoldedProjects.has(name);
+
+  // ---------- Theme ----------
+  function applyTheme(t) {
+    document.documentElement.classList.toggle('dark', t === 'dark');
+    $("themeToggle").textContent = t === "dark" ? "🌙" : "☀";
+    $("themeToggle").title = t === "dark" ? "Switch to light" : "Switch to dark";
+    localStorage.setItem(LS_THEME, t);
+  }
+  $("themeToggle").addEventListener("click", () => {
+    applyTheme(document.documentElement.classList.contains('dark') ? "light" : "dark");
+  });
+  applyTheme(localStorage.getItem(LS_THEME) || "dark");
+
+  // Language toggle
+  $("langBtn").addEventListener("click", () => setLang(lang === "en" ? "ko" : "en"));
+
+  // ---------- Storage ----------
+  function loadProjects() {
+    try { return JSON.parse(localStorage.getItem(LS_PROJECTS)) || {}; }
+    catch { return {}; }
+  }
+  function saveProjects(p) { localStorage.setItem(LS_PROJECTS, JSON.stringify(p)); }
+  function loadTemplates() {
+    try { return JSON.parse(localStorage.getItem(LS_TEMPLATES)) || {}; }
+    catch { return {}; }
+  }
+  function saveTemplates(t) { localStorage.setItem(LS_TEMPLATES, JSON.stringify(t)); }
+
+  const defaultTpl = {
+    from: "/WAS_DATA/webRoot/{project}/src/",
+    to:   "/WAS_DATA/webRoot/{project}/src/",
+  };
+  let tpl = { ...defaultTpl, ...loadTemplates() };
+  $("fromTemplate").value = tpl.from;
+  $("toTemplate").value   = tpl.to;
+
+  // ---------- State ----------
+  let selProject = null;
+  let selServer = null;
+  let pathOverride = { from: null, to: null };
+
+  function currentProject() {
+    if (!selProject) return null;
+    const p = loadProjects()[selProject];
+    return p ? { name: selProject, ...p } : null;
+  }
+  function destServersMap() {
+    if (direction === "dev-uat") return envs.uat?.servers || {};
+    const p = currentProject();
+    return p?.servers || {};
+  }
+  function currentServer() {
+    if (!selServer) return null;
+    const s = destServersMap()[selServer];
+    return s ? { name: selServer, ...s } : null;
+  }
+
+  // ---------- Segmented ----------
+  const genSeg = $("genType");
+  function getGenType() { return genSeg.querySelector("button.active").dataset.val; }
+  function setGenType(v) {
+    genSeg.querySelectorAll("button").forEach(x => x.classList.toggle("active", x.dataset.val === v));
+    $("filesField").classList.toggle("hidden", v !== "file");
+    $("filetypeField").classList.toggle("hidden", v !== "filetype");
+  }
+  genSeg.addEventListener("click", e => {
+    const b = e.target.closest("button[data-val]");
+    if (!b) return;
+    setGenType(b.dataset.val);
+    render();
+  });
+
+  // ---------- Direction ----------
+  const dirSeg = $("direction");
+  function applyDirectionUI() {
+    dirSeg.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.dir === direction));
+    $("serverLabel").textContent = direction === "dev-uat" ? t("uat_server") : t("server");
+  }
+  dirSeg.addEventListener("click", e => {
+    const b = e.target.closest("button[data-dir]");
+    if (!b) return;
+    direction = b.dataset.dir;
+    localStorage.setItem(LS_DIRECTION, direction);
+    selServer = null;
+    applyDirectionUI();
+    refreshServerSelect();
+    render();
+  });
+
+  // ---------- Environments ----------
+  function renderEnvCards() {
+    const root = $("envCards");
+    root.innerHTML = "";
+    for (const env of ["dev", "uat"]) {
+      root.appendChild(renderEnvCard(env));
+    }
+  }
+  function renderEnvCard(env) {
+    const card = document.createElement("div");
+    card.className = "rounded-xl border border-slate-200 dark:border-slate-800 p-4 bg-white dark:bg-slate-900/60";
+    card.dataset.env = env;
+    const servers = envs[env]?.servers || {};
+    const names = Object.keys(servers).sort();
+    card.innerHTML = `
+      <div class="flex items-center justify-between mb-3">
+        <div class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">${env.toUpperCase()} environment</div>
+        <button data-action="addEnvSrv" class="px-2 py-1 rounded-md text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition">+ Server</button>
+      </div>
+      <div class="grid gap-2 text-[10px] uppercase tracking-[0.06em] font-semibold text-slate-500 dark:text-slate-400 mb-1 px-0.5" style="grid-template-columns:1.2fr 2fr 1fr .7fr auto;">
+        <div>Server</div><div>Host / IP</div><div>User</div><div>Port</div><div></div>
+      </div>
+      <div data-role="servers">
+        ${names.map(n => `
+          <div class="grid gap-2 items-center mb-1.5" data-sname="${escAttr(n)}" style="grid-template-columns:1.2fr 2fr 1fr .7fr auto;">
+            <input type="text" data-sfield="name" value="${escAttr(n)}"
+              class="w-full min-w-0 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-md px-2 py-1.5 text-xs md:text-[12.5px] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+            <input type="text" data-sfield="host" value="${escAttr(servers[n].host || "")}" placeholder="0.0.0.0"
+              class="w-full min-w-0 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-md px-2 py-1.5 text-xs md:text-[12.5px] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition font-mono">
+            <input type="text" data-sfield="user" value="${escAttr(servers[n].user || n)}"
+              class="w-full min-w-0 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-md px-2 py-1.5 text-xs md:text-[12.5px] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+            <input type="text" data-sfield="port" value="${escAttr(servers[n].port || "22")}"
+              class="w-full min-w-0 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-md px-2 py-1.5 text-xs md:text-[12.5px] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+            <button data-action="deleteEnvSrv" class="w-7 h-7 rounded-md text-rose-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 inline-flex items-center justify-center transition">×</button>
+          </div>
+        `).join("")}
+      </div>
+    `;
+    return card;
+  }
+
+  // Handle env server row edits + add/delete
+  document.querySelector('.modal-pane[data-pane="environments"]')?.addEventListener("change", e => {
+    const row = e.target.closest("[data-sname]");
+    if (!row) return;
+    const card = row.closest("[data-env]");
+    const env = card.dataset.env;
+    const originalName = row.dataset.sname;
+    const newName = row.querySelector('[data-sfield="name"]').value.trim();
+    if (!newName) { toast(t("toast_server_empty"), "error"); renderEnvCards(); return; }
+    const entry = {
+      host: row.querySelector('[data-sfield="host"]').value.trim(),
+      user: row.querySelector('[data-sfield="user"]').value.trim() || newName,
+      port: row.querySelector('[data-sfield="port"]').value.trim() || "22",
+    };
+    if (newName !== originalName && envs[env].servers[newName]) {
+      toast(t("toast_server_exists", { env: env.toUpperCase(), name: newName }), "error");
+      renderEnvCards();
+      return;
+    }
+    if (newName !== originalName) delete envs[env].servers[originalName];
+    envs[env].servers[newName] = entry;
+    saveEnvs(envs);
+    row.dataset.sname = newName;
+    if (direction === "dev-uat" && env === "uat") {
+      if (selServer === originalName) selServer = newName;
+      refreshServerSelect();
+    }
+    render();
+  });
+  document.querySelector('.modal-pane[data-pane="environments"]')?.addEventListener("click", e => {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+    const card = btn.closest("[data-env]");
+    const env = card.dataset.env;
+    if (btn.dataset.action === "addEnvSrv") {
+      let base = "new", name = base, i = 1;
+      while (envs[env].servers[name]) name = `${base}${++i}`;
+      envs[env].servers[name] = { host: "", user: name, port: "22" };
+      saveEnvs(envs);
+      renderEnvCards();
+      if (direction === "dev-uat" && env === "uat") refreshServerSelect();
+      render();
+    } else if (btn.dataset.action === "deleteEnvSrv") {
+      const row = btn.closest("[data-sname]");
+      const sname = row.dataset.sname;
+      if (!confirm(t("confirm_delete_env_server", { env: env.toUpperCase(), name: sname }))) return;
+      delete envs[env].servers[sname];
+      saveEnvs(envs);
+      if (direction === "dev-uat" && env === "uat" && selServer === sname) selServer = null;
+      renderEnvCards();
+      if (direction === "dev-uat" && env === "uat") refreshServerSelect();
+      render();
+    }
+  });
+
+  // ---------- WAS extensions (configurable) ----------
+  const LS_WAS_EXTS = "rsyncgen.wasExts.v4";
+  const DEFAULT_WAS_EXTS = ["java", "class", "xml", "jsp"];
+  function loadWasExtsRaw() {
+    try {
+      const v = JSON.parse(localStorage.getItem(LS_WAS_EXTS));
+      return Array.isArray(v) ? v : null;
+    } catch { return null; }
+  }
+  function normalizeExts(list) {
+    return Array.from(new Set(
+      (list || [])
+        .map(e => String(e).trim().toLowerCase())
+        .map(e => e.replace(/^[*.]+/, "")) // allow ".java" or "*.java"
+        .filter(Boolean)
+    ));
+  }
+  let wasExtList = normalizeExts(loadWasExtsRaw() || DEFAULT_WAS_EXTS);
+  function saveWasExts() { localStorage.setItem(LS_WAS_EXTS, JSON.stringify(wasExtList)); }
+  function WAS_EXTS() { return wasExtList.map(e => `*.${e}`); }
+  function WAS_RE() {
+    if (!wasExtList.length) return /^\b$/; // matches nothing
+    return new RegExp(`\\.(${wasExtList.map(e => e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})$`, "i");
+  }
+
+  // ---------- Presets ----------
+  // "only WAS" / "only WEB" operate within the CURRENT mode — never switch modes
+  // so your pasted input is never silently hidden or overwritten in the wrong field.
+
+  function flashBtn(btn, msg) {
+    const orig = btn.textContent;
+    btn.textContent = msg;
+    setTimeout(() => btn.textContent = orig, 1400);
+  }
+
+  function applyPreset(kind) {
+    const mode = getGenType();
+    const btn = kind === "was" ? $("presetWas") : $("presetWeb");
+
+    if (mode === "file") {
+      // Filter the user's listed files
+      const lines = $("specificFiles").value.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      const re = WAS_RE();
+      const filtered = lines.filter(l => kind === "was" ? re.test(l) : !re.test(l));
+      if (!lines.length) {
+        flashBtn(btn, "List is empty");
+        return;
+      }
+      $("specificFiles").value = filtered.join("\n");
+      flashBtn(btn, `Kept ${filtered.length} of ${lines.length}`);
+    } else if (mode === "filetype") {
+      if (kind === "was") {
+        $("filetypes").value = WAS_EXTS().join("\n");
+        flashBtn(btn, "WAS patterns set");
+      } else {
+        // "only WEB" doesn't fit File-type mode — tell the user to switch
+        flashBtn(btn, "Switch to Full directory");
+        return;
+      }
+    } else { // dir
+      const excl = $("extraExclude").value.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      if (kind === "web") {
+        $("extraExclude").value = Array.from(new Set([...excl, ...WAS_EXTS()])).join("\n");
+        flashBtn(btn, "WAS excluded");
+      } else {
+        // "only WAS" in dir mode — suggest File-type mode instead
+        flashBtn(btn, "Switch to File type");
+        return;
+      }
+    }
+    rehighlight();
+    render();
+  }
+  $("presetWas").addEventListener("click", () => applyPreset("was"));
+  $("presetWeb").addEventListener("click", () => applyPreset("web"));
+
+  // ---------- .java / .class pairing check ----------
+  function findMissingClassPairs() {
+    const mode = getGenType();
+    if (mode === "file") {
+      const lines = $("specificFiles").value.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      const classBases = new Set();
+      const javas = [];
+      for (const l of lines) {
+        if (/[*?\[]/.test(l)) continue;                       // skip patterns
+        const jm = l.match(/^(.+)\.java$/i);
+        const cm = l.match(/^(.+)\.class$/i);
+        if (jm) javas.push({ base: jm[1], raw: l });
+        if (cm) classBases.add(cm[1]);
+      }
+      return javas.filter(j => !classBases.has(j.base)).map(j => j.raw);
+    }
+    if (mode === "filetype") {
+      const lines = $("filetypes").value.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      const hasJava  = lines.some(l => /(^|[*.])java$/i.test(l));
+      const hasClass = lines.some(l => /(^|[*.])class$/i.test(l));
+      return (hasJava && !hasClass) ? ["*.class"] : [];
+    }
+    return [];
+  }
+
+  function addMissingClassLines() {
+    const mode = getGenType();
+    if (mode === "file") {
+      const missing = findMissingClassPairs();
+      if (!missing.length) return;
+      const classLines = missing.map(m => m.replace(/\.java$/i, ".class"));
+      const existing = $("specificFiles").value.replace(/\s+$/, "");
+      $("specificFiles").value = existing + (existing ? "\n" : "") + classLines.join("\n");
+    } else if (mode === "filetype") {
+      const existing = $("filetypes").value.replace(/\s+$/, "");
+      $("filetypes").value = existing + (existing ? "\n" : "") + "*.class";
+    }
+    rehighlight();
+    render();
+  }
+
+  // ---------- Dropdowns ----------
+  function relTime(iso) {
+    const diffMs = Date.now() - new Date(iso).getTime();
+    if (!isFinite(diffMs) || diffMs < 0) return "";
+    const days = Math.floor(diffMs / 86400000);
+    const hrs  = Math.floor(diffMs / 3600000);
+    const mins = Math.floor(diffMs / 60000);
+    if (days >= 1) return t("time_d_ago", { n: days });
+    if (hrs  >= 1) return t("time_h_ago", { n: hrs });
+    if (mins >= 1) return t("time_m_ago", { n: mins });
+    return t("time_just_now");
+  }
+  function lastSuccessByProject() {
+    const map = new Map();
+    for (const d of (function(){ try { return JSON.parse(localStorage.getItem("rsyncgen.deployments.v1")) || []; } catch { return []; } })()) {
+      if (d.status !== "success") continue;
+      const proj = d.data?.project;
+      if (!proj) continue;
+      const t = d.statusAt || d.savedAt;
+      if (!map.has(proj) || t > map.get(proj)) map.set(proj, t);
+    }
+    return map;
+  }
+  function refreshProjectSelect() {
+    const sel = $("projectSelect");
+    const projects = loadProjects();
+    const names = Object.keys(projects).sort((a,b) => a.localeCompare(b));
+    const cur = sel.value;
+    const success = lastSuccessByProject();
+    sel.innerHTML = `<option value="">${escHtml(t("pick_project"))}</option>` +
+      names.map(n => {
+        const tt = success.get(n);
+        const suffix = tt ? `  ✓ ${relTime(tt)}` : "";
+        return `<option value="${escAttr(n)}">${escHtml(n + suffix)}</option>`;
+      }).join("");
+    if (names.includes(cur)) sel.value = cur;
+  }
+  function refreshServerSelect() {
+    const sel = $("serverSelect");
+    const servers = destServersMap();
+    const names = Object.keys(servers).sort((a,b) => a.localeCompare(b));
+    if (direction === "uat-real" && !currentProject()) {
+      sel.innerHTML = '<option value="">— pick a project first —</option>';
+      sel.disabled = true;
+      selServer = null;
+      return;
+    }
+    sel.disabled = names.length === 0;
+    sel.innerHTML = (names.length ? "" : `<option value="">${escHtml(t("no_servers"))}</option>`) +
+      names.map(n => `<option value="${escAttr(n)}">${escHtml(n)}</option>`).join("");
+    if (names.length) {
+      if (!names.includes(selServer)) selServer = names[0];
+      sel.value = selServer;
+    } else {
+      selServer = null;
+    }
+  }
+
+  $("projectSelect").addEventListener("change", () => {
+    selProject = $("projectSelect").value || null;
+    selServer = null;
+    pathOverride = { from: null, to: null };
+    $("pathOverride").hidden = true;
+    refreshServerSelect();
+    render();
+  });
+  $("serverSelect").addEventListener("change", () => {
+    selServer = $("serverSelect").value || null;
+    render();
+  });
+
+  // ---------- Path override ----------
+  $("togglePathEdit").addEventListener("click", () => {
+    const o = $("pathOverride");
+    const willShow = o.hidden;
+    o.hidden = !willShow;
+    if (willShow) {
+      const { from, to } = expandTemplate();
+      if (!$("fromPath").value) $("fromPath").value = from;
+      if (!$("toPath").value)   $("toPath").value   = to;
+    }
+  });
+  $("resetPaths").addEventListener("click", () => {
+    pathOverride = { from: null, to: null };
+    const { from, to } = expandTemplate();
+    $("fromPath").value = from;
+    $("toPath").value = to;
+    render();
+  });
+  $("fromPath").addEventListener("input", () => { pathOverride.from = $("fromPath").value; render(); });
+  $("toPath").addEventListener("input",   () => { pathOverride.to   = $("toPath").value;   render(); });
+
+  function expandTemplate() {
+    const p = currentProject();
+    const folder = (p?.folder?.trim()) || p?.name || "[project]";
+    return {
+      from: tpl.from.replace(/\{project\}/g, folder),
+      to:   tpl.to.replace(/\{project\}/g, folder),
+    };
+  }
+  function effectivePaths() {
+    const t = expandTemplate();
+    return {
+      from: pathOverride.from ?? t.from,
+      to:   pathOverride.to   ?? t.to,
+    };
+  }
+
+  // ---------- Templates ----------
+  $("fromTemplate").addEventListener("input", () => {
+    tpl.from = $("fromTemplate").value; saveTemplates(tpl); render();
+  });
+  $("toTemplate").addEventListener("input", () => {
+    tpl.to = $("toTemplate").value; saveTemplates(tpl); render();
+  });
+
+  // ---------- Settings modal ----------
+  const modal = $("settingsModal");
+  const isModalOpen = () => modal.style.display === "flex";
+  function openModal() {
+    modal.style.display = "flex";
+    renderProjectsList();
+  }
+  function closeModal() { modal.style.display = "none"; }
+  function openModalWithRefresh() { openModal(); renderEnvCards(); }
+  $("openSettings").addEventListener("click", openModalWithRefresh);
+  $("closeSettings").addEventListener("click", closeModal);
+  modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && isModalOpen()) closeModal();
+  });
+  $("settingsTabs").addEventListener("click", e => {
+    const b = e.target.closest("button[data-tab]");
+    if (!b) return;
+    $("settingsTabs").querySelectorAll("button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    const tab = b.dataset.tab;
+    document.querySelectorAll(".modal-pane").forEach(p => p.classList.toggle("hidden", p.dataset.pane !== tab));
+  });
+
+  // ---------- Projects list ----------
+  function renderProjectsList() {
+    const projects = loadProjects();
+    const names = Object.keys(projects).sort((a,b) => a.localeCompare(b));
+    const list = $("projectsList");
+    list.innerHTML = "";
+    $("projectsEmpty").hidden = names.length > 0;
+    for (const name of names) list.appendChild(renderProjectCard(name, projects[name]));
+  }
+
+  function renderProjectCard(name, p) {
+    const card = document.createElement("div");
+    card.className = "proj-card rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 mb-3 overflow-hidden transition hover:border-slate-300 dark:hover:border-slate-700";
+    card.dataset.name = name;
+    const folded = isFolded(name);
+    if (folded) card.dataset.folded = "true";
+    const servers = p.servers || {};
+    const serverNames = Object.keys(servers).sort((a,b) => a.localeCompare(b));
+
+    card.innerHTML = `
+      <div class="proj-head grid gap-3 p-4 items-end ${folded ? '' : 'border-b border-slate-200 dark:border-slate-800'}" style="grid-template-columns:auto 1fr 1fr auto;">
+        <button data-action="toggleFold" title="Fold / unfold"
+          class="w-7 h-7 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 dark:text-slate-500 inline-flex items-center justify-center text-sm transition mb-0.5"
+          style="transform:${folded ? 'rotate(-90deg)' : 'none'}">▾</button>
+        <div>
+          <label class="block text-[11px] text-slate-500 dark:text-slate-400 mb-1 font-medium">Project name</label>
+          <input type="text" data-field="name" value="${escAttr(name)}"
+            class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition">
+        </div>
+        <div>
+          <label class="block text-[11px] text-slate-500 dark:text-slate-400 mb-1 font-medium">Folder (path)</label>
+          <input type="text" data-field="folder" value="${escAttr(p.folder || "")}" placeholder="defaults to name"
+            class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition">
+        </div>
+        <div class="flex items-center gap-1.5 pb-0.5">
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">${serverNames.length} server${serverNames.length === 1 ? "" : "s"}</span>
+          <button data-action="addServer" class="px-2 py-1 rounded-md text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition">+ Server</button>
+          <button data-action="deleteProject" class="px-2 py-1 rounded-md text-xs text-rose-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition">Delete</button>
+        </div>
+      </div>
+      <div class="proj-servers p-4 bg-slate-50/60 dark:bg-slate-900/30 ${folded ? 'hidden' : ''}">
+        ${serverNames.length ? `
+          <div class="srv-head grid gap-2 mb-2 text-[10px] uppercase tracking-[0.06em] font-semibold text-slate-500 dark:text-slate-400 px-0.5" style="grid-template-columns:1.2fr 2fr 1fr .7fr auto;">
+            <div>Server name</div><div>Host / IP</div><div>User</div><div>Port</div><div></div>
+          </div>
+        ` : ""}
+        <div data-role="servers">
+          ${serverNames.length ? serverNames.map(sn => renderServerRow(sn, servers[sn])).join("") :
+            `<div class="p-3 text-center rounded-lg border border-dashed border-slate-300 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400">No servers — add one or import from PuTTY.</div>`}
+        </div>
+      </div>
+    `;
+    return card;
+  }
+  function renderServerRow(sname, s) {
+    return `
+      <div class="srv-row grid gap-2 items-center mb-1.5" data-sname="${escAttr(sname)}" style="grid-template-columns:1.2fr 2fr 1fr .7fr auto;">
+        <input type="text" data-sfield="name" value="${escAttr(sname)}"
+          class="w-full min-w-0 bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-md px-2 py-1.5 text-xs md:text-[12.5px] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+        <input type="text" data-sfield="host" value="${escAttr(s.host || "")}" placeholder="10.0.0.1"
+          class="w-full min-w-0 bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-md px-2 py-1.5 text-xs md:text-[12.5px] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition font-mono">
+        <input type="text" data-sfield="user" value="${escAttr(s.user || "web")}"
+          class="w-full min-w-0 bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-md px-2 py-1.5 text-xs md:text-[12.5px] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+        <input type="text" data-sfield="port" value="${escAttr(s.port || "22")}"
+          class="w-full min-w-0 bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-md px-2 py-1.5 text-xs md:text-[12.5px] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+        <button data-action="deleteServer" title="Delete server"
+          class="w-7 h-7 rounded-md text-rose-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 inline-flex items-center justify-center transition">×</button>
+      </div>
+    `;
+  }
+
+  $("projectsList").addEventListener("change", e => {
+    const card = e.target.closest(".proj-card");
+    if (!card) return;
+    const projects = loadProjects();
+    const originalName = card.dataset.name;
+    const newName = card.querySelector('input[data-field="name"]').value.trim();
+    const folder  = card.querySelector('input[data-field="folder"]').value.trim();
+
+    if (!newName) { toast(t("toast_project_empty"), "error"); renderProjectsList(); return; }
+
+    const servers = {};
+    card.querySelectorAll(".srv-row").forEach(row => {
+      const sname = row.querySelector('input[data-sfield="name"]').value.trim();
+      if (!sname) return;
+      servers[sname] = {
+        host: row.querySelector('input[data-sfield="host"]').value.trim(),
+        user: row.querySelector('input[data-sfield="user"]').value.trim() || "web",
+        port: row.querySelector('input[data-sfield="port"]').value.trim() || "22",
+      };
+    });
+
+    if (newName !== originalName && projects[newName]) {
+      toast(t("toast_project_exists", { name: newName }), "error");
+      renderProjectsList();
+      return;
+    }
+    if (newName !== originalName) delete projects[originalName];
+    projects[newName] = { folder, servers };
+    saveProjects(projects);
+    card.dataset.name = newName;
+
+    if (selProject === originalName) {
+      selProject = newName;
+      if (!servers[selServer]) selServer = Object.keys(servers)[0] || null;
+    }
+    refreshProjectSelect();
+    $("projectSelect").value = selProject || "";
+    refreshServerSelect();
+    render();
+  });
+
+  $("projectsList").addEventListener("click", e => {
+    const card = e.target.closest(".proj-card");
+    if (!card) return;
+    const name = card.dataset.name;
+    const projects = loadProjects();
+
+    const act = e.target.closest("button[data-action]")?.dataset.action;
+    if (act === "toggleFold") {
+      if (unfoldedProjects.has(name)) unfoldedProjects.delete(name); else unfoldedProjects.add(name);
+      saveUnfolded();
+      renderProjectsList();
+      return;
+    }
+    if (act === "deleteProject") {
+      if (!confirm(t("confirm_delete_project", { name }))) return;
+      delete projects[name];
+      saveProjects(projects);
+      if (selProject === name) { selProject = null; selServer = null; }
+      renderProjectsList();
+      refreshProjectSelect();
+      refreshServerSelect();
+      render();
+      return;
+    }
+    if (act === "addServer") {
+      const p = projects[name] || { folder: "", servers: {} };
+      p.servers = p.servers || {};
+      let base = "server", sn = base, i = 1;
+      while (p.servers[sn]) sn = `${base}${++i}`;
+      p.servers[sn] = { host: "", user: "web", port: "22" };
+      projects[name] = p;
+      saveProjects(projects);
+      unfoldedProjects.add(name);
+      saveUnfolded();
+      renderProjectsList();
+      refreshServerSelect();
+      render();
+      const newCard = [...$("projectsList").children].find(c => c.dataset.name === name);
+      const row = newCard?.querySelector(`.srv-row[data-sname="${CSS.escape(sn)}"]`);
+      row?.querySelector('input[data-sfield="name"]')?.focus();
+      row?.querySelector('input[data-sfield="name"]')?.select();
+      return;
+    }
+    if (act === "deleteServer") {
+      const row = e.target.closest(".srv-row");
+      const sname = row.dataset.sname;
+      if (!confirm(t("confirm_delete_server", { name: sname }))) return;
+      const p = projects[name];
+      if (p?.servers) delete p.servers[sname];
+      saveProjects(projects);
+      if (selProject === name && selServer === sname) selServer = null;
+      renderProjectsList();
+      refreshServerSelect();
+      render();
+    }
+  });
+
+  $("addProject").addEventListener("click", () => {
+    const projects = loadProjects();
+    let base = "new-project", name = base, n = 1;
+    while (projects[name]) name = `${base}-${++n}`;
+    projects[name] = { folder: "", servers: {} };
+    saveProjects(projects);
+    unfoldedProjects.add(name);
+    saveUnfolded();
+    renderProjectsList();
+    refreshProjectSelect();
+    const card = [...$("projectsList").children].find(c => c.dataset.name === name);
+    card?.querySelector('input[data-field="name"]')?.focus();
+    card?.querySelector('input[data-field="name"]')?.select();
+  });
+
+  // ---------- JSON ----------
+  $("exportProjects").addEventListener("click", () => {
+    const data = {
+      version: 5,
+      exportedAt: new Date().toISOString(),
+      projects: loadProjects(),
+      templates: loadTemplates(),
+      envs: envs,
+      options: readOptions(),
+      wasExts: wasExtList,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `rsync-settings-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    flash($("exportProjects"), "✓ Exported");
+    toast(t("toast_exported"), "success");
+  });
+  $("jsonImport").addEventListener("change", async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      if (!data || typeof data !== "object") throw new Error("Invalid file");
+
+      const parts = [];
+      if (data.projects && typeof data.projects === "object") {
+        const existing = loadProjects();
+        const merged = { ...existing };
+        for (const [name, p] of Object.entries(data.projects)) {
+          merged[name] = {
+            folder: p.folder || "",
+            servers: { ...(existing[name]?.servers || {}), ...(p.servers || {}) },
+          };
+        }
+        saveProjects(merged);
+        parts.push(`${Object.keys(data.projects).length} project(s)`);
+      }
+      if (data.templates && typeof data.templates === "object") {
+        tpl = { ...tpl, ...data.templates };
+        saveTemplates(tpl);
+        $("fromTemplate").value = tpl.from;
+        $("toTemplate").value = tpl.to;
+        parts.push("default paths");
+      }
+      if (data.envs && typeof data.envs === "object") {
+        // Merge: preserve any existing servers the import doesn't touch
+        const nextEnvs = migrateEnvs({ dev: data.envs.dev || envs.dev, uat: data.envs.uat || envs.uat });
+        envs = nextEnvs;
+        saveEnvs(envs);
+        renderEnvCards();
+        parts.push("environments");
+      }
+      if (data.options && typeof data.options === "object") {
+        writeOptions(data.options);
+        saveOptions();
+        parts.push("options");
+      }
+      if (Array.isArray(data.wasExts)) {
+        wasExtList = normalizeExts(data.wasExts);
+        saveWasExts();
+        $("wasExts").value = wasExtList.join("\n");
+        parts.push("WAS extensions");
+      }
+
+      renderProjectsList();
+      refreshProjectSelect();
+      refreshServerSelect();
+      render();
+      $("importHint").textContent = parts.length ? `Imported: ${parts.join(", ")}.` : "Nothing imported — file contained no recognized sections.";
+      if (parts.length) toast(t("toast_import_success", { parts: parts.join(", ") }), "success");
+      else toast(t("toast_import_nothing"), "warn");
+    } catch (err) {
+      $("importHint").textContent = "JSON import error: " + err.message;
+      toast(t("toast_import_failed", { msg: err.message }), "error", 5000);
+    } finally { e.target.value = ""; }
+  });
+
+  $("foldAll").addEventListener("click", () => {
+    unfoldedProjects.clear();
+    saveUnfolded();
+    renderProjectsList();
+  });
+  $("unfoldAll").addEventListener("click", () => {
+    Object.keys(loadProjects()).forEach(n => unfoldedProjects.add(n));
+    saveUnfolded();
+    renderProjectsList();
+  });
+
+  // ---------- Command build ----------
+  function splitLines(s) { return s.split(/\r?\n/).map(x => x.trim()).filter(Boolean); }
+  function shq(s) { return `'${String(s).replace(/'/g, `'\\''`)}'`; }
+  function needsQuote(s) { return /[\s"'$`\\!*?()\[\]{}|&;<>]/.test(s); }
+  function maybeQuote(s) { return s === "" ? `''` : (needsQuote(s) ? shq(s) : s); }
+
+  function buildCommand(includeDryRun = true) {
+    const parts = ["rsync"];
+    const warnings = [];
+
+    const flags = [];
+    if ($("optArchive").checked)  flags.push("-a");
+    if ($("optVerbose").checked)  flags.push("-v");
+    if ($("optCompress").checked) flags.push("-z");
+    if ($("optProgress").checked) flags.push("-P");
+    if ($("optHuman").checked)    flags.push("-h");
+    if (includeDryRun && $("optDryRun").checked) flags.push("--dry-run");
+    if ($("optDelete").checked)   flags.push("--delete");
+    if ($("optPartial").checked)  flags.push("--partial");
+    if ($("optStats").checked)    flags.push("--stats");
+    if (flags.length) parts.push(flags.join(" "));
+
+    const s = currentServer();
+    const port = s?.port || "22";
+    if (port && port !== "22") parts.push("-e", shq(`ssh -p ${port}`));
+
+    const gen = getGenType();
+    const extraInc = splitLines($("extraInclude").value);
+    const extraExc = splitLines($("extraExclude").value);
+    const specificFiles = splitLines($("specificFiles").value);
+    const filetypes = splitLines($("filetypes").value);
+
+    if (gen === "file") {
+      parts.push(`--include='*/'`);
+      for (const f of specificFiles) parts.push(`--include=${shq(f)}`);
+      for (const inc of extraInc)    parts.push(`--include=${shq(inc)}`);
+      for (const exc of extraExc)    parts.push(`--exclude=${shq(exc)}`);
+      parts.push(`--exclude='*'`);
+      if (!specificFiles.length) warnings.push("No files listed — nothing will transfer.");
+    } else if (gen === "filetype") {
+      parts.push(`--include='*/'`);
+      for (const p of filetypes)  parts.push(`--include=${shq(p)}`);
+      for (const inc of extraInc) parts.push(`--include=${shq(inc)}`);
+      for (const exc of extraExc) parts.push(`--exclude=${shq(exc)}`);
+      parts.push(`--exclude='*'`);
+      if (!filetypes.length) warnings.push("No patterns listed — nothing will transfer.");
+    } else {
+      for (const inc of extraInc) parts.push(`--include=${shq(inc)}`);
+      for (const exc of extraExc) parts.push(`--exclude=${shq(exc)}`);
+    }
+
+    const extraFlags = $("extraFlags").value.trim();
+    if (extraFlags) parts.push(extraFlags);
+
+    const { from, to } = effectivePaths();
+    const p = currentProject();
+    if (!p) warnings.push("No project selected.");
+    if (!s) warnings.push(direction === "dev-uat" ? "No UAT server selected." : "No server selected.");
+    else if (!s.host) warnings.push(`Server "${s.name}" has no host configured${direction === "dev-uat" ? " — open Settings › Environments" : ""}.`);
+
+    // --delete destructive warning (prepended so it shows first)
+    if ($("optDelete").checked) {
+      warnings.unshift({
+        html: `<strong>--delete is ON</strong> — files on the destination that aren't in the transfer list will be <strong>removed</strong>. Verify the dry-run carefully.`,
+      });
+    }
+
+    // .java without matching .class
+    const missingClass = findMissingClassPairs();
+    if (missingClass.length) {
+      if (gen === "file") {
+        warnings.push({
+          html: `<strong>${missingClass.length}</strong> .java file${missingClass.length === 1 ? "" : "s"} missing a matching <code>.class</code>`,
+          action: "addMissingClass",
+          label: `+ Add ${missingClass.length} .class`,
+          title: `Missing .class for:\n${missingClass.join("\n")}`,
+        });
+      } else if (gen === "filetype") {
+        warnings.push({
+          html: `<code>*.java</code> is listed but <code>*.class</code> isn't — deployments usually need both`,
+          action: "addMissingClass",
+          label: "+ Add *.class",
+          title: "Will append *.class to the pattern list",
+        });
+      }
+    }
+
+    // Server-type vs file-type mismatch
+    if (s?.name) {
+      const sName = s.name.toLowerCase();
+      const isWas = /was/.test(sName);
+      const isWeb = /web/.test(sName);
+      if (isWas !== isWeb) { // only check if unambiguously one or the other
+        const lines = gen === "file" ? specificFiles : (gen === "filetype" ? filetypes : []);
+        const re = WAS_RE();
+        const bad = lines.filter(l => isWas ? !re.test(l) : re.test(l));
+        if (bad.length) {
+          warnings.push({
+            html: `Target is <strong>${isWas ? "WAS" : "WEB"}</strong> server but ` +
+                  `${bad.length} entr${bad.length === 1 ? "y looks" : "ies look"} like ` +
+                  `<strong>${isWas ? "WEB" : "WAS"}</strong> file${bad.length === 1 ? "" : "s"}`,
+            action: isWas ? "presetWas" : "presetWeb",
+            label: isWas ? "only WAS" : "only WEB",
+            title: `${isWas ? "WEB" : "WAS"}-looking entr${bad.length === 1 ? "y" : "ies"}:\n${bad.join("\n")}`,
+          });
+        }
+      }
+    }
+
+    const host = s?.host || "HOST";
+    const user = s?.user || "web";
+    const src = from || "./";
+    const dst = `${user}@${host}:${to || "/"}`;
+    parts.push(maybeQuote(src), maybeQuote(dst));
+
+    return { cmd: parts.join(" "), warnings };
+  }
+
+  function render() {
+    const p = currentProject();
+    const s = currentServer();
+    const { from, to } = effectivePaths();
+
+    // Hero: ProjectName (destination)
+    const hero = $("heroTarget");
+    const devUat = direction === "dev-uat";
+    if (p && s) {
+      const label = devUat ? `UAT / ${s.name}` : s.name;
+      hero.innerHTML =
+        `<span>${escHtml(p.name)}</span>` +
+        `<span class="text-slate-500 dark:text-slate-400 font-medium ml-1.5">(${escHtml(label)})</span>`;
+    } else if (p) {
+      hero.innerHTML = `<span>${escHtml(p.name)}</span><span class="text-slate-400 dark:text-slate-500 font-normal ml-2">(${escHtml(t("target_placeholder"))})</span>`;
+    } else {
+      hero.innerHTML = `<span class="text-slate-400 dark:text-slate-500 font-normal">${escHtml(t("target_placeholder"))}</span>`;
+    }
+
+    // Path line — direction-aware
+    const destUser = s?.user || "web";
+    const destHost = s?.host || "HOST";
+    const srcLabel = devUat ? "DEV" : "UAT";
+    const isOverride = pathOverride.from !== null || pathOverride.to !== null;
+    $("pathPreview").innerHTML =
+      `<span class="text-slate-400 dark:text-slate-500">${isOverride ? "Override:" : "Template:"}</span> ` +
+      `<span class="text-slate-400 dark:text-slate-500">[${escHtml(srcLabel)}]</span> ` +
+      `${escHtml(from)} ` +
+      `<span class="text-slate-400 dark:text-slate-500">→</span> ` +
+      `${escHtml(destUser)}@${escHtml(destHost)}:${escHtml(to)}`;
+
+    const { cmd, warnings } = buildCommand(true);
+    const outputEl = $("output");
+    outputEl.textContent = cmd;
+    const dangerous = $("optDelete").checked;
+    outputEl.classList.toggle("ring-2", dangerous);
+    outputEl.classList.toggle("ring-rose-500/60", dangerous);
+    outputEl.classList.toggle("border-rose-500/60", dangerous);
+    const warnEl = $("cmdWarn");
+    if (warnings.length) {
+      warnEl.classList.remove("hidden");
+      warnEl.innerHTML = warnings.map(w => {
+        if (typeof w === "string") return `<div class="py-0.5">⚠ ${w}</div>`;
+        const btn = w.action
+          ? ` <button data-action="${w.action}"${w.title ? ` title="${escHtml(w.title)}"` : ""} class="ml-2 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-amber-500/20 hover:bg-amber-500/30 text-amber-800 dark:text-amber-200 border border-amber-400/40 transition align-middle cursor-help">${escHtml(w.label)}</button>`
+          : "";
+        return `<div class="py-0.5 flex flex-wrap items-center gap-1">⚠ <span>${w.html}</span>${btn}</div>`;
+      }).join("");
+    } else warnEl.classList.add("hidden");
+
+    const isDry = $("optDryRun").checked;
+    const dot = $("envDot");
+    dot.className = "w-1.5 h-1.5 rounded-full " + (isDry
+      ? "bg-emerald-500 ring-4 ring-emerald-500/20"
+      : "bg-amber-500 ring-4 ring-amber-500/20");
+    $("envLabel").textContent = isDry ? t("dry_run_mode") : t("live_mode");
+    $("envLabel").className = isDry
+      ? "text-slate-500 dark:text-slate-400"
+      : "text-amber-600 dark:text-amber-400 font-medium";
+  }
+
+  function escHtml(s) {
+    return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+  function escAttr(s) { return String(s ?? "").replace(/"/g, "&quot;"); }
+
+  [
+    "specificFiles","filetypes","extraInclude","extraExclude","extraFlags",
+    "optDryRun","optArchive","optVerbose","optCompress","optProgress",
+    "optHuman","optDelete","optPartial","optStats",
+  ].forEach(id => {
+    $(id).addEventListener("input", render);
+    $(id).addEventListener("change", render);
+  });
+  // Persist option changes
+  [...OPTION_IDS, "extraFlags"].forEach(id => {
+    $(id)?.addEventListener("change", saveOptions);
+    $(id)?.addEventListener("input", saveOptions);
+  });
+
+  async function copy(text) {
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); ta.remove();
+    }
+  }
+  function flash(btn, text) {
+    const orig = btn.textContent;
+    btn.textContent = text;
+    setTimeout(() => btn.textContent = orig, 1200);
+  }
+  // ---------- Textarea highlighter ----------
+  function highlightSpecificFiles() {
+    const ta = $("specificFiles");
+    const hl = $("specificFilesHL");
+    if (!ta || !hl) return;
+    const text = ta.value;
+    const re = WAS_RE();
+
+    const lines = text.split("\n");
+    // Basename counts (ignore patterns and blanks)
+    const baseCount = new Map();
+    const javaBases = new Set();   // base path without .java
+    const classBases = new Set();  // base path without .class
+    for (const l of lines) {
+      const t = l.trim();
+      if (!t || /[*?\[]/.test(t)) continue;
+      const b = t.split("/").pop();
+      baseCount.set(b, (baseCount.get(b) || 0) + 1);
+      const jm = t.match(/^(.+)\.java$/i);
+      const cm = t.match(/^(.+)\.class$/i);
+      if (jm) javaBases.add(jm[1]);
+      if (cm) classBases.add(cm[1]);
+    }
+
+    const html = lines.map(line => {
+      const t = line.trim();
+      let cls = "";
+      let extraCls = "";
+      if (!t) return "";
+      if (/[*?\[]/.test(t)) cls = "hl-line-pattern";
+      else if (re.test(t)) cls = "hl-line-was";
+      else if (/\.[^./]+$/.test(t)) cls = "hl-line-web";
+      else cls = "hl-line-noext";
+
+      // Duplicate basename?
+      if (!/[*?\[]/.test(t)) {
+        const b = t.split("/").pop();
+        if (baseCount.get(b) > 1) extraCls += " hl-dup";
+      }
+      // Orphan .java?
+      const jm = t.match(/^(.+)\.java$/i);
+      if (jm && !classBases.has(jm[1])) extraCls += " hl-orphan";
+
+      return `<span class="${cls}${extraCls}">${escHtml(line)}</span>`;
+    }).join("\n") + "\n"; // trailing newline preserves last line height
+
+    hl.innerHTML = html;
+  }
+
+  function highlightFiletypes() {
+    const ta = $("filetypes");
+    const hl = $("filetypesHL");
+    if (!ta || !hl) return;
+    const re = WAS_RE();
+    const html = ta.value.split("\n").map(line => {
+      const t = line.trim();
+      let cls = "";
+      if (!t) return "";
+      if (/[*?\[]/.test(t)) cls = re.test(t) ? "hl-line-was" : "hl-line-web";
+      else if (re.test(t)) cls = "hl-line-was";
+      else if (/\.[^./]+$/.test(t)) cls = "hl-line-web";
+      else cls = "hl-line-noext";
+      return `<span class="${cls}">${escHtml(line)}</span>`;
+    }).join("\n") + "\n";
+    hl.innerHTML = html;
+  }
+
+  function updateLineNumbers(taId, lnId) {
+    const ta = $(taId), ln = $(lnId);
+    if (!ta || !ln) return;
+    const count = Math.max(ta.value.split("\n").length, 1);
+    const out = [];
+    for (let i = 1; i <= count; i++) out.push(i);
+    ln.textContent = out.join("\n") + "\n";
+  }
+
+  function rehighlight() {
+    highlightSpecificFiles();
+    highlightFiletypes();
+    updateLineNumbers("specificFiles", "specificFilesLN");
+    updateLineNumbers("filetypes", "filetypesLN");
+  }
+
+  // Keep overlay + gutter in sync with textarea: content, scroll, resize
+  for (const [taId, hlId, lnId] of [["specificFiles","specificFilesHL","specificFilesLN"], ["filetypes","filetypesHL","filetypesLN"]]) {
+    const ta = $(taId), hl = $(hlId), ln = $(lnId);
+    if (!ta || !hl || !ln) continue;
+    ta.addEventListener("input", rehighlight);
+    ta.addEventListener("scroll", () => {
+      hl.scrollTop = ta.scrollTop;
+      hl.scrollLeft = ta.scrollLeft;
+      ln.scrollTop = ta.scrollTop; // line numbers only scroll vertically
+    });
+    // Observe textarea size for resizable height so pre matches
+    const ro = new ResizeObserver(() => {
+      hl.style.height = ta.offsetHeight + "px";
+      ln.style.height = ta.offsetHeight + "px";
+    });
+    ro.observe(ta);
+  }
+
+  $("cmdWarn").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+    const act = btn.dataset.action;
+    if (act === "addMissingClass") addMissingClassLines();
+    else if (act === "presetWas") applyPreset("was");
+    else if (act === "presetWeb") applyPreset("web");
+  });
+
+  $("copyBtn").addEventListener("click", async () => {
+    await copy(buildCommand(true).cmd);
+    flash($("copyBtn"), "✓ Copied");
+    toast(t("toast_copied_dry"), "success", 2000);
+  });
+  $("copyNoDry").addEventListener("click", async () => {
+    if ($("optDelete").checked) {
+      if (!confirm(t("confirm_live_delete"))) return;
+    }
+    await copy(buildCommand(false).cmd);
+    flash($("copyNoDry"), "✓ Copied live");
+    toast($("optDelete").checked ? t("toast_copied_live_delete") : t("toast_copied_live"), $("optDelete").checked ? "warn" : "success", 2500);
+  });
+
+  // ---------- Auto-save draft + deployments ----------
+  const LS_DRAFT   = "rsyncgen.draft.v1";
+  const LS_DEPLOYS = "rsyncgen.deployments.v1";
+
+  function snapshot() {
+    return {
+      direction,
+      project: selProject,
+      server:  selServer,
+      pathOverride: { ...pathOverride },
+      fromPath: $("fromPath").value,
+      toPath:   $("toPath").value,
+      genType:  getGenType(),
+      specificFiles: $("specificFiles").value,
+      filetypes:     $("filetypes").value,
+      extraInclude:  $("extraInclude").value,
+      extraExclude:  $("extraExclude").value,
+      dryrunLog:     $("dryrunLog").value,
+      command:       $("output").textContent,
+    };
+  }
+
+  let restoring = false;
+  function restoreSnapshot(s, opts = {}) {
+    if (!s || typeof s !== "object") return;
+    restoring = true;
+    try {
+      if (typeof s.direction === "string") {
+        direction = s.direction;
+        localStorage.setItem(LS_DIRECTION, direction);
+      }
+      applyDirectionUI();
+
+      if (s.project != null) {
+        selProject = s.project || null;
+      }
+      refreshProjectSelect();
+      $("projectSelect").value = selProject || "";
+
+      if (s.server != null) selServer = s.server || null;
+      refreshServerSelect();
+      if (selServer) $("serverSelect").value = selServer;
+
+      pathOverride = s.pathOverride ? { from: s.pathOverride.from ?? null, to: s.pathOverride.to ?? null } : { from: null, to: null };
+      const hasOverride = pathOverride.from !== null || pathOverride.to !== null;
+      $("pathOverride").hidden = !hasOverride;
+      if (typeof s.fromPath === "string") $("fromPath").value = s.fromPath;
+      if (typeof s.toPath === "string")   $("toPath").value   = s.toPath;
+
+      if (s.genType) setGenType(s.genType);
+      if (typeof s.specificFiles === "string") $("specificFiles").value = s.specificFiles;
+      if (typeof s.filetypes === "string")     $("filetypes").value     = s.filetypes;
+      if (typeof s.extraInclude === "string")  $("extraInclude").value  = s.extraInclude;
+      if (typeof s.extraExclude === "string")  $("extraExclude").value  = s.extraExclude;
+      if (typeof s.dryrunLog === "string")     $("dryrunLog").value     = s.dryrunLog;
+    } finally { restoring = false; }
+
+    rehighlight();
+    if (typeof analyzeLog === "function") analyzeLog();
+    render();
+    if (typeof updateSaveDeployEnabled === "function") updateSaveDeployEnabled();
+  }
+
+  let draftTimer = null;
+  function scheduleSaveDraft() {
+    if (restoring) return;
+    clearTimeout(draftTimer);
+    draftTimer = setTimeout(() => {
+      try { localStorage.setItem(LS_DRAFT, JSON.stringify(snapshot())); } catch {}
+    }, 400);
+  }
+  function loadDraft() {
+    try { return JSON.parse(localStorage.getItem(LS_DRAFT)); } catch { return null; }
+  }
+
+  // Capture every edit anywhere in the document (deployment UI excluded below)
+  document.addEventListener("input", e => {
+    if (e.target.closest("#deployDesc, #deployList, #projectsList, #envCards, #wasExts, #fromTemplate, #toTemplate, #jsonImport")) return;
+    scheduleSaveDraft();
+  });
+  document.addEventListener("change", e => {
+    if (e.target.closest("#deployDesc, #deployList, #projectsList, #envCards, #wasExts, #fromTemplate, #toTemplate")) return;
+    scheduleSaveDraft();
+  });
+
+  // ---------- Deployment list ----------
+  function loadDeploys() {
+    try { return JSON.parse(localStorage.getItem(LS_DEPLOYS)) || []; }
+    catch { return []; }
+  }
+  function saveDeploysList(list) { localStorage.setItem(LS_DEPLOYS, JSON.stringify(list)); }
+
+  function fmtDate(iso) {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    const p = n => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  }
+
+  const DEPLOY_STATUSES = [
+    { value: "planned",     labelKey: "status_planned",     cls: "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700" },
+    { value: "in-progress", labelKey: "status_in_progress", cls: "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:border-amber-500/30" },
+    { value: "success",     labelKey: "status_success",     cls: "bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/30" },
+    { value: "failed",      labelKey: "status_failed",      cls: "bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:border-rose-500/30" },
+  ];
+  function statusCls(v) { return (DEPLOY_STATUSES.find(s => s.value === v) || DEPLOY_STATUSES[0]).cls; }
+
+  const deployFilter = { search: "", statuses: new Set(), sort: "default" };
+
+  function applyDeployFilter(all) {
+    let list = all.slice();
+    if (deployFilter.statuses.size) {
+      list = list.filter(d => deployFilter.statuses.has(d.status || "planned"));
+    }
+    const q = deployFilter.search.trim().toLowerCase();
+    if (q) {
+      list = list.filter(d => {
+        const parts = [
+          d.name, d.description,
+          d.data?.project, d.data?.server, d.data?.direction,
+          d.status,
+        ].filter(Boolean).join(" ").toLowerCase();
+        return parts.includes(q);
+      });
+    }
+    const sortKey = deployFilter.sort;
+    const byFailThenNewest = (a, b) => {
+      const aFail = (a.status === "failed") ? 0 : 1;
+      const bFail = (b.status === "failed") ? 0 : 1;
+      if (aFail !== bFail) return aFail - bFail;
+      return b.savedAt.localeCompare(a.savedAt);
+    };
+    if (sortKey === "newest")      list.sort((a, b) => b.savedAt.localeCompare(a.savedAt));
+    else if (sortKey === "oldest") list.sort((a, b) => a.savedAt.localeCompare(b.savedAt));
+    else if (sortKey === "name")   list.sort((a, b) => a.name.localeCompare(b.name));
+    else if (sortKey === "status") {
+      const order = { failed: 0, "in-progress": 1, planned: 2, success: 3 };
+      list.sort((a, b) => {
+        const oa = order[a.status || "planned"] ?? 2;
+        const ob = order[b.status || "planned"] ?? 2;
+        if (oa !== ob) return oa - ob;
+        return b.savedAt.localeCompare(a.savedAt);
+      });
+    } else list.sort(byFailThenNewest);
+    return list;
+  }
+
+  function renderDeployList() {
+    const all = loadDeploys();
+    const list = applyDeployFilter(all);
+    const root = $("deployList");
+    const empty = $("deployEmpty");
+    const countEl = $("deployCount");
+
+    // Count line
+    if (all.length) {
+      const filtered = deployFilter.search || deployFilter.statuses.size;
+      countEl.textContent = filtered
+        ? t("saved_count_filtered", { n: list.length, total: all.length })
+        : t("saved_count", { n: all.length });
+      countEl.classList.remove("hidden");
+    } else {
+      countEl.classList.add("hidden");
+    }
+
+    if (!list.length) {
+      root.innerHTML = "";
+      empty.hidden = false;
+      empty.textContent = all.length ? t("deploy_empty_filtered") : t("deploy_empty");
+      return;
+    }
+    empty.hidden = true;
+    root.innerHTML = list.map(item => {
+      const d = item.data || {};
+      const dirLabel = d.direction === "dev-uat" ? "DEV → UAT" : "UAT → REAL";
+      const status = item.status || "planned";
+      const options = DEPLOY_STATUSES.map(s =>
+        `<option value="${s.value}"${s.value === status ? " selected" : ""}>${escHtml(t(s.labelKey))}</option>`
+      ).join("");
+      const checked = diffSel.has(item.id) ? "checked" : "";
+      return `
+        <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-3 flex items-start gap-3 bg-slate-50/50 dark:bg-slate-900/30">
+          <input type="checkbox" ${checked} data-action="diffPick" data-id="${escAttr(item.id)}" title="Select to compare" class="mt-1 tw-check shrink-0">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <select data-action="setStatus" data-id="${escAttr(item.id)}" title="Change status"
+                class="text-[11px] rounded-full px-2 py-0.5 font-semibold border cursor-pointer outline-none focus:ring-2 focus:ring-blue-500/30 ${statusCls(status)}">
+                ${options}
+              </select>
+              <div class="font-semibold text-sm truncate">${escHtml(item.name)}</div>
+            </div>
+            ${item.description ? `<div class="text-xs text-slate-600 dark:text-slate-300 mt-1 break-words">${escHtml(item.description)}</div>` : ""}
+            <div class="text-[11px] text-slate-400 dark:text-slate-500 mt-1 flex flex-wrap gap-x-2 gap-y-0.5">
+              <span>${escHtml(fmtDate(item.savedAt))}</span>
+              ${item.statusAt && item.status && item.status !== "planned" ? `<span>·</span><span>${escHtml(item.status)} ${escHtml(fmtDate(item.statusAt))}</span>` : ""}
+              <span>·</span>
+              <span>${escHtml(dirLabel)}</span>
+              ${d.project ? `<span>·</span><span class="truncate">${escHtml(d.project)}${d.server ? " / " + escHtml(d.server) : ""}</span>` : ""}
+            </div>
+          </div>
+          <div class="flex gap-1 shrink-0">
+            <button data-action="loadDeploy" data-id="${escAttr(item.id)}" class="px-2.5 py-1 rounded-md text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-400 hover:text-blue-500 transition">${escHtml(t("load"))}</button>
+            <button data-action="deleteDeploy" data-id="${escAttr(item.id)}" class="w-7 h-7 rounded-md text-rose-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 inline-flex items-center justify-center transition" title="${escAttr(t("delete_btn"))}">×</button>
+          </div>
+        </div>`;
+    }).join("");
+  }
+
+  function updateSaveDeployEnabled() {
+    const empty = id => !$(id).value.trim();
+    const nothing = empty("specificFiles") && empty("filetypes") && empty("extraInclude") && empty("extraExclude");
+    const btn = $("saveDeploy");
+    btn.disabled = nothing;
+    if (nothing) {
+      btn.classList.add("opacity-50", "cursor-not-allowed");
+      btn.title = t("save_disabled_hint");
+    } else {
+      btn.classList.remove("opacity-50", "cursor-not-allowed");
+      btn.title = "";
+    }
+  }
+  ["specificFiles","filetypes","extraInclude","extraExclude"].forEach(id => {
+    $(id).addEventListener("input", updateSaveDeployEnabled);
+  });
+  updateSaveDeployEnabled();
+
+  $("saveDeploy").addEventListener("click", () => {
+    if ($("saveDeploy").disabled) return;
+    const now = new Date();
+    const p = n => String(n).padStart(2, "0");
+    const dateStr = `${now.getFullYear()}-${p(now.getMonth()+1)}-${p(now.getDate())} ${p(now.getHours())}:${p(now.getMinutes())}`;
+    const projPart = selProject ? selProject : "no-project";
+    const srvPart  = selServer  ? " / " + selServer : "";
+    const dirPart  = direction === "dev-uat" ? "DEV→UAT" : "UAT→REAL";
+    const item = {
+      id: "d_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      name: `${projPart}${srvPart} · ${dirPart} · ${dateStr}`,
+      description: $("deployDesc").value.trim(),
+      savedAt: now.toISOString(),
+      status: "planned",
+      data: snapshot(),
+    };
+    const list = loadDeploys();
+    list.push(item);
+    saveDeploysList(list);
+    $("deployDesc").value = "";
+    renderDeployList();
+    flash($("saveDeploy"), "✓ Saved");
+    toast(t("toast_saved", { name: item.name }), "success");
+  });
+
+  // ---------- Filter / sort ----------
+  $("deploySearch").addEventListener("input", () => {
+    deployFilter.search = $("deploySearch").value;
+    renderDeployList();
+  });
+  $("deploySort").addEventListener("change", () => {
+    deployFilter.sort = $("deploySort").value;
+    renderDeployList();
+  });
+  $("deployStatusFilter").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-status]");
+    if (!btn) return;
+    const v = btn.dataset.status;
+    const all = $("deployStatusFilter").querySelectorAll("button[data-status]");
+    if (v === "") {
+      deployFilter.statuses.clear();
+    } else {
+      if (deployFilter.statuses.has(v)) deployFilter.statuses.delete(v);
+      else deployFilter.statuses.add(v);
+    }
+    // Repaint active flags
+    all.forEach(b => {
+      const bv = b.dataset.status;
+      const active = bv === "" ? deployFilter.statuses.size === 0 : deployFilter.statuses.has(bv);
+      b.dataset.active = active ? "true" : "false";
+    });
+    renderDeployList();
+  });
+
+  // ---------- Diff selection ----------
+  const diffSel = new Set();
+  function refreshDiffBar() {
+    const bar = $("diffBar");
+    const run = $("diffRunBtn");
+    const n = diffSel.size;
+    if (n === 0) { bar.classList.add("hidden"); return; }
+    bar.classList.remove("hidden");
+    if (n === 1) $("diffBarText").textContent = t("diff_pick_one_more");
+    else if (n === 2) $("diffBarText").textContent = t("diff_ready");
+    else $("diffBarText").textContent = t("diff_too_many", { n });
+    run.disabled = n !== 2;
+  }
+  $("diffClearSel").addEventListener("click", () => {
+    diffSel.clear();
+    renderDeployList();
+    refreshDiffBar();
+  });
+  $("diffRunBtn").addEventListener("click", () => {
+    if (diffSel.size !== 2) return;
+    const [idA, idB] = [...diffSel];
+    const list = loadDeploys();
+    const a = list.find(x => x.id === idA);
+    const b = list.find(x => x.id === idB);
+    if (!a || !b) return;
+    // Order: older left, newer right
+    const [left, right] = a.savedAt <= b.savedAt ? [a, b] : [b, a];
+    openDiffModal(left, right);
+  });
+
+  function openDiffModal(a, b) {
+    $("diffBody").innerHTML = renderDiff(a, b);
+    $("diffModal").style.display = "flex";
+  }
+  $("closeDiff").addEventListener("click", () => $("diffModal").style.display = "none");
+  $("diffModal").addEventListener("click", e => {
+    if (e.target === $("diffModal")) $("diffModal").style.display = "none";
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && $("diffModal").style.display === "flex") {
+      $("diffModal").style.display = "none";
+    }
+  });
+
+  function renderDiff(a, b) {
+    const da = a.data || {}, db = b.data || {};
+    const parts = [];
+    parts.push(`
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div class="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-1">Earlier (−)</div>
+          <div class="font-semibold text-sm break-all">${escHtml(a.name)}</div>
+          <div class="text-[11px] text-slate-500 mt-1">${escHtml(fmtDate(a.savedAt))} · ${escHtml(a.status || "planned")}</div>
+          ${a.description ? `<div class="text-xs text-slate-600 dark:text-slate-300 mt-1">${escHtml(a.description)}</div>` : ""}
+        </div>
+        <div class="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-1">Later (+)</div>
+          <div class="font-semibold text-sm break-all">${escHtml(b.name)}</div>
+          <div class="text-[11px] text-slate-500 mt-1">${escHtml(fmtDate(b.savedAt))} · ${escHtml(b.status || "planned")}</div>
+          ${b.description ? `<div class="text-xs text-slate-600 dark:text-slate-300 mt-1">${escHtml(b.description)}</div>` : ""}
+        </div>
+      </div>`);
+    const dirLabel = v => v === "dev-uat" ? "DEV → UAT" : v === "uat-real" ? "UAT → REAL" : (v || "—");
+    parts.push(renderFieldDiff("Direction",   dirLabel(da.direction), dirLabel(db.direction)));
+    parts.push(renderFieldDiff("Project",     da.project,  db.project));
+    parts.push(renderFieldDiff("Server",      da.server,   db.server));
+    parts.push(renderFieldDiff("Gen type",    da.genType,  db.genType));
+    parts.push(renderFieldDiff("From path",   da.fromPath, db.fromPath));
+    parts.push(renderFieldDiff("To path",     da.toPath,   db.toPath));
+    parts.push(renderTextDiff("Files to include", da.specificFiles, db.specificFiles));
+    parts.push(renderTextDiff("Patterns",         da.filetypes,     db.filetypes));
+    parts.push(renderTextDiff("Extra --include",  da.extraInclude,  db.extraInclude));
+    parts.push(renderTextDiff("Extra --exclude",  da.extraExclude,  db.extraExclude));
+    parts.push(renderTextDiff("Dry-run log",      da.dryrunLog,     db.dryrunLog));
+    parts.push(renderTextDiff("Command",          da.command,       db.command));
+    return parts.join("");
+  }
+
+  function renderFieldDiff(label, a, b) {
+    const av = a == null ? "" : String(a);
+    const bv = b == null ? "" : String(b);
+    if (av === bv) {
+      return `<div class="mb-3 pb-2 border-b border-slate-200 dark:border-slate-800/60">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-500">${escHtml(label)}</span>
+          <span class="text-[10px] text-emerald-600 dark:text-emerald-400">same</span>
+        </div>
+        <div class="text-xs font-mono text-slate-500 dark:text-slate-400">${escHtml(av || "(empty)")}</div>
+      </div>`;
+    }
+    return `<div class="mb-3 pb-2 border-b border-slate-200 dark:border-slate-800/60">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-500">${escHtml(label)}</span>
+        <span class="text-[10px] text-amber-600 dark:text-amber-400">changed</span>
+      </div>
+      <div class="font-mono text-xs">
+        <div class="text-rose-600 dark:text-rose-400">- ${escHtml(av || "(empty)")}</div>
+        <div class="text-emerald-600 dark:text-emerald-400">+ ${escHtml(bv || "(empty)")}</div>
+      </div>
+    </div>`;
+  }
+
+  function renderTextDiff(label, a, b) {
+    a = a || ""; b = b || "";
+    const aLines = a.split(/\r?\n/);
+    const bLines = b.split(/\r?\n/);
+    const setA = new Set(aLines), setB = new Set(bLines);
+    const removed = aLines.filter(l => !setB.has(l));
+    const added   = bLines.filter(l => !setA.has(l));
+    const unchanged = aLines.filter(l => setB.has(l));
+    const noChange = removed.length === 0 && added.length === 0;
+    if (noChange) {
+      return `<details class="mb-3 pb-2 border-b border-slate-200 dark:border-slate-800/60">
+        <summary class="flex items-center gap-2 cursor-pointer list-none">
+          <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-500">${escHtml(label)}</span>
+          <span class="text-[10px] text-emerald-600 dark:text-emerald-400">no changes (${unchanged.length})</span>
+        </summary>
+      </details>`;
+    }
+    return `<details open class="mb-3 pb-2 border-b border-slate-200 dark:border-slate-800/60">
+      <summary class="flex items-center gap-2 cursor-pointer list-none">
+        <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-500">${escHtml(label)}</span>
+        <span class="text-[10px] text-rose-600 dark:text-rose-400">−${removed.length}</span>
+        <span class="text-[10px] text-emerald-600 dark:text-emerald-400">+${added.length}</span>
+        <span class="text-[10px] text-slate-400">~${unchanged.length}</span>
+      </summary>
+      <div class="mt-2 font-mono text-xs rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 max-h-96 overflow-auto">
+        ${removed.map(l => `<div class="text-rose-600 dark:text-rose-400 whitespace-pre-wrap break-all">- ${escHtml(l)}</div>`).join("")}
+        ${added.map(l => `<div class="text-emerald-600 dark:text-emerald-400 whitespace-pre-wrap break-all">+ ${escHtml(l)}</div>`).join("")}
+      </div>
+    </details>`;
+  }
+
+  $("deployList").addEventListener("change", e => {
+    const cb = e.target.closest("input[type='checkbox'][data-action='diffPick']");
+    if (cb) {
+      const id = cb.dataset.id;
+      if (cb.checked) diffSel.add(id); else diffSel.delete(id);
+      refreshDiffBar();
+      return;
+    }
+    const sel = e.target.closest("select[data-action='setStatus']");
+    if (!sel) return;
+    const id = sel.dataset.id;
+    const list = loadDeploys();
+    const item = list.find(x => x.id === id);
+    if (!item) return;
+    item.status = sel.value;
+    item.statusAt = new Date().toISOString();
+    saveDeploysList(list);
+    renderDeployList();
+    refreshProjectSelect();
+    if (selProject) $("projectSelect").value = selProject;
+  });
+
+  $("deployList").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+    const id  = btn.dataset.id;
+    const act = btn.dataset.action;
+    const list = loadDeploys();
+    const item = list.find(x => x.id === id);
+    if (!item) return;
+    if (act === "loadDeploy") {
+      restoreSnapshot(item.data);
+      scheduleSaveDraft();
+      flash(btn, "✓ Loaded");
+      toast(t("toast_loaded", { name: item.name }), "info", 2500);
+    } else if (act === "deleteDeploy") {
+      if (!confirm(t("confirm_delete_deploy", { name: item.name }))) return;
+      saveDeploysList(list.filter(x => x.id !== id));
+      diffSel.delete(id);
+      refreshDiffBar();
+      renderDeployList();
+      toast(t("toast_deleted", { name: item.name }), "info", 2500);
+    }
+  });
+
+  // ---------- Dry-run verifier ----------
+  function parseRsyncLog(log) {
+    const paths = [];
+    for (const raw of log.split(/\r?\n/)) {
+      let line = raw.trim();
+      if (!line) continue;
+      if (/^(sending |receiving |sent |total |rsync |skipping |created |deleting |building |\(DRY|cannot |speedup )/i.test(line)) continue;
+      // Strip --itemize-changes prefix like ">f+++++++++" or "<f.st......"
+      line = line.replace(/^[<>.*cdhcChLSsT+._ ]{9,12}\s+/, "");
+      if (!line || line.endsWith("/")) continue;      // directory entries
+      if (!/[/.]/.test(line)) continue;               // no slash or dot -> not a path
+      // Drop trailing " => symlink target" if rsync shows it
+      line = line.split(" -> ")[0].trim();
+      paths.push(line);
+    }
+    return paths;
+  }
+
+  function analyzeLog() {
+    const log = $("dryrunLog").value;
+    const paths = parseRsyncLog(log);
+    const results = $("logResults");
+    const summary = $("logSummary");
+
+    if (!paths.length) {
+      summary.textContent = log.trim() ? "No file paths detected." : "";
+      results.innerHTML = "";
+      return;
+    }
+
+    // Group by basename
+    const byBase = new Map();
+    for (const p of paths) {
+      const base = p.split("/").pop();
+      if (!byBase.has(base)) byBase.set(base, []);
+      byBase.get(base).push(p);
+    }
+
+    const duplicates = [];
+    for (const [base, list] of byBase) if (list.length > 1) duplicates.push({ base, paths: list });
+    duplicates.sort((a, b) => b.paths.length - a.paths.length || a.base.localeCompare(b.base));
+
+    // Cross-check against "Files to include" (bare filenames)
+    const wanted = $("specificFiles").value.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    const ambiguous = [];   // names user asked for that match >1 path
+    const missing = [];     // names user asked for that match 0 paths
+    for (const q of wanted) {
+      const qBase = q.split("/").pop();
+      const matches = byBase.get(qBase) || [];
+      // If user typed a path with slashes, match only exact suffix
+      const filtered = q.includes("/")
+        ? matches.filter(m => m.endsWith(q) || m === q)
+        : matches;
+      if (filtered.length === 0) missing.push(q);
+      else if (filtered.length > 1 && !q.includes("/")) ambiguous.push({ query: q, paths: filtered });
+    }
+
+    summary.innerHTML = `<span class="font-semibold text-slate-700 dark:text-slate-200">${paths.length}</span> files · ` +
+      `<span class="${duplicates.length ? "text-amber-600 dark:text-amber-400 font-semibold" : ""}">${duplicates.length} duplicate basename${duplicates.length === 1 ? "" : "s"}</span>` +
+      (wanted.length ? ` · <span class="${missing.length ? "text-rose-500 font-semibold" : ""}">${missing.length} missing</span>` : "");
+
+    let html = "";
+
+    if (wanted.length) {
+      if (ambiguous.length) {
+        html += `<div class="rounded-lg border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 p-4 mb-3">
+          <div class="text-sm font-semibold text-amber-700 dark:text-amber-400 mb-2">⚠ ${ambiguous.length} of your listed filename${ambiguous.length === 1 ? "" : "s"} matched multiple paths</div>
+          <div class="text-xs text-amber-700 dark:text-amber-400 mb-3">Replace each with one of the full paths below in "Files to include".</div>`;
+        for (const { query, paths: pp } of ambiguous) {
+          html += `<div class="mt-3 first:mt-0">
+            <div class="font-mono text-sm font-semibold">${escHtml(query)} <span class="text-xs text-amber-700 dark:text-amber-400 ml-1">${pp.length}×</span></div>
+            <ul class="font-mono text-xs text-slate-700 dark:text-slate-200 ml-4 mt-1 space-y-0.5">`;
+          for (const p of pp) html += `<li class="flex items-center gap-2"><button data-path="${escAttr(p)}" class="log-copy text-slate-400 hover:text-blue-500 transition" title="Copy path">⧉</button><span>${escHtml(p)}</span></li>`;
+          html += `</ul></div>`;
+        }
+        html += `</div>`;
+      }
+      if (missing.length) {
+        html += `<div class="rounded-lg border border-rose-300 dark:border-rose-500/40 bg-rose-50 dark:bg-rose-500/10 p-3 text-sm text-rose-700 dark:text-rose-400 mb-3">
+          <div class="font-semibold mb-1">⚠ Not found in log:</div>
+          <div class="font-mono text-xs leading-6">${missing.map(escHtml).join("<br>")}</div>
+        </div>`;
+      }
+      if (!ambiguous.length && !missing.length) {
+        html += `<div class="rounded-lg border border-emerald-300 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/10 p-3 text-sm text-emerald-700 dark:text-emerald-400 mb-3">✓ All ${wanted.length} listed filename${wanted.length === 1 ? "" : "s"} matched exactly one path — safe to rsync.</div>`;
+      }
+    } else if (!duplicates.length) {
+      html += `<div class="rounded-lg border border-emerald-300 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/10 p-3 text-sm text-emerald-700 dark:text-emerald-400 mb-3">✓ No duplicate basenames in log.</div>`;
+    }
+
+    // All duplicates (even ones not in user's list), collapsed by default if cross-check already showed issues
+    if (duplicates.length) {
+      const open = !wanted.length;
+      html += `<details ${open ? "open" : ""} class="mb-3"><summary class="text-xs text-slate-500 dark:text-slate-400 cursor-pointer mb-2">All duplicate basenames (${duplicates.length})</summary>
+        <div class="space-y-2">`;
+      for (const { base, paths: pp } of duplicates) {
+        html += `<div><div class="font-mono text-sm font-semibold">${escHtml(base)} <span class="text-xs text-slate-500 dark:text-slate-400 ml-1">${pp.length}×</span></div>
+          <ul class="font-mono text-xs text-slate-600 dark:text-slate-300 ml-4 mt-1 space-y-0.5">`;
+        for (const p of pp) html += `<li class="flex items-center gap-2"><button data-path="${escAttr(p)}" class="log-copy text-slate-400 hover:text-blue-500 transition" title="Copy path">⧉</button><span>${escHtml(p)}</span></li>`;
+        html += `</ul></div>`;
+      }
+      html += `</div></details>`;
+    }
+
+    html += `<details class="mt-2"><summary class="text-xs text-slate-500 dark:text-slate-400 cursor-pointer">All ${paths.length} files in log</summary>
+      <ul class="font-mono text-xs text-slate-600 dark:text-slate-300 mt-2 space-y-0.5 max-h-64 overflow-auto border border-slate-200 dark:border-slate-800 rounded-md p-2 bg-slate-50 dark:bg-slate-900/40">
+      ${paths.map(p => `<li>${escHtml(p)}</li>`).join("")}
+      </ul></details>`;
+
+    results.innerHTML = html;
+  }
+
+  $("dryrunLog").addEventListener("input", analyzeLog);
+  $("clearLog").addEventListener("click", () => {
+    $("dryrunLog").value = "";
+    $("logResults").innerHTML = "";
+    $("logSummary").textContent = "";
+  });
+  $("removeFolders").addEventListener("click", () => {
+    const ta = $("dryrunLog");
+    const before = ta.value.split(/\r?\n/);
+    const after = before.filter(line => !line.trimEnd().endsWith("/"));
+    const removed = before.length - after.length;
+    ta.value = after.join("\n");
+    analyzeLog();
+    flashBtn($("removeFolders"), removed ? `Removed ${removed}` : "No folders");
+  });
+  $("logResults").addEventListener("click", async e => {
+    const btn = e.target.closest("button.log-copy");
+    if (!btn) return;
+    try { await navigator.clipboard.writeText(btn.dataset.path); }
+    catch {}
+    const orig = btn.textContent;
+    btn.textContent = "✓";
+    setTimeout(() => btn.textContent = orig, 900);
+  });
+
+  const savedOpts = loadOptions();
+  if (savedOpts) writeOptions(savedOpts);
+
+  // WAS extensions textarea binding
+  function applyWasExtsToUI() {
+    $("wasExts").value = wasExtList.join("\n");
+  }
+  applyWasExtsToUI();
+  $("wasExts").addEventListener("input", () => {
+    wasExtList = normalizeExts($("wasExts").value.split(/\r?\n/));
+    saveWasExts();
+    rehighlight();
+    render();
+  });
+  $("resetWasExts").addEventListener("click", () => {
+    wasExtList = [...DEFAULT_WAS_EXTS];
+    saveWasExts();
+    applyWasExtsToUI();
+    rehighlight();
+    render();
+  });
+  refreshProjectSelect();
+  applyDirectionUI();
+  refreshServerSelect();
+  renderEnvCards();
+  render();
+  rehighlight();
+
+  // Restore draft (if any) from a previous session
+  const draft = loadDraft();
+  if (draft) restoreSnapshot(draft);
+
+  renderDeployList();
+
+  applyLang();
+
+  // ---------- Guided tour ----------
+  const LS_GUIDE_SEEN = "rsyncgen.guideSeen.v1";
+  const guideSteps = [
+    {
+      title: "Welcome to UAT → REAL Sync",
+      body: "This tool builds <code>rsync</code> commands for deploying code between environments. <strong>Dry-run is on by default</strong> so you can always verify before doing real damage. Let's take a quick tour — it takes 60 seconds.",
+    },
+    {
+      target: "#openSettings",
+      title: "Settings first",
+      body: "Projects, environments, path templates, options, and the WAS extension list all live here. You set these up once, then come back to the main screen to build commands.",
+    },
+    {
+      target: "#openSettings",
+      title: "Projects → many servers",
+      body: "Each <strong>Project</strong> has a name, a <em>Folder</em> used in the path template, and a list of <strong>servers</strong> (e.g. <code>was1 / web1 / was2 / web2</code>). Use the <strong>Import / Export</strong> tab to move setups between machines.",
+    },
+    {
+      target: "#openSettings",
+      title: "Environments → DEV & UAT",
+      body: "The <strong>Environments</strong> tab stores your shared <em>DEV</em> and <em>UAT</em> hosts — each with its own <code>was</code> and <code>web</code> server. These are used when direction is <strong>DEV → UAT</strong>.",
+    },
+    {
+      target: "#direction",
+      title: "Pick direction",
+      body: "<strong>DEV → UAT</strong> uses the UAT environment's servers as destination. <strong>UAT → REAL</strong> pushes to the project's production server (the command is run from UAT).",
+    },
+    {
+      target: "#projectSelect",
+      title: "Project + Server",
+      body: "Pick the project and destination server. The Target in the header updates to <code>ProjectName (serverName)</code> — that's where files go.",
+    },
+    {
+      target: "#togglePathEdit",
+      title: "Paths auto-expand",
+      body: "Paths come from the template <code>/WASDATA/webRoot/{project}/src/</code>. Click the ✎ to override them for this session only (not saved to the project).",
+    },
+    {
+      target: "#genType",
+      title: "What to sync — three modes",
+      body: "<strong>Specific files</strong>: paste filenames that changed (most common after a code commit). <strong>File type</strong>: patterns like <code>*.java</code>. <strong>Full directory</strong>: everything.",
+    },
+    {
+      target: "#presetWas",
+      title: "WAS / WEB presets",
+      body: "<strong>only WAS</strong> keeps/sets <code>.java .class .xml .jsp</code>. <strong>only WEB</strong> excludes them (for the web server). Edit the extension list in Settings › Options.",
+    },
+    {
+      target: "#output",
+      title: "Generated command",
+      body: "The rsync command builds live. <strong>Copy (dry-run)</strong> to test first. Warnings below flag things like missing <code>.class</code> pairs or a server-type mismatch — inline fix buttons apply the right preset in one click.",
+    },
+    {
+      target: "#dryrunLog",
+      title: "Verify the dry-run output",
+      body: "Run the dry-run command in your shell, copy the output, paste here. The tool detects duplicate basenames and cross-checks against your Files to include list so you catch ambiguities before going live.",
+    },
+    {
+      target: "#saveDeploy",
+      title: "Save your deployment",
+      body: "Snapshot the whole setup (direction / project / server / paths / file list / log) so you can reload and recheck a past deploy. Your work also <strong>auto-saves</strong> as you go — closing the tab won't lose progress.",
+    },
+    {
+      title: "You're ready",
+      body: "Everything lives in your browser's localStorage — nothing leaves your machine. Click the <strong>?</strong> button in the header anytime to replay this tour.",
+    },
+  ];
+
+  let guideIdx = 0;
+
+  function buildGuideOverlay() {
+    if (document.getElementById("guideOverlay")) return;
+    const overlay = document.createElement("div");
+    overlay.id = "guideOverlay";
+    overlay.style.cssText = "position:fixed; inset:0; z-index:60; display:none; pointer-events:none;";
+    overlay.innerHTML = `
+      <div id="guideDim" style="position:absolute; inset:0; background:rgba(8,12,24,0.55); pointer-events:auto;"></div>
+      <div id="guideHighlight" style="position:absolute; border:2px solid #3b82f6; border-radius:10px; box-shadow:0 0 0 9999px rgba(8,12,24,0.55); transition:all .25s ease; pointer-events:none; display:none;"></div>
+      <div id="guidePopover" style="position:absolute; max-width:380px; pointer-events:auto;"
+        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl p-5">
+        <div class="flex items-center justify-between mb-2">
+          <div id="guideStepCount" class="text-[11px] uppercase tracking-[0.14em] font-semibold text-blue-500"></div>
+          <button id="guideSkip" class="text-[11px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">Skip tour</button>
+        </div>
+        <div id="guideTitle" class="text-lg font-semibold tracking-tight mb-2"></div>
+        <div id="guideBody" class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4"></div>
+        <div class="flex items-center justify-between gap-2">
+          <button id="guidePrev" class="px-3 py-1.5 rounded-md text-xs bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition">← Prev</button>
+          <button id="guideNext" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white transition">Next →</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    overlay.querySelector("#guideDim").addEventListener("click", () => endGuide(false));
+    overlay.querySelector("#guideSkip").addEventListener("click", () => endGuide(true));
+    overlay.querySelector("#guidePrev").addEventListener("click", () => { if (guideIdx > 0) { guideIdx--; showGuideStep(); }});
+    overlay.querySelector("#guideNext").addEventListener("click", () => {
+      if (guideIdx >= guideSteps.length - 1) endGuide(true);
+      else { guideIdx++; showGuideStep(); }
+    });
+    document.addEventListener("keydown", e => {
+      if (overlay.style.display === "none") return;
+      if (e.key === "Escape") endGuide(false);
+      else if (e.key === "ArrowRight") overlay.querySelector("#guideNext").click();
+      else if (e.key === "ArrowLeft") overlay.querySelector("#guidePrev").click();
+    });
+    window.addEventListener("resize", () => { if (overlay.style.display !== "none") showGuideStep(); });
+  }
+
+  function showGuideStep() {
+    buildGuideOverlay();
+    const overlay = $("guideOverlay");
+    const hl = overlay.querySelector("#guideHighlight");
+    const pop = overlay.querySelector("#guidePopover");
+    const step = guideSteps[guideIdx];
+
+    overlay.querySelector("#guideStepCount").textContent = `Step ${guideIdx + 1} of ${guideSteps.length}`;
+    overlay.querySelector("#guideTitle").textContent = step.title;
+    overlay.querySelector("#guideBody").innerHTML = step.body;
+    const prev = overlay.querySelector("#guidePrev");
+    prev.disabled = guideIdx === 0;
+    prev.style.opacity = guideIdx === 0 ? "0.4" : "1";
+    prev.style.cursor = guideIdx === 0 ? "not-allowed" : "pointer";
+    overlay.querySelector("#guideNext").textContent = guideIdx === guideSteps.length - 1 ? "Done" : "Next →";
+
+    // Position
+    const place = () => {
+      const el = step.target ? document.querySelector(step.target) : null;
+      pop.style.transform = "";
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        hl.style.display = "block";
+        hl.style.left = (rect.left - 6) + "px";
+        hl.style.top  = (rect.top - 6) + "px";
+        hl.style.width  = (rect.width + 12) + "px";
+        hl.style.height = (rect.height + 12) + "px";
+        const popW = pop.offsetWidth, popH = pop.offsetHeight;
+        let top = rect.bottom + 14;
+        if (top + popH > window.innerHeight - 20) top = Math.max(20, rect.top - popH - 14);
+        let left = rect.left + rect.width / 2 - popW / 2;
+        left = Math.max(20, Math.min(window.innerWidth - popW - 20, left));
+        pop.style.left = left + "px";
+        pop.style.top  = top + "px";
+      } else {
+        hl.style.display = "none";
+        pop.style.left = "50%";
+        pop.style.top = "50%";
+        pop.style.transform = "translate(-50%, -50%)";
+      }
+    };
+
+    if (step.target) {
+      const el = document.querySelector(step.target);
+      if (el && typeof el.scrollIntoView === "function") {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(place, 320);
+      } else place();
+    } else place();
+  }
+
+  function startGuide() {
+    buildGuideOverlay();
+    guideIdx = 0;
+    $("guideOverlay").style.display = "block";
+    showGuideStep();
+  }
+  function endGuide(persist) {
+    const o = $("guideOverlay");
+    if (o) o.style.display = "none";
+    if (persist) localStorage.setItem(LS_GUIDE_SEEN, "1");
+  }
+
+  $("guideBtn").addEventListener("click", startGuide);
+
+  // Auto-launch on first visit
+  if (!localStorage.getItem(LS_GUIDE_SEEN)) {
+    setTimeout(startGuide, 400);
+  }
+})();
+</script>
+
+<div id="toastContainer" class="fixed bottom-4 right-4 z-[70] flex flex-col-reverse gap-2 pointer-events-none"></div>
+<style>
+  @keyframes toastIn { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @keyframes toastOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(110%); opacity: 0; } }
+  .toast {
+    pointer-events: auto;
+    min-width: 260px;
+    max-width: 380px;
+    padding: 10px 12px 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    box-shadow: 0 10px 28px -10px rgba(0,0,0,.35);
+    border: 1px solid;
+    animation: toastIn .18s cubic-bezier(.2,.8,.2,1);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .toast.leaving { animation: toastOut .18s cubic-bezier(.2,.8,.2,1) forwards; }
+  .toast-info    { background: rgb(239 246 255); border-color: rgb(191 219 254); color: rgb(29 78 216); }
+  .dark .toast-info { background: rgb(30 41 59); border-color: rgba(96,165,250,.3); color: rgb(147 197 253); }
+  .toast-success { background: rgb(236 253 245); border-color: rgb(167 243 208); color: rgb(4 120 87); }
+  .dark .toast-success { background: rgb(30 41 59); border-color: rgba(52,211,153,.3); color: rgb(110 231 183); }
+  .toast-warn    { background: rgb(255 251 235); border-color: rgb(253 230 138); color: rgb(146 64 14); }
+  .dark .toast-warn { background: rgb(30 41 59); border-color: rgba(251,191,36,.3); color: rgb(253 224 71); }
+  .toast-error   { background: rgb(254 242 242); border-color: rgb(254 202 202); color: rgb(153 27 27); }
+  .dark .toast-error { background: rgb(30 41 59); border-color: rgba(244,114,114,.3); color: rgb(252 165 165); }
+  .toast button.dismiss {
+    background: transparent; border: 0; color: inherit; opacity: .55;
+    cursor: pointer; font-size: 16px; line-height: 1; padding: 0 4px;
+  }
+  .toast button.dismiss:hover { opacity: 1; }
+</style>
+<script>
+(function(){
+  const ICONS = { info: "ℹ", success: "✓", warn: "⚠", error: "✕" };
+  window.toast = function(message, type, duration) {
+    type = type || "info";
+    duration = duration == null ? 3500 : duration;
+    const c = document.getElementById("toastContainer");
+    if (!c) return;
+    const el = document.createElement("div");
+    el.className = "toast toast-" + type;
+    el.innerHTML = `<span style="flex-shrink:0;font-weight:700;">${ICONS[type] || ""}</span><span style="flex:1 1 auto; word-break:break-word;"></span><button class="dismiss" aria-label="Dismiss">×</button>`;
+    el.children[1].innerHTML = message;
+    const close = () => {
+      if (el.classList.contains("leaving")) return;
+      el.classList.add("leaving");
+      setTimeout(() => el.remove(), 200);
+    };
+    el.querySelector("button.dismiss").addEventListener("click", close);
+    c.appendChild(el);
+    if (duration > 0) setTimeout(close, duration);
+  };
+})();
+</script>
+</body>
+</html>

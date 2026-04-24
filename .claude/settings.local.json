@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"C:/Users/ksg-usr/Documents/MY Projects/kosign_url_decode_json/components/rsync_generator\")",
+      "Bash(cp \"C:/Users/ksg-usr/Documents/KOSIGN/rsync-generate/index.html\" \"C:/Users/ksg-usr/Documents/MY Projects/kosign_url_decode_json/components/rsync_generator/rsync_generator.html\")"
+    ]
+  }
+}
