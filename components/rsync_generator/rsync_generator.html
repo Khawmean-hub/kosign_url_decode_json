@@ -157,6 +157,14 @@
   .hl-dot.hl-web { background: rgb(5 150 105); }
   .hl-dot.hl-dup { background: rgba(245, 158, 11, 0.5); }
   .hl-dot.hl-orphan { background: transparent; border-bottom: 2px solid rgb(245 158 11); border-radius: 0; height: 10px; }
+
+  /* Generated command syntax highlight */
+  #output .cmd-bin    { color: rgb(253 224 71); font-weight: 600; }   /* amber-300 */
+  #output .cmd-flag   { color: rgb(125 211 252); }                     /* sky-300 */
+  #output .cmd-str    { color: rgb(134 239 172); }                     /* green-300 */
+  #output .cmd-host   { color: rgb(240 171 252); }                     /* fuchsia-300 */
+  #output .cmd-path   { color: rgb(190 242 100); }                     /* lime-300 */
+  #output .cmd-sep    { color: rgb(148 163 184); }                     /* slate-400 */
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
@@ -1704,7 +1712,7 @@
 
     const { cmd, warnings } = buildCommand(true);
     const outputEl = $("output");
-    outputEl.textContent = cmd;
+    outputEl.innerHTML = highlightRsyncCmd(cmd);
     const dangerous = $("optDelete").checked;
     outputEl.classList.toggle("ring-2", dangerous);
     outputEl.classList.toggle("ring-rose-500/60", dangerous);
@@ -1736,6 +1744,53 @@
     return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   }
   function escAttr(s) { return String(s ?? "").replace(/"/g, "&quot;"); }
+
+  function highlightRsyncCmd(cmd) {
+    if (!cmd) return "";
+    const s = String(cmd);
+    let out = "", i = 0, n = s.length, seenBin = false;
+    while (i < n) {
+      const ch = s[i];
+      if (/\s/.test(ch)) {
+        let j = i;
+        while (j < n && /\s/.test(s[j])) j++;
+        out += escHtml(s.slice(i, j));
+        i = j; continue;
+      }
+      if (ch === "'" || ch === '"') {
+        const q = ch;
+        let j = i + 1;
+        while (j < n && s[j] !== q) { if (s[j] === "\\" && j + 1 < n) j++; j++; }
+        if (j < n) j++;
+        out += `<span class="cmd-str">${escHtml(s.slice(i, j))}</span>`;
+        i = j; continue;
+      }
+      if (ch === '-') {
+        let j = i + 1;
+        while (j < n && !/[\s='"]/.test(s[j])) j++;
+        out += `<span class="cmd-flag">${escHtml(s.slice(i, j))}</span>`;
+        i = j;
+        if (i < n && s[i] === '=') { out += `<span class="cmd-sep">=</span>`; i++; }
+        continue;
+      }
+      let j = i;
+      while (j < n && !/\s/.test(s[j])) j++;
+      const word = s.slice(i, j);
+      if (!seenBin && /^rsync$/i.test(word)) {
+        out += `<span class="cmd-bin">${escHtml(word)}</span>`;
+        seenBin = true;
+      } else {
+        const m = word.match(/^([A-Za-z0-9._-]+@[A-Za-z0-9._-]+)(:)(.*)$/);
+        if (m) {
+          out += `<span class="cmd-host">${escHtml(m[1])}</span><span class="cmd-sep">${escHtml(m[2])}</span><span class="cmd-path">${escHtml(m[3])}</span>`;
+        } else {
+          out += `<span class="cmd-path">${escHtml(word)}</span>`;
+        }
+      }
+      i = j;
+    }
+    return out;
+  }
 
   [
     "specificFiles","filetypes","extraInclude","extraExclude","extraFlags",
