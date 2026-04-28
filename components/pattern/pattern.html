@@ -12,7 +12,7 @@
                     <div class="field required">
                         <div style="display: flex;">
                             <label class="text_fixed_color">Pattern</label>
-                            <div class="show_my_popup" data-offset="-2" data-position="top left" data-html="<spand class='txt_main_color'>$key: </spand>replace with Key.<br><spand class='txt_main_color'>$key[number]: </spand>replace with specifice key index.<br><spand class='txt_main_color'>$val: </spand>replace with valaue.<br><spand class='txt_main_color'>$val[number]: </spand>replace with specific valaue index.<br><spand class='txt_main_color'>$tab: </spand>replace with tab." style="margin-left: 5px;"><i class="question circle icon"></i></div> 
+                            <div id="btn_pattern_help" class="show_my_popup" data-offset="-2" data-position="top left" data-html="<spand class='txt_main_color'>$key: </spand>replace with Key.<br><spand class='txt_main_color'>$key[number]: </spand>replace with specifice key index.<br><spand class='txt_main_color'>$val: </spand>replace with valaue.<br><spand class='txt_main_color'>$val[number]: </spand>replace with specific valaue index.<br><spand class='txt_main_color'>$tab: </spand>replace with tab.<br><spand class='txt_main_color'>$keyLower / $valLower: </spand>lowercase.<br><spand class='txt_main_color'>$keyUpper / $valUpper: </spand>UPPERCASE.<br><spand class='txt_main_color'>$keySnake / $valSnake: </spand>snake_case.<br><spand class='txt_main_color'>$keyCamel / $valCamel: </spand>camelCase.<br><spand class='txt_main_color'>$keyPascal / $valPascal: </spand>PascalCase.<br><i>Click for details</i>" style="margin-left: 5px; cursor: pointer;"><i class="question circle icon"></i></div>
                         </div>
                         <div style="margin-bottom:10px;" class="two fields">
                             <div class="field">
@@ -49,6 +49,33 @@
                     <textarea rows="25" id="right_editor04"></textarea>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Pattern token help modal -->
+    <div class="ui modal small" id="pattern_help_modal">
+        <div class="header">Pattern Tokens</div>
+        <div class="scrolling content">
+            <table class="ui very basic small celled table">
+                <thead>
+                    <tr><th style="width: 220px;">Token</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code class="txt_main_color">$key</code></td><td>Replace with key.</td></tr>
+                    <tr><td><code class="txt_main_color">$key[number]</code></td><td>Replace with specific key index (e.g. <code>$key0</code>, <code>$key1</code>).</td></tr>
+                    <tr><td><code class="txt_main_color">$val</code></td><td>Replace with value.</td></tr>
+                    <tr><td><code class="txt_main_color">$val[number]</code></td><td>Replace with specific value index (e.g. <code>$val0</code>, <code>$val1</code>).</td></tr>
+                    <tr><td><code class="txt_main_color">$tab</code></td><td>Replace with tab (auto-aligned).</td></tr>
+                    <tr><td><code class="txt_main_color">$keyLower</code> / <code class="txt_main_color">$valLower</code></td><td>lowercase.</td></tr>
+                    <tr><td><code class="txt_main_color">$keyUpper</code> / <code class="txt_main_color">$valUpper</code></td><td>UPPERCASE.</td></tr>
+                    <tr><td><code class="txt_main_color">$keySnake</code> / <code class="txt_main_color">$valSnake</code></td><td>snake_case.</td></tr>
+                    <tr><td><code class="txt_main_color">$keyCamel</code> / <code class="txt_main_color">$valCamel</code></td><td>camelCase.</td></tr>
+                    <tr><td><code class="txt_main_color">$keyPascal</code> / <code class="txt_main_color">$valPascal</code></td><td>PascalCase.</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="actions">
+            <div class="ui approve button btn_color">Close</div>
         </div>
     </div>
 </div>

@@ -33,6 +33,12 @@ function events(){
     $('#btn_pattern_save').on('click', onSaveNewPattern)
     $('#btn_pattern_delete').on('click', onDeletePattern)
     $('#btn_copy_patter_text').on('click', onCopyPatterText)
+    $('#btn_pattern_help').on('click', onShowPatternHelp)
+}
+
+//show pattern help modal
+function onShowPatternHelp(){
+    $('#pattern_help_modal').modal({duration: 200}).modal('show');
 }
 
 /**
@@ -119,10 +125,53 @@ function onApplyPattern(){
         keys.forEach(v=>{
             var tab = getDefAutoTab(keys, v);
             var val = json[v];
-            resutl += patternTxt.replaceAll(replaceKey, v).replaceAll(replaceTab, tab).replaceAll(replaceVal, val) + '\n'
+            var line = applyCaseTokens(patternTxt, replaceKey, v)
+            line = applyCaseTokens(line, replaceVal, val)
+            resutl += line.replaceAll(replaceKey, v).replaceAll(replaceTab, tab).replaceAll(replaceVal, val) + '\n'
         })
     }
     rightEditor04.setValue(resutl)
+}
+
+
+/**
+ * Replace case-modifier tokens (e.g. $keyLower, $valSnake) for a given base token.
+ * Must run BEFORE the bare $key/$val replacement, otherwise '$key' would clobber '$keyLower'.
+ */
+function applyCaseTokens(text, baseToken, value){
+    var s = String(value == null ? '' : value);
+    return text
+        .replaceAll(baseToken + 'Lower', s.toLowerCase())
+        .replaceAll(baseToken + 'Upper', s.toUpperCase())
+        .replaceAll(baseToken + 'Snake', toSnakeCase(s))
+        .replaceAll(baseToken + 'Pascal', toPascalCase(s))
+        .replaceAll(baseToken + 'Camel', toCamelCase(s));
+}
+
+//convert any string to snake_case
+function toSnakeCase(str){
+    return String(str)
+        .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+        .replace(/[\s\-]+/g, '_')
+        .replace(/_+/g, '_')
+        .replace(/^_|_$/g, '')
+        .toLowerCase();
+}
+
+//convert any string to camelCase
+function toCamelCase(str){
+    var s = String(str)
+        .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+        .replace(/[_\-]+/g, ' ')
+        .trim()
+        .toLowerCase();
+    return s.replace(/\s+(.)/g, function(_, c){ return c.toUpperCase(); });
+}
+
+//convert any string to PascalCase
+function toPascalCase(str){
+    var c = toCamelCase(str);
+    return c ? c.charAt(0).toUpperCase() + c.slice(1) : c;
 }
 
 
